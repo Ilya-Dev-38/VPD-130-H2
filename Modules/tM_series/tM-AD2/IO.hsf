@@ -1,0 +1,25 @@
+BEGIN_FUNCTION_BLOCK();
+
+const int ch_count = 2;  // Number of AI channels
+BOOL  flag;
+WORD  recv[ch_count];    // Raw data from tM series
+int   val[ch_count], i;
+const WORD aiTypes[]={$TYPE_AI0, $TYPE_AI1};
+const int aiGains[]={ $GAIN_AI0, $GAIN_AI1};
+
+uart_SetTimeout($CONNECTION, $TIMEOUT);
+
+if ( VAR_VALUE($ENABLE_AI) && VAR_VALUE($R_ACTION) ) { 
+
+  memset(recv, 0, sizeof(recv));
+  flag = mrm_ReadAI($CONNECTION, $NetID, 0, ch_count, recv);
+  if (! flag) return HMI_ERROR; // failure
+
+  for (i=0; i<ch_count; i++)
+	  val[i] = tM_AIHexToLong("tM-AD2", aiTypes[i], recv[i], aiGains[i], NULL);
+
+  VAR_SET($AI0, val[0] );
+  VAR_SET($AI1, val[1] );
+}
+
+END_FUNCTION_BLOCK();

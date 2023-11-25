@@ -1,0 +1,55 @@
+BEGIN_FUNCTION_BLOCK();
+    
+WORD temp;
+
+uart_SetTimeout($CONNECTION, $TIMEOUT);
+
+mrm_ReadAO($CONNECTION, $NETID, 6, 1, &temp); // 7 адрес получает реальную скорость
+VAR_SET($SPEED_GET, temp);
+
+mrm_ReadAO($CONNECTION, $NETID, 19, 1, &temp); // 20 адрес получает значение A1
+VAR_SET($A1, temp);
+VAR_SET($Bar, temp / (float)655.35);
+
+mrm_ReadAO($CONNECTION, $NETID, 10, 1, &temp); // 11 адрес получает значение D1
+VAR_SET($D1, temp);
+VAR_SET($ERROR_D1, !temp);
+
+mrm_ReadAO($CONNECTION, $NETID, 1, 1, &temp); // 2 адрес получаем скорость
+if(VAR_GET($C_UP) == 1) temp = temp + (VAR_GET($SPEED_MAX) - VAR_GET($SPEED_MIN)) / 100;
+if(VAR_GET($C_DOWN) == 1) temp = temp - (VAR_GET($SPEED_MAX) - VAR_GET($SPEED_MIN)) / 100;
+if(temp < VAR_GET($SPEED_MIN)) temp = VAR_GET($SPEED_MIN);
+if(temp > VAR_GET($SPEED_MAX)) temp = VAR_GET($SPEED_MAX);
+VAR_SET($SPEED_SET, (temp - VAR_GET($SPEED_MIN)) / ((VAR_GET($SPEED_MAX) - VAR_GET($SPEED_MIN)) / 100));
+mrm_WriteAO($CONNECTION, $NETID, 1, 1, &temp); // 2 адрес задает скорость
+
+if(VAR_GET($Start) == 1){
+    if(VAR_GET($Reverse) != 1){
+        temp = 1;
+    } else {
+        temp = 3;
+    }
+} else {
+    temp = 0;
+}
+mrm_WriteAO($CONNECTION, $NETID, 0, 1, &temp); //Записывается в 1 регистр
+
+
+
+
+/*
+VAR_SET($ERR_RECIEVE_VALUE, mrm_ReadAO($CONNECTION, $NETID, 0, 1, &v_ai) ? 1 : 0);
+if(VAR_GET($C_UP) == 1) v_ai++;
+if(VAR_GET($C_DOWN) == 1) v_ai--;
+VAR_SET($Value, v_ai);
+VAR_SET($ERR_SEND_VALUE, mrm_WriteAO($CONNECTION, $NETID, 0, 1, &v_ai) ? 1 : 0);
+
+VAR_SET($ERR_RECIEVE_SPEED, mrm_ReadAO($CONNECTION, $NETID, 20, 1, &s_ai) ? 1 : 0);
+VAR_SET($Speed, s_ai);
+*/
+
+
+//Значение аналогового входа 1 (AI1) адрес 20
+//Действительное значение скорости магистральной шины адрес 7
+//частотники адреса 11 и 22
+END_FUNCTION_BLOCK();

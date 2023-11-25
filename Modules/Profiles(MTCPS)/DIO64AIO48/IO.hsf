@@ -1,0 +1,297 @@
+BEGIN_FUNCTION_BLOCK();
+
+DWORD st = mts_GetIOStatus($NETID);
+
+if(VAR_VALUE($ENABLE_DIO) && VAR_VALUE($W_ACTION))
+{
+   // Update to gmts_DioBuf only when the I/O Tag's write-flag is true.
+   // The grms_DioBuf is global data buffer for the Modbus RTU slave functions 
+   // working in ladder mode.
+   
+   // DIO0 is usually used as device status.
+   // When reboot, all I/O tags are initialized as zeros.
+   // Client (Modbus RTU master) can then initial the TouchPAD again, 
+   // and then set DIO0 to 1 that indicates initialized by client.
+   
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[0], $DIO0, 0);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[0], $DIO1, 1);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[0], $DIO2, 2);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[0], $DIO3, 3);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[0], $DIO4, 4);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[0], $DIO5, 5);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[0], $DIO6, 6);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[0], $DIO7, 7);
+
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[1], $DIO8,  0);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[1], $DIO9,  1);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[1], $DIO10, 2);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[1], $DIO11, 3);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[1], $DIO12, 4);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[1], $DIO13, 5);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[1], $DIO14, 6);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[1], $DIO15, 7);
+
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[2], $DIO16, 0);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[2], $DIO17, 1);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[2], $DIO18, 2);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[2], $DIO19, 3);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[2], $DIO20, 4);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[2], $DIO21, 5);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[2], $DIO22, 6);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[2], $DIO23, 7);
+   
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[3], $DIO24, 0);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[3], $DIO25, 1);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[3], $DIO26, 2);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[3], $DIO27, 3);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[3], $DIO28, 4);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[3], $DIO29, 5);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[3], $DIO30, 6);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[3], $DIO31, 7);
+  
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[4], $DIO32, 0);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[4], $DIO33, 1);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[4], $DIO34, 2);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[4], $DIO35, 3);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[4], $DIO36, 4);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[4], $DIO37, 5);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[4], $DIO38, 6);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[4], $DIO39, 7);
+  
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[5], $DIO40, 0);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[5], $DIO41, 1);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[5], $DIO42, 2);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[5], $DIO43, 3);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[5], $DIO44, 4);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[5], $DIO45, 5);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[5], $DIO46, 6);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[5], $DIO47, 7);
+  
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[6], $DIO48, 0);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[6], $DIO49, 1);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[6], $DIO50, 2);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[6], $DIO51, 3);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[6], $DIO52, 4);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[6], $DIO53, 5);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[6], $DIO54, 6);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[6], $DIO55, 7);
+  
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[7], $DIO56, 0);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[7], $DIO57, 1);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[7], $DIO58, 2);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[7], $DIO59, 3);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[7], $DIO60, 4);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[7], $DIO61, 5);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[7], $DIO62, 6);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[7], $DIO63, 7);
+}
+
+if(VAR_VALUE($ENABLE_AIO) && VAR_VALUE($W_ACTION))
+{
+   // Update to gmts_AIOBuf only when the I/O Tag's write-flag is true.
+   // The grms_AIOBuf is global data buffer for the Modbus RTU slave functions 
+   // working in ladder mode.
+   
+   // AIO0 is usually used as device status.
+   // When reboot, all I/O tags are initialized as zeros.
+   // Client (Modbus RTU master) can then initial the TouchPAD again, 
+   // and then set AIO0 to 1 that indicates initialized by client.
+   
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[0],  $AIO0);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[1],  $AIO1);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[2],  $AIO2);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[3],  $AIO3);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[4],  $AIO4);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[5],  $AIO5);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[6],  $AIO6);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[7],  $AIO7);
+
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[8],  $AIO8);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[9],  $AIO9);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[10], $AIO10);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[11], $AIO11);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[12], $AIO12);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[13], $AIO13);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[14], $AIO14);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[15], $AIO15);
+
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[16], $AIO16);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[17], $AIO17);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[18], $AIO18);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[19], $AIO19);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[20], $AIO20);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[21], $AIO21);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[22], $AIO22);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[23], $AIO23);
+   
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[24], $AIO24);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[25], $AIO25);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[26], $AIO26);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[27], $AIO27);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[28], $AIO28);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[29], $AIO29);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[30], $AIO30);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[31], $AIO31);
+   
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[32], $AIO32);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[33], $AIO33);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[34], $AIO34);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[35], $AIO35);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[36], $AIO36);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[37], $AIO37);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[38], $AIO38);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[39], $AIO39);
+   
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[40], $AIO40);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[41], $AIO41);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[42], $AIO42);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[43], $AIO43);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[44], $AIO44);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[45], $AIO45);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[46], $AIO46);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[47], $AIO47);   
+}
+ 
+if(VAR_VALUE($ENABLE_DIO) && VAR_VALUE($R_ACTION))
+{
+   // Update all I/O Tags from the gmts_DioBuf.
+    
+   if ( st & 1 ) // bit 0 is dity flag for DIO
+   {
+      VAR_SET($DIO0,  (gmts_DioBuf[0]>>0) & 1);
+      VAR_SET($DIO1,  (gmts_DioBuf[0]>>1) & 1);
+      VAR_SET($DIO2,  (gmts_DioBuf[0]>>2) & 1);
+      VAR_SET($DIO3,  (gmts_DioBuf[0]>>3) & 1);
+      VAR_SET($DIO4,  (gmts_DioBuf[0]>>4) & 1);
+      VAR_SET($DIO5,  (gmts_DioBuf[0]>>5) & 1);
+      VAR_SET($DIO6,  (gmts_DioBuf[0]>>6) & 1);
+      VAR_SET($DIO7,  (gmts_DioBuf[0]>>7) & 1);
+      
+      VAR_SET($DIO8,  (gmts_DioBuf[1]>>0) & 1);
+      VAR_SET($DIO9,  (gmts_DioBuf[1]>>1) & 1);
+      VAR_SET($DIO10, (gmts_DioBuf[1]>>2) & 1);
+      VAR_SET($DIO11, (gmts_DioBuf[1]>>3) & 1);
+      VAR_SET($DIO12, (gmts_DioBuf[1]>>4) & 1);
+      VAR_SET($DIO13, (gmts_DioBuf[1]>>5) & 1);
+      VAR_SET($DIO14, (gmts_DioBuf[1]>>6) & 1);
+      VAR_SET($DIO15, (gmts_DioBuf[1]>>7) & 1);
+   
+      VAR_SET($DIO16, (gmts_DioBuf[2]>>0) & 1);
+      VAR_SET($DIO17, (gmts_DioBuf[2]>>1) & 1);
+      VAR_SET($DIO18, (gmts_DioBuf[2]>>2) & 1);
+      VAR_SET($DIO19, (gmts_DioBuf[2]>>3) & 1);
+      VAR_SET($DIO20, (gmts_DioBuf[2]>>4) & 1);
+      VAR_SET($DIO21, (gmts_DioBuf[2]>>5) & 1);
+      VAR_SET($DIO22, (gmts_DioBuf[2]>>6) & 1);
+      VAR_SET($DIO23, (gmts_DioBuf[2]>>7) & 1);
+   
+      VAR_SET($DIO24, (gmts_DioBuf[3]>>0) & 1);
+      VAR_SET($DIO25, (gmts_DioBuf[3]>>1) & 1);
+      VAR_SET($DIO26, (gmts_DioBuf[3]>>2) & 1);
+      VAR_SET($DIO27, (gmts_DioBuf[3]>>3) & 1);
+      VAR_SET($DIO28, (gmts_DioBuf[3]>>4) & 1);
+      VAR_SET($DIO29, (gmts_DioBuf[3]>>5) & 1);
+      VAR_SET($DIO30, (gmts_DioBuf[3]>>6) & 1);
+      VAR_SET($DIO31, (gmts_DioBuf[3]>>7) & 1);
+      
+      VAR_SET($DIO32, (gmts_DioBuf[4]>>0) & 1);
+      VAR_SET($DIO33, (gmts_DioBuf[4]>>1) & 1);
+      VAR_SET($DIO34, (gmts_DioBuf[4]>>2) & 1);
+      VAR_SET($DIO35, (gmts_DioBuf[4]>>3) & 1);
+      VAR_SET($DIO36, (gmts_DioBuf[4]>>4) & 1);
+      VAR_SET($DIO37, (gmts_DioBuf[4]>>5) & 1);
+      VAR_SET($DIO38, (gmts_DioBuf[4]>>6) & 1);
+      VAR_SET($DIO39, (gmts_DioBuf[4]>>7) & 1);
+   
+      VAR_SET($DIO40, (gmts_DioBuf[5]>>0) & 1);
+      VAR_SET($DIO41, (gmts_DioBuf[5]>>1) & 1);
+      VAR_SET($DIO42, (gmts_DioBuf[5]>>2) & 1);
+      VAR_SET($DIO43, (gmts_DioBuf[5]>>3) & 1);
+      VAR_SET($DIO44, (gmts_DioBuf[5]>>4) & 1);
+      VAR_SET($DIO45, (gmts_DioBuf[5]>>5) & 1);
+      VAR_SET($DIO46, (gmts_DioBuf[5]>>6) & 1);
+      VAR_SET($DIO47, (gmts_DioBuf[5]>>7) & 1);
+   
+      VAR_SET($DIO48, (gmts_DioBuf[6]>>0) & 1);
+      VAR_SET($DIO49, (gmts_DioBuf[6]>>1) & 1);
+      VAR_SET($DIO50, (gmts_DioBuf[6]>>2) & 1);
+      VAR_SET($DIO51, (gmts_DioBuf[6]>>3) & 1);
+      VAR_SET($DIO52, (gmts_DioBuf[6]>>4) & 1);
+      VAR_SET($DIO53, (gmts_DioBuf[6]>>5) & 1);
+      VAR_SET($DIO54, (gmts_DioBuf[6]>>6) & 1);
+      VAR_SET($DIO55, (gmts_DioBuf[6]>>7) & 1);
+   
+      VAR_SET($DIO56, (gmts_DioBuf[7]>>0) & 1);
+      VAR_SET($DIO57, (gmts_DioBuf[7]>>1) & 1);
+      VAR_SET($DIO58, (gmts_DioBuf[7]>>2) & 1);
+      VAR_SET($DIO59, (gmts_DioBuf[7]>>3) & 1);
+      VAR_SET($DIO60, (gmts_DioBuf[7]>>4) & 1);
+      VAR_SET($DIO61, (gmts_DioBuf[7]>>5) & 1);
+      VAR_SET($DIO62, (gmts_DioBuf[7]>>6) & 1);
+      VAR_SET($DIO63, (gmts_DioBuf[7]>>7) & 1);
+   }
+}
+
+if(VAR_VALUE($ENABLE_AIO) && VAR_VALUE($R_ACTION))
+{
+   // Update all I/O Tags from the gmts_AioBuf.
+   
+   if ( st & 2 ) // bit 1 is dity flag for AIO
+   {
+      VAR_SET($AIO0,  gmts_AioBuf[0]);
+      VAR_SET($AIO1,  gmts_AioBuf[1]);
+      VAR_SET($AIO2,  gmts_AioBuf[2]);
+      VAR_SET($AIO3,  gmts_AioBuf[3]);
+      VAR_SET($AIO4,  gmts_AioBuf[4]);
+      VAR_SET($AIO5,  gmts_AioBuf[5]);
+      VAR_SET($AIO6,  gmts_AioBuf[6]);
+      VAR_SET($AIO7,  gmts_AioBuf[7]);
+   
+      VAR_SET($AIO8,  gmts_AioBuf[8]);
+      VAR_SET($AIO9,  gmts_AioBuf[9]);
+      VAR_SET($AIO10, gmts_AioBuf[10]);
+      VAR_SET($AIO11, gmts_AioBuf[11]);
+      VAR_SET($AIO12, gmts_AioBuf[12]);
+      VAR_SET($AIO13, gmts_AioBuf[13]);
+      VAR_SET($AIO14, gmts_AioBuf[14]);
+      VAR_SET($AIO15, gmts_AioBuf[15]);
+
+      VAR_SET($AIO16, gmts_AioBuf[16]);
+      VAR_SET($AIO17, gmts_AioBuf[17]);
+      VAR_SET($AIO18, gmts_AioBuf[18]);
+      VAR_SET($AIO19, gmts_AioBuf[19]);
+      VAR_SET($AIO20, gmts_AioBuf[20]);
+      VAR_SET($AIO21, gmts_AioBuf[21]);
+      VAR_SET($AIO22, gmts_AioBuf[22]);
+      VAR_SET($AIO23, gmts_AioBuf[23]);
+
+      VAR_SET($AIO24, gmts_AioBuf[24]);
+      VAR_SET($AIO25, gmts_AioBuf[25]);
+      VAR_SET($AIO26, gmts_AioBuf[26]);
+      VAR_SET($AIO27, gmts_AioBuf[27]);
+      VAR_SET($AIO28, gmts_AioBuf[28]);
+      VAR_SET($AIO29, gmts_AioBuf[29]);
+      VAR_SET($AIO30, gmts_AioBuf[30]);
+      VAR_SET($AIO31, gmts_AioBuf[31]);
+	  
+      VAR_SET($AIO32, gmts_AioBuf[32]);
+      VAR_SET($AIO33, gmts_AioBuf[33]);
+      VAR_SET($AIO34, gmts_AioBuf[34]);
+      VAR_SET($AIO35, gmts_AioBuf[35]);
+      VAR_SET($AIO36, gmts_AioBuf[36]);
+      VAR_SET($AIO37, gmts_AioBuf[37]);
+      VAR_SET($AIO38, gmts_AioBuf[38]);
+      VAR_SET($AIO39, gmts_AioBuf[39]);
+	  
+      VAR_SET($AIO40, gmts_AioBuf[40]);
+      VAR_SET($AIO41, gmts_AioBuf[41]);
+      VAR_SET($AIO42, gmts_AioBuf[42]);
+      VAR_SET($AIO43, gmts_AioBuf[43]);
+      VAR_SET($AIO44, gmts_AioBuf[44]);
+      VAR_SET($AIO45, gmts_AioBuf[45]);
+      VAR_SET($AIO46, gmts_AioBuf[46]);
+      VAR_SET($AIO47, gmts_AioBuf[47]);
+   }
+}
+
+END_FUNCTION_BLOCK();

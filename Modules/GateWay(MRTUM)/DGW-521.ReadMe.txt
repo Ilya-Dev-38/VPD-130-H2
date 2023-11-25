@@ -1,0 +1,5 @@
+DALI_Cmd_1              // Low byte, command code or value.
+Cmd_Or_Value_1          // Decide the low byte is direct lamp power value or command code , 0 : direct lamp power value 1: command code.
+Address_1               // Address value, if the mode is broadcast, this tag useless.
+Short_Group_Broadcast_1 // 0 : Short address 1 : Group address 2 : Broadcast command
+Cmd_Trigger_1           // When you set this tag to 1, the system will set the command once, then this tag will auto back to 0.

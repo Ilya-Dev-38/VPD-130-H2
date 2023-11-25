@@ -1,0 +1,932 @@
+BEGIN_FUNCTION_BLOCK();
+
+DWORD st = mrs_GetIOStatus($NETID);
+
+if(VAR_VALUE($ENABLE_AIO) && VAR_VALUE($W_ACTION))
+{
+   // Update to gmrs_AIOBuf only when the I/O Tag's write-flag is true.
+   // The grms_AIOBuf is global data buffer for the Modbus RTU slave functions 
+   // working in ladder mode.
+   
+   // AIO0 is usually used as device status.
+   // When reboot, all I/O tags are initialized as zeros.
+   // Client (Modbus RTU master) can then initial the TouchPAD again, 
+   // and then set AIO0 to 1 that indicates initialized by client.
+   
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[0],  $AIO0);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[1],  $AIO1);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[2],  $AIO2);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[3],  $AIO3);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[4],  $AIO4);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[5],  $AIO5);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[6],  $AIO6);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[7],  $AIO7);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[8],  $AIO8);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[9],  $AIO9);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[10], $AIO10);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[11], $AIO11);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[12], $AIO12);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[13], $AIO13);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[14], $AIO14);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[15], $AIO15);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[16], $AIO16);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[17], $AIO17);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[18], $AIO18);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[19], $AIO19);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[20], $AIO20);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[21], $AIO21);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[22], $AIO22);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[23], $AIO23);
+   
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[24], $AIO24);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[25], $AIO25);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[26], $AIO26);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[27], $AIO27);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[28], $AIO28);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[29], $AIO29);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[30], $AIO30);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[31], $AIO31);
+
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[32], $AIO32);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[33], $AIO33);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[34], $AIO34);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[35], $AIO35);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[36], $AIO36);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[37], $AIO37);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[38], $AIO38);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[39], $AIO39);
+	
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[40], $AIO40);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[41], $AIO41);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[42], $AIO42);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[43], $AIO43);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[44], $AIO44);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[45], $AIO45);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[46], $AIO46);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[47], $AIO47);
+	
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[48], $AIO48);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[49], $AIO49);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[50], $AIO50);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[51], $AIO51);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[52], $AIO52);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[53], $AIO53);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[54], $AIO54);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[55], $AIO55);
+	
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[56], $AIO56);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[57], $AIO57);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[58], $AIO58);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[59], $AIO59);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[60], $AIO60);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[61], $AIO61);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[62], $AIO62);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[63], $AIO63);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[64], $AIO64);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[65], $AIO65);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[66], $AIO66);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[67], $AIO67);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[68], $AIO68);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[69], $AIO69);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[70], $AIO70);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[71], $AIO71);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[72], $AIO72);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[73], $AIO73);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[74], $AIO74);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[75], $AIO75);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[76], $AIO76);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[77], $AIO77);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[78], $AIO78);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[79], $AIO79);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[80], $AIO80);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[81], $AIO81);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[82], $AIO82);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[83], $AIO83);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[84], $AIO84);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[85], $AIO85);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[86], $AIO86);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[87], $AIO87);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[88], $AIO88);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[89], $AIO89);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[90], $AIO90);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[91], $AIO91);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[92], $AIO92);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[93], $AIO93);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[94], $AIO94);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[95], $AIO95);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[96], $AIO96);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[97], $AIO97);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[98], $AIO98);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[99], $AIO99);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[100], $AIO100);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[101], $AIO101);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[102], $AIO102);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[103], $AIO103);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[104], $AIO104);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[105], $AIO105);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[106], $AIO106);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[107], $AIO107);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[108], $AIO108);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[109], $AIO109);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[110], $AIO110);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[111], $AIO111);
+
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[112], $AIO112);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[113], $AIO113);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[114], $AIO114);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[115], $AIO115);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[116], $AIO116);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[117], $AIO117);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[118], $AIO118);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[119], $AIO119);
+
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[120], $AIO120);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[121], $AIO121);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[122], $AIO122);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[123], $AIO123);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[124], $AIO124);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[125], $AIO125);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[126], $AIO126);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[127], $AIO127);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[128], $AIO128);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[129], $AIO129);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[130], $AIO130);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[131], $AIO131);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[132], $AIO132);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[133], $AIO133);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[134], $AIO134);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[135], $AIO135);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[136], $AIO136);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[137], $AIO137);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[138], $AIO138);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[139], $AIO139);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[140], $AIO140);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[141], $AIO141);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[142], $AIO142);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[143], $AIO143);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[144], $AIO144);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[145], $AIO145);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[146], $AIO146);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[147], $AIO147);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[148], $AIO148);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[149], $AIO149);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[150], $AIO150);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[151], $AIO151);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[152], $AIO152);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[153], $AIO153);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[154], $AIO154);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[155], $AIO155);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[156], $AIO156);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[157], $AIO157);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[158], $AIO158);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[159], $AIO159);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[160], $AIO160);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[161], $AIO161);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[162], $AIO162);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[163], $AIO163);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[164], $AIO164);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[165], $AIO165);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[166], $AIO166);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[167], $AIO167);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[168], $AIO168);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[169], $AIO169);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[170], $AIO170);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[171], $AIO171);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[172], $AIO172);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[173], $AIO173);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[174], $AIO174);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[175], $AIO175);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[176], $AIO176);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[177], $AIO177);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[178], $AIO178);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[179], $AIO179);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[180], $AIO180);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[181], $AIO181);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[182], $AIO182);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[183], $AIO183);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[184], $AIO184);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[185], $AIO185);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[186], $AIO186);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[187], $AIO187);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[188], $AIO188);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[189], $AIO189);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[190], $AIO190);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[191], $AIO191);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[192], $AIO192);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[193], $AIO193);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[194], $AIO194);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[195], $AIO195);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[196], $AIO196);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[197], $AIO197);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[198], $AIO198);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[199], $AIO199);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[200], $AIO200);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[201], $AIO201);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[202], $AIO202);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[203], $AIO203);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[204], $AIO204);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[205], $AIO205);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[206], $AIO206);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[207], $AIO207);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[208], $AIO208);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[209], $AIO209);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[210], $AIO210);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[211], $AIO211);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[212], $AIO212);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[213], $AIO213);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[214], $AIO214);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[215], $AIO215);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[216], $AIO216);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[217], $AIO217);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[218], $AIO218);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[219], $AIO219);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[220], $AIO220);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[221], $AIO221);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[222], $AIO222);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[223], $AIO223);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[224], $AIO224);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[225], $AIO225);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[226], $AIO226);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[227], $AIO227);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[228], $AIO228);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[229], $AIO229);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[230], $AIO230);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[231], $AIO231);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[232], $AIO232);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[233], $AIO233);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[234], $AIO234);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[235], $AIO235);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[236], $AIO236);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[237], $AIO237);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[238], $AIO238);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[239], $AIO239);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[240], $AIO240);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[241], $AIO241);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[242], $AIO242);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[243], $AIO243);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[244], $AIO244);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[245], $AIO245);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[246], $AIO246);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[247], $AIO247);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[248], $AIO248);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[249], $AIO249);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[250], $AIO250);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[251], $AIO251);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[252], $AIO252);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[253], $AIO253);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[254], $AIO254);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[255], $AIO255);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[256], $AIO256);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[257], $AIO257);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[258], $AIO258);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[259], $AIO259);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[260], $AIO260);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[261], $AIO261);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[262], $AIO262);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[263], $AIO263);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[264], $AIO264);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[265], $AIO265);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[266], $AIO266);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[267], $AIO267);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[268], $AIO268);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[269], $AIO269);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[270], $AIO270);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[271], $AIO271);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[272], $AIO272);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[273], $AIO273);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[274], $AIO274);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[275], $AIO275);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[276], $AIO276);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[277], $AIO277);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[278], $AIO278);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[279], $AIO279);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[280], $AIO280);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[281], $AIO281);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[282], $AIO282);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[283], $AIO283);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[284], $AIO284);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[285], $AIO285);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[286], $AIO286);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[287], $AIO287);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[288], $AIO288);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[289], $AIO289);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[290], $AIO290);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[291], $AIO291);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[292], $AIO292);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[293], $AIO293);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[294], $AIO294);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[295], $AIO295);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[296], $AIO296);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[297], $AIO297);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[298], $AIO298);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[299], $AIO299);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[300], $AIO300);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[301], $AIO301);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[302], $AIO302);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[303], $AIO303);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[304], $AIO304);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[305], $AIO305);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[306], $AIO306);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[307], $AIO307);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[308], $AIO308);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[309], $AIO309);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[310], $AIO310);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[311], $AIO311);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[312], $AIO312);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[313], $AIO313);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[314], $AIO314);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[315], $AIO315);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[316], $AIO316);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[317], $AIO317);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[318], $AIO318);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[319], $AIO319);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[320], $AIO320);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[321], $AIO321);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[322], $AIO322);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[323], $AIO323);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[324], $AIO324);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[325], $AIO325);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[326], $AIO326);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[327], $AIO327);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[328], $AIO328);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[329], $AIO329);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[330], $AIO330);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[331], $AIO331);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[332], $AIO332);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[333], $AIO333);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[334], $AIO334);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[335], $AIO335);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[336], $AIO336);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[337], $AIO337);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[338], $AIO338);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[339], $AIO339);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[340], $AIO340);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[341], $AIO341);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[342], $AIO342);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[343], $AIO343);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[344], $AIO344);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[345], $AIO345);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[346], $AIO346);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[347], $AIO347);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[348], $AIO348);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[349], $AIO349);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[350], $AIO350);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[351], $AIO351);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[352], $AIO352);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[353], $AIO353);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[354], $AIO354);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[355], $AIO355);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[356], $AIO356);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[357], $AIO357);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[358], $AIO358);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[359], $AIO359);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[360], $AIO360);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[361], $AIO361);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[362], $AIO362);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[363], $AIO363);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[364], $AIO364);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[365], $AIO365);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[366], $AIO366);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[367], $AIO367);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[368], $AIO368);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[369], $AIO369);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[370], $AIO370);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[371], $AIO371);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[372], $AIO372);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[373], $AIO373);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[374], $AIO374);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[375], $AIO375);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[376], $AIO376);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[377], $AIO377);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[378], $AIO378);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[379], $AIO379);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[380], $AIO380);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[381], $AIO381);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[382], $AIO382);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[383], $AIO383);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[384], $AIO384);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[385], $AIO385);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[386], $AIO386);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[387], $AIO387);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[388], $AIO388);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[389], $AIO389);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[390], $AIO390);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[391], $AIO391);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[392], $AIO392);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[393], $AIO393);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[394], $AIO394);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[395], $AIO395);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[396], $AIO396);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[397], $AIO397);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[398], $AIO398);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[399], $AIO399);
+
+}
+
+if(VAR_VALUE($ENABLE_AIO) && VAR_VALUE($R_ACTION))
+{
+   // Update all I/O Tags from the gmrs_AioBuf.
+   
+   if ( st & 2 ) // bit 1 is dity flag for AIO
+   {
+      VAR_SET($AIO0,  gmrs_AioBuf[0]);
+      VAR_SET($AIO1,  gmrs_AioBuf[1]);
+      VAR_SET($AIO2,  gmrs_AioBuf[2]);
+      VAR_SET($AIO3,  gmrs_AioBuf[3]);
+      VAR_SET($AIO4,  gmrs_AioBuf[4]);
+      VAR_SET($AIO5,  gmrs_AioBuf[5]);
+      VAR_SET($AIO6,  gmrs_AioBuf[6]);
+      VAR_SET($AIO7,  gmrs_AioBuf[7]);
+   
+      VAR_SET($AIO8,  gmrs_AioBuf[8]);
+      VAR_SET($AIO9,  gmrs_AioBuf[9]);
+      VAR_SET($AIO10, gmrs_AioBuf[10]);
+      VAR_SET($AIO11, gmrs_AioBuf[11]);
+      VAR_SET($AIO12, gmrs_AioBuf[12]);
+      VAR_SET($AIO13, gmrs_AioBuf[13]);
+      VAR_SET($AIO14, gmrs_AioBuf[14]);
+      VAR_SET($AIO15, gmrs_AioBuf[15]);
+
+      VAR_SET($AIO16, gmrs_AioBuf[16]);
+      VAR_SET($AIO17, gmrs_AioBuf[17]);
+      VAR_SET($AIO18, gmrs_AioBuf[18]);
+      VAR_SET($AIO19, gmrs_AioBuf[19]);
+      VAR_SET($AIO20, gmrs_AioBuf[20]);
+      VAR_SET($AIO21, gmrs_AioBuf[21]);
+      VAR_SET($AIO22, gmrs_AioBuf[22]);
+      VAR_SET($AIO23, gmrs_AioBuf[23]);
+
+      VAR_SET($AIO24, gmrs_AioBuf[24]);
+      VAR_SET($AIO25, gmrs_AioBuf[25]);
+      VAR_SET($AIO26, gmrs_AioBuf[26]);
+      VAR_SET($AIO27, gmrs_AioBuf[27]);
+      VAR_SET($AIO28, gmrs_AioBuf[28]);
+      VAR_SET($AIO29, gmrs_AioBuf[29]);
+      VAR_SET($AIO30, gmrs_AioBuf[30]);
+      VAR_SET($AIO31, gmrs_AioBuf[31]);
+		
+
+      VAR_SET($AIO32, gmrs_AioBuf[32]);
+      VAR_SET($AIO33, gmrs_AioBuf[33]);
+      VAR_SET($AIO34, gmrs_AioBuf[34]);
+      VAR_SET($AIO35, gmrs_AioBuf[35]);
+      VAR_SET($AIO36, gmrs_AioBuf[36]);
+      VAR_SET($AIO37, gmrs_AioBuf[37]);
+      VAR_SET($AIO38, gmrs_AioBuf[38]);
+      VAR_SET($AIO39, gmrs_AioBuf[39]);
+		
+      VAR_SET($AIO40, gmrs_AioBuf[40]);
+      VAR_SET($AIO41, gmrs_AioBuf[41]);
+      VAR_SET($AIO42, gmrs_AioBuf[42]);
+      VAR_SET($AIO43, gmrs_AioBuf[43]);
+      VAR_SET($AIO44, gmrs_AioBuf[44]);
+      VAR_SET($AIO45, gmrs_AioBuf[45]);
+      VAR_SET($AIO46, gmrs_AioBuf[46]);
+      VAR_SET($AIO47, gmrs_AioBuf[47]);
+
+      VAR_SET($AIO48, gmrs_AioBuf[48]);
+      VAR_SET($AIO49, gmrs_AioBuf[49]);
+      VAR_SET($AIO50, gmrs_AioBuf[50]);
+      VAR_SET($AIO51, gmrs_AioBuf[51]);
+      VAR_SET($AIO52, gmrs_AioBuf[52]);
+      VAR_SET($AIO53, gmrs_AioBuf[53]);
+      VAR_SET($AIO54, gmrs_AioBuf[54]);
+      VAR_SET($AIO55, gmrs_AioBuf[55]);
+
+      VAR_SET($AIO56, gmrs_AioBuf[56]);
+      VAR_SET($AIO57, gmrs_AioBuf[57]);
+      VAR_SET($AIO58, gmrs_AioBuf[58]);
+      VAR_SET($AIO59, gmrs_AioBuf[59]);
+      VAR_SET($AIO60, gmrs_AioBuf[60]);
+      VAR_SET($AIO61, gmrs_AioBuf[61]);
+      VAR_SET($AIO62, gmrs_AioBuf[62]);
+      VAR_SET($AIO63, gmrs_AioBuf[63]);
+
+      VAR_SET($AIO64, gmrs_AioBuf[64]);
+      VAR_SET($AIO65, gmrs_AioBuf[65]);
+      VAR_SET($AIO66, gmrs_AioBuf[66]);
+      VAR_SET($AIO67, gmrs_AioBuf[67]);
+      VAR_SET($AIO68, gmrs_AioBuf[68]);
+      VAR_SET($AIO69, gmrs_AioBuf[69]);
+      VAR_SET($AIO70, gmrs_AioBuf[70]);
+      VAR_SET($AIO71, gmrs_AioBuf[71]);
+
+      VAR_SET($AIO72, gmrs_AioBuf[72]);
+      VAR_SET($AIO73, gmrs_AioBuf[73]);
+      VAR_SET($AIO74, gmrs_AioBuf[74]);
+      VAR_SET($AIO75, gmrs_AioBuf[75]);
+      VAR_SET($AIO76, gmrs_AioBuf[76]);
+      VAR_SET($AIO77, gmrs_AioBuf[77]);
+      VAR_SET($AIO78, gmrs_AioBuf[78]);
+      VAR_SET($AIO79, gmrs_AioBuf[79]);
+
+      VAR_SET($AIO80, gmrs_AioBuf[80]);
+      VAR_SET($AIO81, gmrs_AioBuf[81]);
+      VAR_SET($AIO82, gmrs_AioBuf[82]);
+      VAR_SET($AIO83, gmrs_AioBuf[83]);
+      VAR_SET($AIO84, gmrs_AioBuf[84]);
+      VAR_SET($AIO85, gmrs_AioBuf[85]);
+      VAR_SET($AIO86, gmrs_AioBuf[86]);
+      VAR_SET($AIO87, gmrs_AioBuf[87]);
+
+      VAR_SET($AIO88, gmrs_AioBuf[88]);
+      VAR_SET($AIO89, gmrs_AioBuf[89]);
+      VAR_SET($AIO90, gmrs_AioBuf[90]);
+      VAR_SET($AIO91, gmrs_AioBuf[91]);
+      VAR_SET($AIO92, gmrs_AioBuf[92]);
+      VAR_SET($AIO93, gmrs_AioBuf[93]);
+      VAR_SET($AIO94, gmrs_AioBuf[94]);
+      VAR_SET($AIO95, gmrs_AioBuf[95]);
+
+      VAR_SET($AIO96, gmrs_AioBuf[96]);
+      VAR_SET($AIO97, gmrs_AioBuf[97]);
+      VAR_SET($AIO98, gmrs_AioBuf[98]);
+      VAR_SET($AIO99, gmrs_AioBuf[99]);
+      VAR_SET($AIO100, gmrs_AioBuf[100]);
+      VAR_SET($AIO101, gmrs_AioBuf[101]);
+      VAR_SET($AIO102, gmrs_AioBuf[102]);
+      VAR_SET($AIO103, gmrs_AioBuf[103]);
+
+      VAR_SET($AIO104, gmrs_AioBuf[104]);
+      VAR_SET($AIO105, gmrs_AioBuf[105]);
+      VAR_SET($AIO106, gmrs_AioBuf[106]);
+      VAR_SET($AIO107, gmrs_AioBuf[107]);
+      VAR_SET($AIO108, gmrs_AioBuf[108]);
+      VAR_SET($AIO109, gmrs_AioBuf[109]);
+      VAR_SET($AIO110, gmrs_AioBuf[110]);
+      VAR_SET($AIO111, gmrs_AioBuf[111]);
+
+      VAR_SET($AIO112, gmrs_AioBuf[112]);
+      VAR_SET($AIO113, gmrs_AioBuf[113]);
+      VAR_SET($AIO114, gmrs_AioBuf[114]);
+      VAR_SET($AIO115, gmrs_AioBuf[115]);
+      VAR_SET($AIO116, gmrs_AioBuf[116]);
+      VAR_SET($AIO117, gmrs_AioBuf[117]);
+      VAR_SET($AIO118, gmrs_AioBuf[118]);
+      VAR_SET($AIO119, gmrs_AioBuf[119]);
+
+      VAR_SET($AIO120, gmrs_AioBuf[120]);
+      VAR_SET($AIO121, gmrs_AioBuf[121]);
+      VAR_SET($AIO122, gmrs_AioBuf[122]);
+      VAR_SET($AIO123, gmrs_AioBuf[123]);
+      VAR_SET($AIO124, gmrs_AioBuf[124]);
+      VAR_SET($AIO125, gmrs_AioBuf[125]);
+      VAR_SET($AIO126, gmrs_AioBuf[126]);
+      VAR_SET($AIO127, gmrs_AioBuf[127]);
+
+      VAR_SET($AIO128, gmrs_AioBuf[128]);
+      VAR_SET($AIO129, gmrs_AioBuf[129]);
+      VAR_SET($AIO130, gmrs_AioBuf[130]);
+      VAR_SET($AIO131, gmrs_AioBuf[131]);
+      VAR_SET($AIO132, gmrs_AioBuf[132]);
+      VAR_SET($AIO133, gmrs_AioBuf[133]);
+      VAR_SET($AIO134, gmrs_AioBuf[134]);
+      VAR_SET($AIO135, gmrs_AioBuf[135]);
+
+      VAR_SET($AIO136, gmrs_AioBuf[136]);
+      VAR_SET($AIO137, gmrs_AioBuf[137]);
+      VAR_SET($AIO138, gmrs_AioBuf[138]);
+      VAR_SET($AIO139, gmrs_AioBuf[139]);
+      VAR_SET($AIO140, gmrs_AioBuf[140]);
+      VAR_SET($AIO141, gmrs_AioBuf[141]);
+      VAR_SET($AIO142, gmrs_AioBuf[142]);
+      VAR_SET($AIO143, gmrs_AioBuf[143]);
+
+      VAR_SET($AIO144, gmrs_AioBuf[144]);
+      VAR_SET($AIO145, gmrs_AioBuf[145]);
+      VAR_SET($AIO146, gmrs_AioBuf[146]);
+      VAR_SET($AIO147, gmrs_AioBuf[147]);
+      VAR_SET($AIO148, gmrs_AioBuf[148]);
+      VAR_SET($AIO149, gmrs_AioBuf[149]);
+      VAR_SET($AIO150, gmrs_AioBuf[150]);
+      VAR_SET($AIO151, gmrs_AioBuf[151]);
+
+      VAR_SET($AIO152, gmrs_AioBuf[152]);
+      VAR_SET($AIO153, gmrs_AioBuf[153]);
+      VAR_SET($AIO154, gmrs_AioBuf[154]);
+      VAR_SET($AIO155, gmrs_AioBuf[155]);
+      VAR_SET($AIO156, gmrs_AioBuf[156]);
+      VAR_SET($AIO157, gmrs_AioBuf[157]);
+      VAR_SET($AIO158, gmrs_AioBuf[158]);
+      VAR_SET($AIO159, gmrs_AioBuf[159]);
+
+      VAR_SET($AIO160, gmrs_AioBuf[160]);
+      VAR_SET($AIO161, gmrs_AioBuf[161]);
+      VAR_SET($AIO162, gmrs_AioBuf[162]);
+      VAR_SET($AIO163, gmrs_AioBuf[163]);
+      VAR_SET($AIO164, gmrs_AioBuf[164]);
+      VAR_SET($AIO165, gmrs_AioBuf[165]);
+      VAR_SET($AIO166, gmrs_AioBuf[166]);
+      VAR_SET($AIO167, gmrs_AioBuf[167]);
+
+      VAR_SET($AIO168, gmrs_AioBuf[168]);
+      VAR_SET($AIO169, gmrs_AioBuf[169]);
+      VAR_SET($AIO170, gmrs_AioBuf[170]);
+      VAR_SET($AIO171, gmrs_AioBuf[171]);
+      VAR_SET($AIO172, gmrs_AioBuf[172]);
+      VAR_SET($AIO173, gmrs_AioBuf[173]);
+      VAR_SET($AIO174, gmrs_AioBuf[174]);
+      VAR_SET($AIO175, gmrs_AioBuf[175]);
+
+      VAR_SET($AIO176, gmrs_AioBuf[176]);
+      VAR_SET($AIO177, gmrs_AioBuf[177]);
+      VAR_SET($AIO178, gmrs_AioBuf[178]);
+      VAR_SET($AIO179, gmrs_AioBuf[179]);
+      VAR_SET($AIO180, gmrs_AioBuf[180]);
+      VAR_SET($AIO181, gmrs_AioBuf[181]);
+      VAR_SET($AIO182, gmrs_AioBuf[182]);
+      VAR_SET($AIO183, gmrs_AioBuf[183]);
+
+      VAR_SET($AIO184, gmrs_AioBuf[184]);
+      VAR_SET($AIO185, gmrs_AioBuf[185]);
+      VAR_SET($AIO186, gmrs_AioBuf[186]);
+      VAR_SET($AIO187, gmrs_AioBuf[187]);
+      VAR_SET($AIO188, gmrs_AioBuf[188]);
+      VAR_SET($AIO189, gmrs_AioBuf[189]);
+      VAR_SET($AIO190, gmrs_AioBuf[190]);
+      VAR_SET($AIO191, gmrs_AioBuf[191]);
+
+      VAR_SET($AIO192, gmrs_AioBuf[192]);
+      VAR_SET($AIO193, gmrs_AioBuf[193]);
+      VAR_SET($AIO194, gmrs_AioBuf[194]);
+      VAR_SET($AIO195, gmrs_AioBuf[195]);
+      VAR_SET($AIO196, gmrs_AioBuf[196]);
+      VAR_SET($AIO197, gmrs_AioBuf[197]);
+      VAR_SET($AIO198, gmrs_AioBuf[198]);
+      VAR_SET($AIO199, gmrs_AioBuf[199]);
+
+      VAR_SET($AIO200, gmrs_AioBuf[200]);
+      VAR_SET($AIO201, gmrs_AioBuf[201]);
+      VAR_SET($AIO202, gmrs_AioBuf[202]);
+      VAR_SET($AIO203, gmrs_AioBuf[203]);
+      VAR_SET($AIO204, gmrs_AioBuf[204]);
+      VAR_SET($AIO205, gmrs_AioBuf[205]);
+      VAR_SET($AIO206, gmrs_AioBuf[206]);
+      VAR_SET($AIO207, gmrs_AioBuf[207]);
+
+      VAR_SET($AIO208, gmrs_AioBuf[208]);
+      VAR_SET($AIO209, gmrs_AioBuf[209]);
+      VAR_SET($AIO210, gmrs_AioBuf[210]);
+      VAR_SET($AIO211, gmrs_AioBuf[211]);
+      VAR_SET($AIO212, gmrs_AioBuf[212]);
+      VAR_SET($AIO213, gmrs_AioBuf[213]);
+      VAR_SET($AIO214, gmrs_AioBuf[214]);
+      VAR_SET($AIO215, gmrs_AioBuf[215]);
+
+      VAR_SET($AIO216, gmrs_AioBuf[216]);
+      VAR_SET($AIO217, gmrs_AioBuf[217]);
+      VAR_SET($AIO218, gmrs_AioBuf[218]);
+      VAR_SET($AIO219, gmrs_AioBuf[219]);
+      VAR_SET($AIO220, gmrs_AioBuf[220]);
+      VAR_SET($AIO221, gmrs_AioBuf[221]);
+      VAR_SET($AIO222, gmrs_AioBuf[222]);
+      VAR_SET($AIO223, gmrs_AioBuf[223]);
+
+      VAR_SET($AIO224, gmrs_AioBuf[224]);
+      VAR_SET($AIO225, gmrs_AioBuf[225]);
+      VAR_SET($AIO226, gmrs_AioBuf[226]);
+      VAR_SET($AIO227, gmrs_AioBuf[227]);
+      VAR_SET($AIO228, gmrs_AioBuf[228]);
+      VAR_SET($AIO229, gmrs_AioBuf[229]);
+      VAR_SET($AIO230, gmrs_AioBuf[230]);
+      VAR_SET($AIO231, gmrs_AioBuf[231]);
+
+      VAR_SET($AIO232, gmrs_AioBuf[232]);
+      VAR_SET($AIO233, gmrs_AioBuf[233]);
+      VAR_SET($AIO234, gmrs_AioBuf[234]);
+      VAR_SET($AIO235, gmrs_AioBuf[235]);
+      VAR_SET($AIO236, gmrs_AioBuf[236]);
+      VAR_SET($AIO237, gmrs_AioBuf[237]);
+      VAR_SET($AIO238, gmrs_AioBuf[238]);
+      VAR_SET($AIO239, gmrs_AioBuf[239]);
+
+      VAR_SET($AIO240, gmrs_AioBuf[240]);
+      VAR_SET($AIO241, gmrs_AioBuf[241]);
+      VAR_SET($AIO242, gmrs_AioBuf[242]);
+      VAR_SET($AIO243, gmrs_AioBuf[243]);
+      VAR_SET($AIO244, gmrs_AioBuf[244]);
+      VAR_SET($AIO245, gmrs_AioBuf[245]);
+      VAR_SET($AIO246, gmrs_AioBuf[246]);
+      VAR_SET($AIO247, gmrs_AioBuf[247]);
+
+      VAR_SET($AIO248, gmrs_AioBuf[248]);
+      VAR_SET($AIO249, gmrs_AioBuf[249]);
+      VAR_SET($AIO250, gmrs_AioBuf[250]);
+      VAR_SET($AIO251, gmrs_AioBuf[251]);
+      VAR_SET($AIO252, gmrs_AioBuf[252]);
+      VAR_SET($AIO253, gmrs_AioBuf[253]);
+      VAR_SET($AIO254, gmrs_AioBuf[254]);
+      VAR_SET($AIO255, gmrs_AioBuf[255]);
+
+      VAR_SET($AIO256, gmrs_AioBuf[256]);
+      VAR_SET($AIO257, gmrs_AioBuf[257]);
+      VAR_SET($AIO258, gmrs_AioBuf[258]);
+      VAR_SET($AIO259, gmrs_AioBuf[259]);
+      VAR_SET($AIO260, gmrs_AioBuf[260]);
+      VAR_SET($AIO261, gmrs_AioBuf[261]);
+      VAR_SET($AIO262, gmrs_AioBuf[262]);
+      VAR_SET($AIO263, gmrs_AioBuf[263]);
+
+      VAR_SET($AIO264, gmrs_AioBuf[264]);
+      VAR_SET($AIO265, gmrs_AioBuf[265]);
+      VAR_SET($AIO266, gmrs_AioBuf[266]);
+      VAR_SET($AIO267, gmrs_AioBuf[267]);
+      VAR_SET($AIO268, gmrs_AioBuf[268]);
+      VAR_SET($AIO269, gmrs_AioBuf[269]);
+      VAR_SET($AIO270, gmrs_AioBuf[270]);
+      VAR_SET($AIO271, gmrs_AioBuf[271]);
+
+      VAR_SET($AIO272, gmrs_AioBuf[272]);
+      VAR_SET($AIO273, gmrs_AioBuf[273]);
+      VAR_SET($AIO274, gmrs_AioBuf[274]);
+      VAR_SET($AIO275, gmrs_AioBuf[275]);
+      VAR_SET($AIO276, gmrs_AioBuf[276]);
+      VAR_SET($AIO277, gmrs_AioBuf[277]);
+      VAR_SET($AIO278, gmrs_AioBuf[278]);
+      VAR_SET($AIO279, gmrs_AioBuf[279]);
+
+      VAR_SET($AIO280, gmrs_AioBuf[280]);
+      VAR_SET($AIO281, gmrs_AioBuf[281]);
+      VAR_SET($AIO282, gmrs_AioBuf[282]);
+      VAR_SET($AIO283, gmrs_AioBuf[283]);
+      VAR_SET($AIO284, gmrs_AioBuf[284]);
+      VAR_SET($AIO285, gmrs_AioBuf[285]);
+      VAR_SET($AIO286, gmrs_AioBuf[286]);
+      VAR_SET($AIO287, gmrs_AioBuf[287]);
+
+      VAR_SET($AIO288, gmrs_AioBuf[288]);
+      VAR_SET($AIO289, gmrs_AioBuf[289]);
+      VAR_SET($AIO290, gmrs_AioBuf[290]);
+      VAR_SET($AIO291, gmrs_AioBuf[291]);
+      VAR_SET($AIO292, gmrs_AioBuf[292]);
+      VAR_SET($AIO293, gmrs_AioBuf[293]);
+      VAR_SET($AIO294, gmrs_AioBuf[294]);
+      VAR_SET($AIO295, gmrs_AioBuf[295]);
+
+      VAR_SET($AIO296, gmrs_AioBuf[296]);
+      VAR_SET($AIO297, gmrs_AioBuf[297]);
+      VAR_SET($AIO298, gmrs_AioBuf[298]);
+      VAR_SET($AIO299, gmrs_AioBuf[299]);
+      VAR_SET($AIO300, gmrs_AioBuf[300]);
+      VAR_SET($AIO301, gmrs_AioBuf[301]);
+      VAR_SET($AIO302, gmrs_AioBuf[302]);
+      VAR_SET($AIO303, gmrs_AioBuf[303]);
+
+      VAR_SET($AIO304, gmrs_AioBuf[304]);
+      VAR_SET($AIO305, gmrs_AioBuf[305]);
+      VAR_SET($AIO306, gmrs_AioBuf[306]);
+      VAR_SET($AIO307, gmrs_AioBuf[307]);
+      VAR_SET($AIO308, gmrs_AioBuf[308]);
+      VAR_SET($AIO309, gmrs_AioBuf[309]);
+      VAR_SET($AIO310, gmrs_AioBuf[310]);
+      VAR_SET($AIO311, gmrs_AioBuf[311]);
+
+      VAR_SET($AIO312, gmrs_AioBuf[312]);
+      VAR_SET($AIO313, gmrs_AioBuf[313]);
+      VAR_SET($AIO314, gmrs_AioBuf[314]);
+      VAR_SET($AIO315, gmrs_AioBuf[315]);
+      VAR_SET($AIO316, gmrs_AioBuf[316]);
+      VAR_SET($AIO317, gmrs_AioBuf[317]);
+      VAR_SET($AIO318, gmrs_AioBuf[318]);
+      VAR_SET($AIO319, gmrs_AioBuf[319]);
+
+      VAR_SET($AIO320, gmrs_AioBuf[320]);
+      VAR_SET($AIO321, gmrs_AioBuf[321]);
+      VAR_SET($AIO322, gmrs_AioBuf[322]);
+      VAR_SET($AIO323, gmrs_AioBuf[323]);
+      VAR_SET($AIO324, gmrs_AioBuf[324]);
+      VAR_SET($AIO325, gmrs_AioBuf[325]);
+      VAR_SET($AIO326, gmrs_AioBuf[326]);
+      VAR_SET($AIO327, gmrs_AioBuf[327]);
+
+      VAR_SET($AIO328, gmrs_AioBuf[328]);
+      VAR_SET($AIO329, gmrs_AioBuf[329]);
+      VAR_SET($AIO330, gmrs_AioBuf[330]);
+      VAR_SET($AIO331, gmrs_AioBuf[331]);
+      VAR_SET($AIO332, gmrs_AioBuf[332]);
+      VAR_SET($AIO333, gmrs_AioBuf[333]);
+      VAR_SET($AIO334, gmrs_AioBuf[334]);
+      VAR_SET($AIO335, gmrs_AioBuf[335]);
+
+      VAR_SET($AIO336, gmrs_AioBuf[336]);
+      VAR_SET($AIO337, gmrs_AioBuf[337]);
+      VAR_SET($AIO338, gmrs_AioBuf[338]);
+      VAR_SET($AIO339, gmrs_AioBuf[339]);
+      VAR_SET($AIO340, gmrs_AioBuf[340]);
+      VAR_SET($AIO341, gmrs_AioBuf[341]);
+      VAR_SET($AIO342, gmrs_AioBuf[342]);
+      VAR_SET($AIO343, gmrs_AioBuf[343]);
+
+      VAR_SET($AIO344, gmrs_AioBuf[344]);
+      VAR_SET($AIO345, gmrs_AioBuf[345]);
+      VAR_SET($AIO346, gmrs_AioBuf[346]);
+      VAR_SET($AIO347, gmrs_AioBuf[347]);
+      VAR_SET($AIO348, gmrs_AioBuf[348]);
+      VAR_SET($AIO349, gmrs_AioBuf[349]);
+      VAR_SET($AIO350, gmrs_AioBuf[350]);
+      VAR_SET($AIO351, gmrs_AioBuf[351]);
+
+      VAR_SET($AIO352, gmrs_AioBuf[352]);
+      VAR_SET($AIO353, gmrs_AioBuf[353]);
+      VAR_SET($AIO354, gmrs_AioBuf[354]);
+      VAR_SET($AIO355, gmrs_AioBuf[355]);
+      VAR_SET($AIO356, gmrs_AioBuf[356]);
+      VAR_SET($AIO357, gmrs_AioBuf[357]);
+      VAR_SET($AIO358, gmrs_AioBuf[358]);
+      VAR_SET($AIO359, gmrs_AioBuf[359]);
+
+      VAR_SET($AIO360, gmrs_AioBuf[360]);
+      VAR_SET($AIO361, gmrs_AioBuf[361]);
+      VAR_SET($AIO362, gmrs_AioBuf[362]);
+      VAR_SET($AIO363, gmrs_AioBuf[363]);
+      VAR_SET($AIO364, gmrs_AioBuf[364]);
+      VAR_SET($AIO365, gmrs_AioBuf[365]);
+      VAR_SET($AIO366, gmrs_AioBuf[366]);
+      VAR_SET($AIO367, gmrs_AioBuf[367]);
+
+      VAR_SET($AIO368, gmrs_AioBuf[368]);
+      VAR_SET($AIO369, gmrs_AioBuf[369]);
+      VAR_SET($AIO370, gmrs_AioBuf[370]);
+      VAR_SET($AIO371, gmrs_AioBuf[371]);
+      VAR_SET($AIO372, gmrs_AioBuf[372]);
+      VAR_SET($AIO373, gmrs_AioBuf[373]);
+      VAR_SET($AIO374, gmrs_AioBuf[374]);
+      VAR_SET($AIO375, gmrs_AioBuf[375]);
+
+      VAR_SET($AIO376, gmrs_AioBuf[376]);
+      VAR_SET($AIO377, gmrs_AioBuf[377]);
+      VAR_SET($AIO378, gmrs_AioBuf[378]);
+      VAR_SET($AIO379, gmrs_AioBuf[379]);
+      VAR_SET($AIO380, gmrs_AioBuf[380]);
+      VAR_SET($AIO381, gmrs_AioBuf[381]);
+      VAR_SET($AIO382, gmrs_AioBuf[382]);
+      VAR_SET($AIO383, gmrs_AioBuf[383]);
+
+      VAR_SET($AIO384, gmrs_AioBuf[384]);
+      VAR_SET($AIO385, gmrs_AioBuf[385]);
+      VAR_SET($AIO386, gmrs_AioBuf[386]);
+      VAR_SET($AIO387, gmrs_AioBuf[387]);
+      VAR_SET($AIO388, gmrs_AioBuf[388]);
+      VAR_SET($AIO389, gmrs_AioBuf[389]);
+      VAR_SET($AIO390, gmrs_AioBuf[390]);
+      VAR_SET($AIO391, gmrs_AioBuf[391]);
+
+      VAR_SET($AIO392, gmrs_AioBuf[392]);
+      VAR_SET($AIO393, gmrs_AioBuf[393]);
+      VAR_SET($AIO394, gmrs_AioBuf[394]);
+      VAR_SET($AIO395, gmrs_AioBuf[395]);
+      VAR_SET($AIO396, gmrs_AioBuf[396]);
+      VAR_SET($AIO397, gmrs_AioBuf[397]);
+      VAR_SET($AIO398, gmrs_AioBuf[398]);
+      VAR_SET($AIO399, gmrs_AioBuf[399]);
+
+
+	}   
+}
+
+END_FUNCTION_BLOCK();

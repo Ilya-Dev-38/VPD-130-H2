@@ -1,0 +1,25 @@
+BEGIN_FUNCTION_BLOCK();
+
+WORD v_ao[2];
+const int  IR_COUNT = 6;
+const PVAR IR_LIST[]={&$IR_Out1, &$IR_Out2, &$IR_Out3, &$IR_Out4, &$IR_Out5, &$IR_Out6};
+
+uart_SetTimeout($CONNECTION, $TIMEOUT);
+
+for (int i=0; i<IR_COUNT; i++)
+{
+  if ( PVAR_FLAG_IS_WRITE(IR_LIST[i]) ) // Get and clear the write flag.
+  {
+    v_ao[0] = 0xFFFF & PVAR_VALUE(IR_LIST[i]); // command
+	 v_ao[1] = (1 << i); // channel
+
+	 // Modbus RTU master API uses byte-array to send/receive data.
+	 if ( ! mrm_WriteAO($CONNECTION, $NETID, 1103, 2, v_ao) )
+	      return HMI_ERROR;     // failure
+	 else return HMI_OK;        // send others in next loop (= add delay)
+  }
+}
+
+return HMI_OK;
+
+END_FUNCTION_BLOCK();

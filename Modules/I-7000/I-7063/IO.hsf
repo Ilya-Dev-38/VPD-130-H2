@@ -1,0 +1,88 @@
+BEGIN_FUNCTION_BLOCK();
+
+DWORD v_do = 0;
+DWORD v_di = 0;
+int   gWriteCount = 0;
+DWORD v_ai[8];
+int   iRtn;
+
+uart_SetTimeout($CONNECTION, $TIMEOUT);
+
+if ( VAR_VALUE($ENABLE_DO) && VAR_VALUE($W_ACTION) ) 
+{
+   int iWrite = 0;
+   v_do   = 0;
+    
+   iWrite += VAR_GET_WRITE_U32(&v_do, $DO0, 0);
+   iWrite += VAR_GET_WRITE_U32(&v_do, $DO1, 1);
+   iWrite += VAR_GET_WRITE_U32(&v_do, $DO2, 2);
+
+   if ( iWrite )  // Write only when need
+   {
+      gWriteCount++;
+      if ( ! dcon_WriteDO($CONNECTION, $NETID, 3, v_do & 0xFF) )
+	     return HMI_ERROR;
+   }
+}
+
+if ( VAR_VALUE($ENABLE_DO) && VAR_VALUE($W_ACTION) ) 
+{
+    if(VAR_VALUE($CNTC0)) 
+	   dcon_ClearDICNT($CONNECTION, $NETID,0,8);
+    if(VAR_VALUE($CNTC1)) 
+	   dcon_ClearDICNT($CONNECTION, $NETID,1,8);
+    if(VAR_VALUE($CNTC2)) 
+	   dcon_ClearDICNT($CONNECTION, $NETID,2,8);
+    if(VAR_VALUE($CNTC3)) 
+	   dcon_ClearDICNT($CONNECTION, $NETID,3,8);
+    if(VAR_VALUE($CNTC4)) 
+	   dcon_ClearDICNT($CONNECTION, $NETID,4,8);
+    if(VAR_VALUE($CNTC5)) 
+	   dcon_ClearDICNT($CONNECTION, $NETID,5,8);
+    if(VAR_VALUE($CNTC6)) 
+	   dcon_ClearDICNT($CONNECTION, $NETID,6,8);
+    if(VAR_VALUE($CNTC7)) 
+	   dcon_ClearDICNT($CONNECTION, $NETID,7,8);
+}
+if ( gWriteCount ) return HMI_OK;  // Skip reading to reduce the device loading 
+
+if ( (VAR_VALUE($ENABLE_DO) || VAR_VALUE($ENABLE_DI)) && VAR_VALUE($R_ACTION) ) 
+{
+  if (dcon_ReadDIO($CONNECTION, $NETID, 8, 3, &v_di, &v_do))
+  {
+	VAR_SET($DI0, (v_di>>0) & 1);
+	VAR_SET($DI1, (v_di>>1) & 1);
+	VAR_SET($DI2, (v_di>>2) & 1);
+	VAR_SET($DI3, (v_di>>3) & 1);
+	VAR_SET($DI4, (v_di>>4) & 1);
+	VAR_SET($DI5, (v_di>>5) & 1);
+	VAR_SET($DI6, (v_di>>6) & 1);
+	VAR_SET($DI7, (v_di>>7) & 1);
+
+	VAR_SET($DO0, (v_do>>0) & 1);
+	VAR_SET($DO1, (v_do>>1) & 1);
+	VAR_SET($DO2, (v_do>>2) & 1);
+  } else
+    return HMI_ERROR;
+}
+
+if ( VAR_VALUE($ENABLE_AI) && VAR_VALUE($R_ACTION)) 
+{ 
+
+ for(int i = 0 ; i<8 ; i++)
+  iRtn = dcon_ReadDICNT($CONNECTION, $NETID, i, 8, &v_ai[i]);
+  
+  VAR_SET($CNT0, v_ai[0]);
+  VAR_SET($CNT1, v_ai[1]);
+  VAR_SET($CNT2, v_ai[2]);
+  VAR_SET($CNT3, v_ai[3]);
+  VAR_SET($CNT4, v_ai[4]);
+  VAR_SET($CNT5, v_ai[5]);
+  VAR_SET($CNT6, v_ai[6]);
+  VAR_SET($CNT7, v_ai[7]);
+  
+  if ( ! iRtn ) 
+    return HMI_ERROR;
+}
+
+END_FUNCTION_BLOCK();

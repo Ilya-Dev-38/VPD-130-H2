@@ -1,0 +1,25 @@
+BEGIN_FUNCTION_BLOCK();
+
+float v_ai[6];
+int   iRtn;
+
+uart_SetTimeout($CONNECTION, $TIMEOUT);
+
+if ( VAR_VALUE($ENABLE_AI) && VAR_VALUE($R_ACTION)) 
+{
+  for (int i=0; i<6; i++)
+     v_ai[i] = 9999;
+   
+  iRtn = dcon_ReadAIAll($CONNECTION, $NETID, v_ai);
+  VAR_SET($AI0, v_ai[0]);
+  VAR_SET($AI1, v_ai[1]);
+  VAR_SET($AI2, v_ai[2]);
+  VAR_SET($AI3, v_ai[3]);
+  VAR_SET($AI4, v_ai[4]);
+  VAR_SET($AI5, v_ai[5]);
+  
+  if ( ! iRtn ) 
+    return HMI_ERROR;
+}
+
+END_FUNCTION_BLOCK();

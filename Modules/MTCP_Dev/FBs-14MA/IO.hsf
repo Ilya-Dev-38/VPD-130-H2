@@ -1,0 +1,92 @@
+
+// Test for Fatek FBs-14MA PLC
+
+BEGIN_FUNCTION_BLOCK();
+
+DWORD v_di = 0;
+DWORD v_do = 0;
+WORD v_ao[10];
+WORD v_ai[10];
+
+if (VAR_VALUE($W_ACTION)) 
+{
+	if(VAR_VALUE($DO0)) v_do |= 1;
+	if(VAR_VALUE($DO1)) v_do |= 2;
+	if(VAR_VALUE($DO2)) v_do |= 3;
+	if(VAR_VALUE($DO3)) v_do |= 4;
+	if(VAR_VALUE($DO4)) v_do |= 5;
+	if(VAR_VALUE($DO5)) v_do |= 6;
+	if(VAR_VALUE($DO6)) v_do |= 7;
+	if(VAR_VALUE($DO7)) v_do |= 8;
+	MBM_WRITEDO($DEVICE, 0, 8, v_do);  
+	
+	v_ao[0] = VAR_VALUE($AO0);
+	v_ao[1] = VAR_VALUE($AO1);
+	v_ao[2] = VAR_VALUE($AO2);
+	v_ao[3] = VAR_VALUE($AO3);
+	v_ao[4] = VAR_VALUE($AO4);
+	v_ao[5] = VAR_VALUE($AO5);
+	v_ao[6] = VAR_VALUE($AO6);
+	v_ao[7] = VAR_VALUE($AO7);
+	v_ao[8] = VAR_VALUE($AO8);
+	v_ao[9] = VAR_VALUE($AO9);
+	MBM_WRITEAO($DEVICE, 0, 10, v_ao);
+}
+
+if (VAR_VALUE($R_ACTION)) 
+if (MBM_READDO($DEVICE, 0, 8, &v_do) ) 
+{
+	VAR_SET($DO0, (v_do>>0) & 1);
+	VAR_SET($DO1, (v_do>>1) & 1);
+	VAR_SET($DO2, (v_do>>2) & 1);
+	VAR_SET($DO3, (v_do>>3) & 1);
+	VAR_SET($DO4, (v_do>>4) & 1);
+	VAR_SET($DO5, (v_do>>5) & 1);
+	VAR_SET($DO6, (v_do>>6) & 1);
+	VAR_SET($DO7, (v_do>>7) & 1);
+}
+
+if (VAR_VALUE($R_ACTION)) 
+if (MBM_READAO($DEVICE, 0, 10, v_ao) ) 
+{
+	VAR_SET($AO0, v_ao[0]);
+	VAR_SET($AO1, v_ao[1]);
+	VAR_SET($AO2, v_ao[2]);
+	VAR_SET($AO3, v_ao[3]);
+	VAR_SET($AO4, v_ao[4]);
+	VAR_SET($AO5, v_ao[5]);
+	VAR_SET($AO6, v_ao[6]);
+	VAR_SET($AO7, v_ao[7]);
+	VAR_SET($AO8, v_ao[8]);
+	VAR_SET($AO9, v_ao[9]);
+}
+
+if (VAR_VALUE($R_ACTION)) 
+if (MBM_READDO($DEVICE, 1000, 8, &v_di)) 
+{  
+	VAR_SET($DI0, (v_di>>0) & 1);
+	VAR_SET($DI1, (v_di>>1) & 1);
+	VAR_SET($DI2, (v_di>>2) & 1);
+	VAR_SET($DI3, (v_di>>3) & 1);
+	VAR_SET($DI4, (v_di>>4) & 1);
+	VAR_SET($DI5, (v_di>>5) & 1);
+	VAR_SET($DI6, (v_di>>6) & 1);
+	VAR_SET($DI7, (v_di>>7) & 1);
+}
+
+if (VAR_VALUE($R_ACTION)) 
+if (MBM_READAO($DEVICE, 1000, 10, v_ai) ) 
+{
+	VAR_SET($AI0, v_ai[0]);
+	VAR_SET($AI1, v_ai[1]);
+	VAR_SET($AI2, v_ai[2]);
+	VAR_SET($AI3, v_ai[3]);
+	VAR_SET($AI4, v_ai[4]);
+	VAR_SET($AI5, v_ai[5]);
+	VAR_SET($AI6, v_ai[5]);
+	VAR_SET($AI7, v_ai[6]);
+	VAR_SET($AI8, v_ai[7]);
+	VAR_SET($AI9, v_ai[9]);
+}
+
+END_FUNCTION_BLOCK();

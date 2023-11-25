@@ -1,0 +1,525 @@
+﻿document Document
+  Enabled = False
+  Height = 240000
+  ID = 1
+  Version = 150
+  Width = 320000
+  object Layer1: THMILayer
+    Enabled = False
+    ID = 3
+    Visible = True
+  end
+  object Frame1: THMIFrame
+    ProgramStyle = SoftPLC
+    object ObjectList: THMIObjectList
+      property Brush
+        Color = 16777215
+        PropStyle = [psEditForm]
+      end
+      BrushStyle = Solid
+      Enabled = True
+      FillColor = 16777215
+      FitToWidget = True
+      ForceCompile = False
+      Height = 32000
+      HiColor = True
+      ID = 17
+      Layer = Layer1
+      Left = -50000
+      Objects = (
+        'Button(M)\BtnMAG0.hwd'
+        'Button(M)\BtnMAN1.hwd' )
+      OutlineColor = 0
+      property Pen
+        PropStyle = [psEditForm]
+      end
+      Top = 158000
+      Visible = True
+      Width = 32000
+    end
+    object Label: THMILabelWidget
+      Alignment = Center
+      property Brush
+        Color = 16777215
+        PropStyle = [psEditForm]
+      end
+      BrushStyle = Solid
+      DecimalDigits = 1
+      Enabled = True
+      FillColor = 16777215
+      property Font
+        Color = -16777208
+        Name = 'Crimson Pro'
+        Size = 12000
+        HMIFontCodeString = 'Crimson Pro,Regular,12'
+        IsIcpdas_eb_ = True
+      end
+      Height = 49000
+      ID = 6
+      Layer = Layer1
+      Left = 3000
+      OutlineColor = 0
+      property Pen
+        PropStyle = [psEditForm]
+      end
+      RefObject = 
+      TagName = Pump_Bar
+      Text = Label6
+      Top = 145000
+      Visible = True
+      Width = 80000
+    end
+    object Label: THMILabelWidget
+      Alignment = Center
+      property Brush
+        Color = 16777215
+        PropStyle = [psEditForm]
+      end
+      BrushStyle = Solid
+      DecimalDigits = 0
+      Enabled = True
+      FillColor = 16777215
+      property Font
+        Color = -16777208
+        Name = 'Crimson Pro'
+        Size = 12000
+        HMIFontCodeString = 'Crimson Pro,Regular,12'
+        IsIcpdas_eb_ = True
+      end
+      Height = 77000
+      ID = 4
+      Layer = Layer1
+      Left = 10000
+      OutlineColor = 0
+      property Pen
+        PropStyle = [psEditForm]
+      end
+      RefObject = 
+      TagName = Pump_SPEED_SET
+      Text = Label4
+      Top = 32000
+      Visible = True
+      Width = 143000
+    end
+    object Label: THMILabelWidget
+      Alignment = Center
+      property Brush
+        Color = 16777215
+        PropStyle = [psEditForm]
+      end
+      BrushStyle = Solid
+      DecimalDigits = 0
+      Enabled = True
+      FillColor = 16777215
+      property Font
+        Color = -16777208
+        Name = 'Crimson Pro'
+        Size = 12000
+        HMIFontCodeString = 'Crimson Pro,Regular,12'
+        IsIcpdas_eb_ = True
+      end
+      Height = 77000
+      ID = 5
+      Layer = Layer1
+      Left = 167000
+      OutlineColor = 0
+      property Pen
+        PropStyle = [psEditForm]
+      end
+      RefObject = 
+      TagName = Needles_SPEED_SET
+      Text = Label4
+      Top = 32000
+      Visible = True
+      Width = 143000
+    end
+    object Text: THMIText
+      property Brush
+        Color = 16777215
+        Style = bsClear
+        PropStyle = [psEditForm]
+      end
+      BrushStyle = Clear
+      Enabled = True
+      FillColor = 16777215
+      property Font
+        Color = -16777208
+        Name = 'Crimson Pro'
+        Size = 12000
+        HMIFontCodeString = 'Crimson Pro,Regular,12'
+        IsIcpdas_eb_ = False
+      end
+      Height = 26000
+      ID = 7
+      Layer = Layer1
+      Left = 83000
+      OutlineColor = 0
+      property Pen
+        PropStyle = [psEditForm]
+      end
+      Text = +
+      TextAsImage = False
+      Top = 208000
+      Visible = True
+      Width = 11000
+    end
+    object Text: THMIText
+      property Brush
+        Color = 16777215
+        Style = bsClear
+        PropStyle = [psEditForm]
+      end
+      BrushStyle = Clear
+      Enabled = True
+      FillColor = 16777215
+      property Font
+        Color = -16777208
+        Name = 'Crimson Pro'
+        Size = 12000
+        HMIFontCodeString = 'Crimson Pro,Regular,12'
+        IsIcpdas_eb_ = False
+      end
+      Height = 26000
+      ID = 9
+      Layer = Layer1
+      Left = 280000
+      OutlineColor = 0
+      property Pen
+        PropStyle = [psEditForm]
+      end
+      Text = +
+      TextAsImage = False
+      Top = 208000
+      Visible = True
+      Width = 11000
+    end
+    object Text: THMIText
+      property Brush
+        Color = 16777215
+        Style = bsClear
+        PropStyle = [psEditForm]
+      end
+      BrushStyle = Clear
+      Enabled = True
+      FillColor = 16777215
+      property Font
+        Color = -16777208
+        Name = 'Crimson Pro'
+        Size = 12000
+        HMIFontCodeString = 'Crimson Pro,Regular,12'
+        IsIcpdas_eb_ = False
+      end
+      Height = 26000
+      ID = 10
+      Layer = Layer1
+      Left = 142000
+      OutlineColor = 0
+      property Pen
+        PropStyle = [psEditForm]
+      end
+      Text = Stop
+      TextAsImage = False
+      Top = 208000
+      Visible = True
+      Width = 36000
+    end
+    object Text: THMIText
+      property Brush
+        Color = 16777215
+        Style = bsClear
+        PropStyle = [psEditForm]
+      end
+      BrushStyle = Clear
+      Enabled = True
+      FillColor = 16777215
+      property Font
+        Color = -16777208
+        Name = 'Crimson Pro'
+        Size = 12000
+        HMIFontCodeString = 'Crimson Pro,Regular,12'
+        IsIcpdas_eb_ = False
+      end
+      Height = 26000
+      ID = 11
+      Layer = Layer1
+      Left = 47000
+      OutlineColor = 0
+      property Pen
+        PropStyle = [psEditForm]
+      end
+      Text = 'Pump %'
+      TextAsImage = False
+      Top = 7000
+      Visible = True
+      Width = 66000
+    end
+    object Text: THMIText
+      property Brush
+        Color = 16777215
+        Style = bsClear
+        PropStyle = [psEditForm]
+      end
+      BrushStyle = Clear
+      Enabled = True
+      FillColor = 16777215
+      property Font
+        Color = -16777208
+        Name = 'Crimson Pro'
+        Size = 12000
+        HMIFontCodeString = 'Crimson Pro,Regular,12'
+        IsIcpdas_eb_ = False
+      end
+      Height = 26000
+      ID = 12
+      Layer = Layer1
+      Left = 198000
+      OutlineColor = 0
+      property Pen
+        PropStyle = [psEditForm]
+      end
+      Text = 'Needles %'
+      TextAsImage = False
+      Top = 9000
+      Visible = True
+      Width = 83000
+    end
+    object Text: THMIText
+      AutoSize = False
+      property Brush
+        Color = 16777215
+        Style = bsClear
+        PropStyle = [psEditForm]
+      end
+      BrushStyle = Clear
+      Enabled = True
+      FillColor = 16777215
+      property Font
+        Color = -16777208
+        Name = 'Crimson Pro'
+        Size = 12000
+        HMIFontCodeString = 'Crimson Pro,Regular,12'
+        IsIcpdas_eb_ = False
+      end
+      Height = 26000
+      ID = 13
+      Layer = Layer1
+      Left = 29000
+      OutlineColor = 0
+      property Pen
+        PropStyle = [psEditForm]
+      end
+      Text = -
+      TextAsImage = False
+      Top = 208000
+      Visible = True
+      Width = 20000
+    end
+    object Text: THMIText
+      AutoSize = False
+      property Brush
+        Color = 16777215
+        Style = bsClear
+        PropStyle = [psEditForm]
+      end
+      BrushStyle = Clear
+      Enabled = True
+      FillColor = 16777215
+      property Font
+        Color = -16777208
+        Name = 'Crimson Pro'
+        Size = 12000
+        HMIFontCodeString = 'Crimson Pro,Regular,12'
+        IsIcpdas_eb_ = False
+      end
+      Height = 26000
+      ID = 14
+      Layer = Layer1
+      Left = 220000
+      OutlineColor = 0
+      property Pen
+        PropStyle = [psEditForm]
+      end
+      Text = -
+      TextAsImage = False
+      Top = 208000
+      Visible = True
+      Width = 20000
+    end
+    object CheckBox: THMICheckBoxWidget
+      BoxSize = 16
+      property Brush
+        Color = 16777215
+        PropStyle = [psEditForm]
+      end
+      BrushStyle = Solid
+      DisplayType = TopLeft
+      Enabled = True
+      FillColor = 16777215
+      property Font
+        Color = -16777208
+        Name = 'Crimson Pro'
+        Size = 12000
+        HMIFontCodeString = 'Crimson Pro,Regular,12'
+        IsIcpdas_eb_ = True
+      end
+      Height = 80000
+      ID = 8
+      Layer = Layer1
+      Left = 247000
+      OutlineColor = 0
+      property Pen
+        PropStyle = [psEditForm]
+      end
+      RefObject = ObjectList17
+      Selected = False
+      TagName = Needles_Start
+      Text = (
+        'CheckBox8' )
+      Top = 115000
+      Visible = True
+      Width = 65000
+    end
+    object CheckBox: THMICheckBoxWidget
+      BoxSize = 16
+      property Brush
+        Color = 16777215
+        PropStyle = [psEditForm]
+      end
+      BrushStyle = Solid
+      DisplayType = TopLeft
+      Enabled = True
+      FillColor = 16777215
+      property Font
+        Color = -16777208
+        Name = 'Crimson Pro'
+        Size = 12000
+        HMIFontCodeString = 'Crimson Pro,Regular,12'
+        IsIcpdas_eb_ = True
+      end
+      Height = 80000
+      ID = 16
+      Layer = Layer1
+      Left = 88000
+      OutlineColor = 0
+      property Pen
+        PropStyle = [psEditForm]
+      end
+      RefObject = ObjectList17
+      Selected = False
+      TagName = Pump_Start
+      Text = (
+        'CheckBox16' )
+      Top = 117000
+      Visible = True
+      Width = 65000
+    end
+    object Text: THMIText
+      property Brush
+        Color = 16777215
+        Style = bsClear
+        PropStyle = [psEditForm]
+      end
+      BrushStyle = Clear
+      Enabled = True
+      FillColor = 16777215
+      property Font
+        Color = -16777208
+        Name = 'Crimson Pro'
+        Size = 12000
+        HMIFontCodeString = 'Crimson Pro,Regular,12'
+        IsIcpdas_eb_ = False
+      end
+      Height = 26000
+      ID = 15
+      Layer = Layer1
+      Left = 29000
+      OutlineColor = 0
+      property Pen
+        PropStyle = [psEditForm]
+      end
+      Text = Bar
+      TextAsImage = False
+      Top = 121000
+      Visible = True
+      Width = 27000
+    end
+    object Label: THMILabelWidget
+      Alignment = Center
+      property Brush
+        Color = 16777215
+        PropStyle = [psEditForm]
+      end
+      BrushStyle = Solid
+      DecimalDigits = 0
+      Enabled = True
+      FillColor = 16777215
+      property Font
+        Color = -16777208
+        Name = 'Crimson Pro'
+        Size = 12000
+        HMIFontCodeString = 'Crimson Pro,Regular,12'
+        IsIcpdas_eb_ = True
+      end
+      Height = 49000
+      ID = 18
+      Layer = Layer1
+      Left = 164000
+      OutlineColor = 0
+      property Pen
+        PropStyle = [psEditForm]
+      end
+      RefObject = 
+      TagName = Pump_ERROR_D1
+      Text = Label6
+      Top = 143000
+      Visible = True
+      Width = 80000
+    end
+    object Text: THMIText
+      property Brush
+        Color = 16777215
+        Style = bsClear
+        PropStyle = [psEditForm]
+      end
+      BrushStyle = Clear
+      Enabled = True
+      FillColor = 16777215
+      property Font
+        Color = -16777208
+        Name = 'Crimson Pro'
+        Size = 12000
+        HMIFontCodeString = 'Crimson Pro,Regular,12'
+        IsIcpdas_eb_ = False
+      end
+      Height = 26000
+      ID = 19
+      Layer = Layer1
+      Left = 182000
+      OutlineColor = 0
+      property Pen
+        PropStyle = [psEditForm]
+      end
+      Text = Error
+      TextAsImage = False
+      Top = 120000
+      Visible = True
+      Width = 42000
+    end
+    BackgroundColor = 16777215
+    property Brush
+      PropStyle = [psEditForm]
+    end
+    BrushStyle = Solid
+    Default = True
+    Enabled = False
+    ID = 2
+    OnCreate = ( )
+    OnDestroy = ( )
+    OnHide = ( )
+    OnPaint = ( )
+    OnShow = ( )
+    ProgramStyle = SoftPLC
+    RefObject = 
+    Visible = True
+  end
+end

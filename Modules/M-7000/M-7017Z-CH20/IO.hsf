@@ -1,0 +1,50 @@
+BEGIN_FUNCTION_BLOCK();
+
+const int ch_count = 20;  // Number of AI channels
+BOOL  flag;
+WORD  recv[ch_count];     // Raw data from M-7000
+int   val[ch_count], i;
+const WORD aiTypes[]={$TYPE_AI0,  $TYPE_AI1,  $TYPE_AI2,  $TYPE_AI3,  $TYPE_AI4,  $TYPE_AI5,  $TYPE_AI6,  $TYPE_AI7,  $TYPE_AI8,  $TYPE_AI9,
+                      $TYPE_AI10, $TYPE_AI11, $TYPE_AI12, $TYPE_AI13, $TYPE_AI14, $TYPE_AI15, $TYPE_AI16, $TYPE_AI17, $TYPE_AI18, $TYPE_AI19};
+const int aiGains[]={ $GAIN_AI0,  $GAIN_AI1,  $GAIN_AI2,  $GAIN_AI3,  $GAIN_AI4,  $GAIN_AI5,  $GAIN_AI6,  $GAIN_AI7,  $GAIN_AI8,  $GAIN_AI9,
+                      $GAIN_AI10, $GAIN_AI11, $GAIN_AI12, $GAIN_AI13, $GAIN_AI14, $GAIN_AI15, $GAIN_AI16, $GAIN_AI17, $GAIN_AI18, $GAIN_AI19};
+
+//DWORD dwStart, dwEnd;
+//dwStart = hmi_GetTickCount();
+
+uart_SetTimeout($CONNECTION, $TIMEOUT);
+
+if ( VAR_VALUE($ENABLE_AI) && VAR_VALUE($R_ACTION) ) { 
+
+  memset(recv, 0, sizeof(recv));
+  flag = mrm_ReadAI($CONNECTION, $NetID, 0, ch_count, recv);
+  if (! flag) return HMI_ERROR; // failure
+
+  for (i=0; i<ch_count; i++)
+     val[i] = M7000_AIHexToLong("7017Z", aiTypes[i], recv[i], aiGains[i], NULL);
+
+  VAR_SET($AI0,  val[0] );
+  VAR_SET($AI1,  val[1] );
+  VAR_SET($AI2,  val[2] );
+  VAR_SET($AI3,  val[3] );
+  VAR_SET($AI4,  val[4] );
+  VAR_SET($AI5,  val[5] );
+  VAR_SET($AI6,  val[6] );
+  VAR_SET($AI7,  val[7] );
+  VAR_SET($AI8,  val[8] );
+  VAR_SET($AI9,  val[9] );
+  
+  VAR_SET($AI10, val[10] );
+  VAR_SET($AI11, val[11] );
+  VAR_SET($AI12, val[12] );
+  VAR_SET($AI13, val[13] );
+  VAR_SET($AI14, val[14] );
+  VAR_SET($AI15, val[15] );
+  VAR_SET($AI16, val[16] );
+  VAR_SET($AI17, val[17] );
+  VAR_SET($AI18, val[18] );
+  VAR_SET($AI19, val[19] );
+  
+}
+
+END_FUNCTION_BLOCK();

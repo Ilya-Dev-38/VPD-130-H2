@@ -1,0 +1,57 @@
+BEGIN_FUNCTION_BLOCK();
+
+// The UDIO is working like DO channels by default.
+// The DI/DO mode must be static configuration on web first.
+// Dynamic configuration through command is not supported here.
+
+char  v_do[2];
+int   gWriteCount = 0;
+const PVAR var_list[]={
+   &$UDIO0,  &$UDIO1,  &$UDIO2,  &$UDIO3,  &$UDIO4,  &$UDIO5,  &$UDIO6,  &$UDIO7, 
+   &$UDIO8,  &$UDIO9,  &$UDIO10, &$UDIO11, &$UDIO12, &$UDIO13, &$UDIO14, &$UDIO15 };
+
+// Write UDIO
+if (VAR_VALUE($ENABLE_UDIO) && VAR_VALUE($W_ACTION)) 
+{
+   int iWrite = 0;
+   memset(v_do, 0, 2);
+
+   int iTag = 0;
+   for (int iByte=0; iByte<=1; iByte++)
+	{
+		for (int iBit=0; iBit<=7; iBit++)
+		{
+			iWrite += PVAR_GET_WRITE_BYTE( &(v_do[iByte]), var_list[iTag], iBit);
+			iTag++;
+		}
+	}
+
+   if ( iWrite )  // Write only when need
+   {
+      gWriteCount++;
+      if ( ! MTM_WRITEDO($DEVICE, $NETID, 0, 16, v_do, $TIMEOUT) )
+          return HMI_ERROR;
+   }  
+}
+
+if ( gWriteCount ) return HMI_OK;  // Skip reading to reduce the device loading 
+
+// Readback UDIO ***************
+if (VAR_VALUE($ENABLE_UDIO) && VAR_VALUE($R_ACTION)) { 
+   if (MTM_READDO($DEVICE, $NETID, 0, 16, v_do, $TIMEOUT) ) 
+   {
+		int iTag = 0;
+		for (int iByte=0; iByte<=1; iByte++)
+		{
+			for (int iBit=0; iBit<=7; iBit++)
+			{
+				PVAR_SET(var_list[iTag], (v_do[iByte]>> iBit) & 1);
+				iTag++;
+			}
+		}
+
+   } else
+      return HMI_ERROR;
+}
+
+END_FUNCTION_BLOCK();

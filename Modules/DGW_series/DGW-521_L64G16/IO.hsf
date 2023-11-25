@@ -1,0 +1,59 @@
+BEGIN_FUNCTION_BLOCK();
+
+uart_SetTimeout($CONNECTION, $TIMEOUT);
+
+static const PVAR pv[] = {
+&$Lamp0, &$Lamp1, &$Lamp2, &$Lamp3, &$Lamp4, &$Lamp5, &$Lamp6, &$Lamp7, &$Lamp8, &$Lamp9,
+&$Lamp10, &$Lamp11, &$Lamp12, &$Lamp13, &$Lamp14, &$Lamp15, &$Lamp16, &$Lamp17, &$Lamp18, &$Lamp19,
+&$Lamp20, &$Lamp21, &$Lamp22, &$Lamp23, &$Lamp24, &$Lamp25, &$Lamp26, &$Lamp27, &$Lamp28, &$Lamp29,
+&$Lamp30, &$Lamp31, &$Lamp32, &$Lamp33, &$Lamp34, &$Lamp35, &$Lamp36, &$Lamp37, &$Lamp38, &$Lamp39,
+&$Lamp40, &$Lamp41, &$Lamp42, &$Lamp43, &$Lamp44, &$Lamp45, &$Lamp46, &$Lamp47, &$Lamp48, &$Lamp49,
+&$Lamp50, &$Lamp51, &$Lamp52, &$Lamp53, &$Lamp54, &$Lamp55, &$Lamp56, &$Lamp57, &$Lamp58, &$Lamp59,
+&$Lamp60, &$Lamp61, &$Lamp62, &$Lamp63 };
+
+static const PVAR gp[] = {
+&$Group0, &$Group1, &$Group2, &$Group3, &$Group4, &$Group5, &$Group6, &$Group7, &$Group8, &$Group9,
+&$Group10, &$Group11, &$Group12, &$Group13, &$Group14, &$Group15 };
+
+if ( dgw_State($HANDLE) < DGW_READY )
+{
+	dgw_Process($HANDLE); // init or error
+	return HMI_ERROR;
+}
+
+// Output lamps level
+for (int i=0; i<=63; i++) 
+{
+  if ( PVAR_FLAG_IS_WRITE(pv[i]) ) dgw_SetLampLevel($HANDLE, i, PVAR_READ_DEVICE(pv[i]));
+}
+
+// Output groups level
+for (int i=0; i<=15; i++) 
+{
+  if ( PVAR_FLAG_IS_WRITE(gp[i]) ) 
+  {
+	 dgw_SetGroupLevel($HANDLE, i, PVAR_READ_DEVICE(gp[i]));
+	 dgw_SendReadbackAll($HANDLE);
+  }
+}
+
+dgw_Process($HANDLE);
+
+//unsigned int dlist[2];
+//if ( dgw_GetPresences($HANDLE, dlist) == DGW_OK )
+//{
+//	VAR_SET(v1, dlist[0] & 0xFFFF);
+//}
+
+// Get current state
+unsigned char data[64];
+if ( dgw_GetAllLampsLevel($HANDLE, data) == DGW_OK )
+{
+	for (int i=0; i<=63; i++)
+	  PVAR_SET(pv[i], data[i]);
+	return HMI_OK;  
+}
+else
+   return HMI_ERROR;
+
+END_FUNCTION_BLOCK();

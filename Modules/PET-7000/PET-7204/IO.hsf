@@ -1,0 +1,71 @@
+BEGIN_FUNCTION_BLOCK();
+
+char  v_di = 0;
+WORD  v_ao[4];
+WORD  v_ai[4];
+int   gWriteCount = 0;
+
+// Write AO
+if (VAR_VALUE($ENABLE_AO) && VAR_VALUE($W_ACTION)) 
+{
+   int iWrite = 0;
+    
+   if( VAR_FLAG_IS_WRITE($AO0) ) iWrite++; 
+   v_ao[0] = VAR_VALUE($AO0);  
+     
+   if( VAR_FLAG_IS_WRITE($AO1) ) iWrite++; 
+   v_ao[1] = VAR_VALUE($AO1);
+
+   if( VAR_FLAG_IS_WRITE($AO2) ) iWrite++; 
+   v_ao[2] = VAR_VALUE($AO2);
+
+   if( VAR_FLAG_IS_WRITE($AO3) ) iWrite++; 
+   v_ao[3] = VAR_VALUE($AO3);
+
+   if ( iWrite ) // Write only when need
+   {   
+      gWriteCount++;
+      if ( ! MTM_WRITEAO($DEVICE, $NETID, 0, 4, v_ao, $TIMEOUT) )
+         return HMI_ERROR;
+   }
+}
+
+if ( gWriteCount ) return HMI_OK;  // Skip reading to reduce the device loading 
+
+// Readback AO ***************	
+if (VAR_VALUE($ENABLE_AO) && VAR_VALUE($R_ACTION)) { 
+   if (MTM_READAO($DEVICE, $NETID, 0, 4, v_ao, $TIMEOUT) ) 
+   {
+      VAR_SET($AO0, v_ao[0]);
+      VAR_SET($AO1, v_ao[1]);
+      VAR_SET($AO2, v_ao[2]);
+      VAR_SET($AO3, v_ao[3]);
+   } else
+      return HMI_ERROR;
+}
+
+// Read DI ********************
+if (VAR_VALUE($ENABLE_DI) && VAR_VALUE($R_ACTION)) { 
+   if (MTM_READDI($DEVICE, $NETID, 0, 4, &v_di, $TIMEOUT)) 
+   {  
+      VAR_SET($DI0, (v_di>>0) & 1);
+      VAR_SET($DI1, (v_di>>1) & 1);
+      VAR_SET($DI2, (v_di>>2) & 1);
+      VAR_SET($DI3, (v_di>>3) & 1);
+   } else
+      return HMI_ERROR;
+}
+
+// Read AI ********************
+if (VAR_VALUE($ENABLE_AI) && VAR_VALUE($R_ACTION)) { 
+   if (MTM_READAI($DEVICE, $NETID, 0, 4, v_ai, $TIMEOUT) ) 
+   {
+      VAR_SET($AI0, v_ai[0]);
+      VAR_SET($AI1, v_ai[1]);
+      VAR_SET($AI2, v_ai[2]);
+      VAR_SET($AI3, v_ai[3]);
+   } else
+      return HMI_ERROR;
+}
+
+END_FUNCTION_BLOCK();

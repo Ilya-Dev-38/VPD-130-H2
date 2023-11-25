@@ -1,0 +1,72 @@
+BEGIN_FUNCTION_BLOCK();
+
+WORD recv[72];
+WORD a[2];
+float sng;
+float Volt[4];
+float Current[4];
+float Power[4];
+float PF[4];
+
+BOOL flag; 
+
+uart_SetTimeout($CONNECTION, $TIMEOUT);
+
+if ( VAR_VALUE($ENABLE_AI) ) { 
+
+  memset(recv, 0, sizeof(recv));
+  flag = mrm_ReadAI($CONNECTION, $NetID, 0x1100, 72, recv);
+  if (!flag) return HMI_ERROR; // faliure
+
+  
+  for(int i = 0 ; i<4 ; i++)
+  {
+    a[1] = recv[i * 18 + 1];
+    a[0] = recv[i * 18 + 0];
+	
+	memcpy(&sng, a , 4);
+	Volt[i] = sng*1000;
+    //-------------------------------
+      
+    a[1] = recv[i * 18 + 2 + 1];
+    a[0] = recv[i * 18 + 2 + 0];
+       
+    memcpy(&sng, a, 4);
+    Current[i] = sng*1000;
+    //--------------------------
+	
+    a[1] = recv[i * 18 + 4 + 1];
+    a[0] = recv[i * 18 + 4 + 0];
+        
+    memcpy(&sng, a, 4);
+    Power[i] = sng*1000;
+    //----------------
+        
+    a[1] = recv[i * 18 + 10 + 1];
+    a[0] = recv[i * 18 + 10 + 0];
+    memcpy(&sng, a, 4);
+    PF[i] = sng*1000;
+  }
+	
+  VAR_SET($AI0, Volt[0]);
+  VAR_SET($AI1, Current[0]);
+  VAR_SET($AI2, Power[0]);
+  VAR_SET($AI3, PF[0]);
+	
+  VAR_SET($AI4, Volt[1]);
+  VAR_SET($AI5, Current[1]);
+  VAR_SET($AI6, Power[1]);
+  VAR_SET($AI7, PF[1]);
+
+  VAR_SET($AI8, Volt[2]);
+  VAR_SET($AI9, Current[2]);
+  VAR_SET($AI10, Power[2]);
+  VAR_SET($AI11, PF[2]);
+
+  VAR_SET($AI12, Volt[3]);
+  VAR_SET($AI13, Current[3]);
+  VAR_SET($AI14, Power[3]);
+  VAR_SET($AI15, PF[3]);
+}
+	
+END_FUNCTION_BLOCK();

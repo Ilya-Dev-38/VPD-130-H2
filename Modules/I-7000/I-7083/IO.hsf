@@ -1,0 +1,125 @@
+BEGIN_FUNCTION_BLOCK();
+
+uart_SetTimeout($CONNECTION, $TIMEOUT);
+
+if ( VAR_VALUE($ENABLE_PresetValue) && VAR_VALUE($W_ACTION)) 
+{ 
+  BOOL iRet = true;
+	
+  // if(!VAR_VALUE($PresetValue0) && !VAR_VALUE($PresetValue1) && !VAR_VALUE($PresetValue2) ) continue;
+  
+  char SetEncoderToPresetValue_Command0[10],SetEncoderToPresetValue_Buffer0[10] ;
+  char SetEncoderToPresetValue_Command1[10],SetEncoderToPresetValue_Buffer1[10] ;
+  char SetEncoderToPresetValue_Command2[10],SetEncoderToPresetValue_Buffer2[10] ;
+  
+  usprintf( SetEncoderToPresetValue_Command0,"$%02X6%d",$NETID,0);
+  usprintf( SetEncoderToPresetValue_Command1,"$%02X6%d",$NETID,1);
+  usprintf( SetEncoderToPresetValue_Command2,"$%02X6%d",$NETID,2);
+  
+  if(VAR_VALUE($PresetValue0))
+  iRet = uart_SendCmd($CONNECTION,SetEncoderToPresetValue_Command0, SetEncoderToPresetValue_Buffer0);
+  if(VAR_VALUE($PresetValue1))
+  iRet = uart_SendCmd($CONNECTION,SetEncoderToPresetValue_Command1, SetEncoderToPresetValue_Buffer1);
+  if(VAR_VALUE($PresetValue2))
+  iRet = uart_SendCmd($CONNECTION,SetEncoderToPresetValue_Command2, SetEncoderToPresetValue_Buffer2);
+ 
+  if (iRet)
+  {
+	  VAR_SET($PresetValue0,0);
+      VAR_SET($PresetValue1,0);
+      VAR_SET($PresetValue2,0);	  
+  } 
+  else
+    return HMI_ERROR;
+}
+
+if ( VAR_VALUE($ENABLE_SetPresetValue) && VAR_VALUE($W_ACTION)) 
+{ 
+  // if( !VAR_FLAG_IS_WRITE($SetPresetValue0) || !VAR_FLAG_IS_WRITE($SetPresetValue1) || !VAR_FLAG_IS_WRITE($SetPresetValue2) ) return 0 ;
+  
+  BOOL iRet = true;
+	
+  char SetThePresetValue_Buffer0[10],SetThePresetValue_Command0[20] ;
+  char SetThePresetValue_Buffer1[10],SetThePresetValue_Command1[20] ;
+  char SetThePresetValue_Buffer2[10],SetThePresetValue_Command2[20] ;
+  
+  usprintf( SetThePresetValue_Command0,"@%02XP%d%08x",$NETID,0,VAR_VALUE($SetPresetValue0));
+  usprintf( SetThePresetValue_Command1,"@%02XP%d%08x",$NETID,1,VAR_VALUE($SetPresetValue1));
+  usprintf( SetThePresetValue_Command2,"@%02XP%d%08x",$NETID,2,VAR_VALUE($SetPresetValue2));
+  if( VAR_FLAG_IS_WRITE($SetPresetValue0) )
+  iRet = uart_SendCmd($CONNECTION,SetThePresetValue_Command0, SetThePresetValue_Buffer0);
+  if( VAR_FLAG_IS_WRITE($SetPresetValue1) )
+  iRet = uart_SendCmd($CONNECTION,SetThePresetValue_Command1, SetThePresetValue_Buffer1);
+  if( VAR_FLAG_IS_WRITE($SetPresetValue2) )
+  iRet = uart_SendCmd($CONNECTION,SetThePresetValue_Command2, SetThePresetValue_Buffer2);
+ 
+  
+  if ( !iRet && !SetThePresetValue_Buffer0[0] == '!' && !SetThePresetValue_Buffer1[0] == '!' && !SetThePresetValue_Buffer2[0] == '!')
+  return HMI_ERROR;
+}
+
+if ( VAR_VALUE($ENABLE_ReadEncoder) && VAR_VALUE($R_ACTION)) 
+{ 
+  BOOL iRet = true;
+  
+  unsigned int iHex0,iHex1,iHex2 ;
+	
+  char ReadEncoderValue_Buffer0[10],ReadEncoderValue_Command0[10] ;
+  char ReadEncoderValue_Buffer1[10],ReadEncoderValue_Command1[10] ;
+  char ReadEncoderValue_Buffer2[10],ReadEncoderValue_Command2[10] ;
+  
+  usprintf( ReadEncoderValue_Command0,"#%02X%d",$NETID,0);
+  usprintf( ReadEncoderValue_Command1,"#%02X%d",$NETID,1);
+  usprintf( ReadEncoderValue_Command2,"#%02X%d",$NETID,2);
+  
+  iRet = uart_SendCmd($CONNECTION,ReadEncoderValue_Command0, ReadEncoderValue_Buffer0);
+  iRet = uart_SendCmd($CONNECTION,ReadEncoderValue_Command1, ReadEncoderValue_Buffer1);
+  iRet = uart_SendCmd($CONNECTION,ReadEncoderValue_Command2, ReadEncoderValue_Buffer2);
+  
+  sscanf(ReadEncoderValue_Buffer0+1,"%08x",&iHex0);
+  sscanf(ReadEncoderValue_Buffer1+1,"%08x",&iHex1);
+  sscanf(ReadEncoderValue_Buffer2+1,"%08x",&iHex2);
+  
+  if (iRet && ReadEncoderValue_Buffer0[0] == '>' && ReadEncoderValue_Buffer1[0] == '>' && ReadEncoderValue_Buffer2[0] == '>')
+  {
+	  VAR_SET($ReadEncoder0,iHex0);
+      VAR_SET($ReadEncoder1,iHex1);
+      VAR_SET($ReadEncoder2,iHex2);	  
+  } 
+  else
+    return HMI_ERROR;
+}
+
+if ( VAR_VALUE($ENABLE_ReadPresetValue) && VAR_VALUE($R_ACTION)) 
+{ 
+  BOOL iRet = true;
+  
+  unsigned int iHex0,iHex1,iHex2 ;
+	
+  char ReadThePresetValue_Buffer0[15],ReadThePresetValue_Command0[10] ;
+  char ReadThePresetValue_Buffer1[15],ReadThePresetValue_Command1[10] ;
+  char ReadThePresetValue_Buffer2[15],ReadThePresetValue_Command2[10] ;
+  
+  usprintf( ReadThePresetValue_Command0,"@%02XG%d",$NETID,0);
+  usprintf( ReadThePresetValue_Command1,"@%02XG%d",$NETID,1);
+  usprintf( ReadThePresetValue_Command2,"@%02XG%d",$NETID,2);
+  
+  iRet = uart_SendCmd($CONNECTION,ReadThePresetValue_Command0, ReadThePresetValue_Buffer0);
+  iRet = uart_SendCmd($CONNECTION,ReadThePresetValue_Command1, ReadThePresetValue_Buffer1);
+  iRet = uart_SendCmd($CONNECTION,ReadThePresetValue_Command2, ReadThePresetValue_Buffer2);
+  
+  sscanf(ReadThePresetValue_Buffer0+3,"%08x",&iHex0);
+  sscanf(ReadThePresetValue_Buffer1+3,"%08x",&iHex1);
+  sscanf(ReadThePresetValue_Buffer2+3,"%08x",&iHex2);
+  
+  if (iRet && ReadThePresetValue_Buffer0[0] == '!' && ReadThePresetValue_Buffer1[0] == '!' && ReadThePresetValue_Buffer2[0] == '!')
+  {
+	  VAR_SET($ReadPresetValue0,iHex0);
+      VAR_SET($ReadPresetValue1,iHex1);
+      VAR_SET($ReadPresetValue2,iHex2);	  
+  } 
+  else
+    return HMI_ERROR;
+}
+
+END_FUNCTION_BLOCK();

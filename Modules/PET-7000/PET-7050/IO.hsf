@@ -1,0 +1,64 @@
+BEGIN_FUNCTION_BLOCK();
+
+char v_do = 0; // 6-ch
+char v_di[2] ={0}; // 12-ch
+int  gWriteCount = 0;
+
+// Write DO
+if (VAR_VALUE($ENABLE_DO) &&VAR_VALUE($W_ACTION)) 
+{
+   int iWrite = 0;
+   v_do   = 0;
+    
+   iWrite += VAR_GET_WRITE_BYTE(&v_do, $DO0, 0);
+   iWrite += VAR_GET_WRITE_BYTE(&v_do, $DO1, 1);
+   iWrite += VAR_GET_WRITE_BYTE(&v_do, $DO2, 2);
+   iWrite += VAR_GET_WRITE_BYTE(&v_do, $DO3, 3);
+   iWrite += VAR_GET_WRITE_BYTE(&v_do, $DO4, 4);
+   iWrite += VAR_GET_WRITE_BYTE(&v_do, $DO5, 5);
+    
+   if ( iWrite )  // Write only when need
+   {
+      gWriteCount++;
+      if ( ! MTM_WRITEDO($DEVICE, $NETID, 0, 6, &v_do, $TIMEOUT) )
+         return HMI_ERROR;
+   }  
+}
+
+if ( gWriteCount ) return HMI_OK;  // Skip reading to reduce the device loading 
+
+if (VAR_VALUE($ENABLE_DO) && VAR_VALUE($R_ACTION)) { 
+	if (MTM_READDO($DEVICE, $NETID, 0, 6, &v_do, $TIMEOUT) ) 
+	{
+		VAR_SET($DO0, (v_do>>0) & 1);
+		VAR_SET($DO1, (v_do>>1) & 1);
+		VAR_SET($DO2, (v_do>>2) & 1);
+		VAR_SET($DO3, (v_do>>3) & 1);
+		VAR_SET($DO4, (v_do>>4) & 1);
+		VAR_SET($DO5, (v_do>>5) & 1);
+	} else
+	   return HMI_ERROR;
+}
+
+if (VAR_VALUE($ENABLE_DI) && VAR_VALUE($R_ACTION)) {
+	if (MTM_READDI($DEVICE, $NETID, 0, 12, v_di, $TIMEOUT) ) 
+	{
+		VAR_SET($DI0,  (v_di[0] >>0) & 1);
+		VAR_SET($DI1,  (v_di[0] >>1) & 1);
+		VAR_SET($DI2,  (v_di[0] >>2) & 1);
+		VAR_SET($DI3,  (v_di[0] >>3) & 1);
+		VAR_SET($DI4,  (v_di[0] >>4) & 1);
+		VAR_SET($DI5,  (v_di[0] >>5) & 1);
+		VAR_SET($DI6,  (v_di[0] >>6) & 1);
+		VAR_SET($DI7,  (v_di[0] >>7) & 1);
+		
+		VAR_SET($DI8,  (v_di[1] >>0) & 1);
+		VAR_SET($DI9,  (v_di[1] >>1) & 1);
+		VAR_SET($DI10, (v_di[1] >>2) & 1);
+		VAR_SET($DI11, (v_di[1] >>3) & 1);
+
+	} else
+	   return HMI_ERROR;
+}
+
+END_FUNCTION_BLOCK();

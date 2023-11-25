@@ -1,0 +1,23 @@
+BEGIN_FUNCTION_BLOCK();
+
+DWORD v_di = 0;
+
+uart_SetTimeout($CONNECTION, $TIMEOUT);
+
+if ( VAR_VALUE($ENABLE_DI) && VAR_VALUE($R_ACTION)) 
+{ 
+  if (dcon_ReadDI($CONNECTION, $NETID, 8, &v_di))
+  {
+	VAR_SET($DI0, (v_di>>0) & 1);
+	VAR_SET($DI1, (v_di>>1) & 1);
+	VAR_SET($DI2, (v_di>>2) & 1);
+	VAR_SET($DI3, (v_di>>3) & 1);
+	VAR_SET($DI4, (v_di>>4) & 1);
+	VAR_SET($DI5, (v_di>>5) & 1);
+	VAR_SET($DI6, (v_di>>6) & 1);
+	VAR_SET($DI7, (v_di>>7) & 1);
+  } else
+    return HMI_ERROR;
+}
+
+END_FUNCTION_BLOCK();

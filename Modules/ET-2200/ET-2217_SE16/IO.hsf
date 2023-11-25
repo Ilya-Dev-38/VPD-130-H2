@@ -1,0 +1,20 @@
+BEGIN_FUNCTION_BLOCK();
+
+// 16 single-ended analog inputs for ET-2217
+WORD  v_ai[16];
+const PVAR var_ai_list[]={
+   &$AI0,  &$AI1,  &$AI2,  &$AI3,  &$AI4,  &$AI5,  &$AI6,  &$AI7, 
+   &$AI8,  &$AI9,  &$AI10, &$AI11, &$AI12, &$AI13, &$AI14, &$AI15 };
+
+if (VAR_VALUE($ENABLE_AI) && VAR_VALUE($R_ACTION)) {
+	if (MTM_READAI($DEVICE, $NETID, 0, 16, v_ai, $TIMEOUT) ) 
+	{
+		for (int i=0; i<=15; i++)
+		{
+			PVAR_SET(var_ai_list[i], v_ai[i]);
+		}
+	} else
+      return HMI_ERROR;  
+}	
+
+END_FUNCTION_BLOCK();

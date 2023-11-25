@@ -1,0 +1,47 @@
+BEGIN_FUNCTION_BLOCK();
+
+DWORD v_do = 0;
+DWORD v_di = 0;
+int   gWriteCount = 0;
+
+uart_SetTimeout($CONNECTION, $TIMEOUT);
+
+if ( VAR_VALUE($ENABLE_DO) && VAR_VALUE($W_ACTION)) 
+{
+   int iWrite = 0;
+   v_do   = 0;
+    
+   iWrite += VAR_GET_WRITE_U32(&v_do, $DO0, 0);
+   iWrite += VAR_GET_WRITE_U32(&v_do, $DO1, 1);
+   iWrite += VAR_GET_WRITE_U32(&v_do, $DO2, 2);
+   iWrite += VAR_GET_WRITE_U32(&v_do, $DO3, 3);
+   iWrite += VAR_GET_WRITE_U32(&v_do, $DO4, 4);
+   iWrite += VAR_GET_WRITE_U32(&v_do, $DO5, 5);
+   iWrite += VAR_GET_WRITE_U32(&v_do, $DO6, 6);
+    
+   if ( iWrite )  // Write only when need
+   {
+      gWriteCount++;
+      if ( ! dcon_WriteDO($CONNECTION, $NETID, 7, v_do & 0xFF) )
+	     return HMI_ERROR;
+   }
+}
+
+if ( gWriteCount ) return HMI_OK;  // Skip reading to reduce the device loading 
+
+if ( VAR_VALUE($ENABLE_DO) && VAR_VALUE($R_ACTION)) 
+{ 
+  if (dcon_ReadDIO($CONNECTION, $NETID, 4, 8, &v_di, &v_do))
+  {
+	VAR_SET($DO0, (v_do>>0) & 1);
+	VAR_SET($DO1, (v_do>>1) & 1);
+	VAR_SET($DO2, (v_do>>2) & 1);
+	VAR_SET($DO3, (v_do>>3) & 1);
+	VAR_SET($DO4, (v_do>>4) & 1);
+	VAR_SET($DO5, (v_do>>5) & 1);
+	VAR_SET($DO6, (v_do>>6) & 1);
+  } else
+    return HMI_ERROR;
+}
+
+END_FUNCTION_BLOCK();

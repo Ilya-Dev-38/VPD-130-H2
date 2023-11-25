@@ -1,0 +1,159 @@
+BEGIN_FUNCTION_BLOCK();
+
+const int HI_WORD_FIRST  = 0; // 1 = high-word first, 0 = low-word first
+
+char  v_di = 0;
+char  v_do = 0;
+WORD  v_ai[12]; 
+WORD  v_ao[4];
+int   gWriteCount = 0;
+
+// Write DO
+if (VAR_VALUE($ENABLE_DO) && VAR_VALUE($W_ACTION)) 
+{
+   int iWrite = 0;
+   v_do   = 0;
+    
+   iWrite += VAR_GET_WRITE_BYTE(&v_do, $DO0, 0);
+   iWrite += VAR_GET_WRITE_BYTE(&v_do, $DO1, 1);
+
+   if ( iWrite )  // Write only when need
+   {
+      gWriteCount++;
+      if ( ! MTM_WRITEDO($DEVICE, $NETID, 20, 2, &v_do, $TIMEOUT) )
+         return HMI_ERROR;  
+   }
+}
+
+// Write AO
+if (VAR_VALUE($ENABLE_AO) && VAR_VALUE($W_ACTION)) 
+{
+   int iWrite = 0;
+
+   DWORD dwHex[2];
+      
+   float *fv  = (float*) &dwHex[0];  // Sharing the same address for DWORD & float
+   float *fv1 = (float*) &dwHex[1];
+    
+   if( VAR_FLAG_IS_WRITE($AO0) ) iWrite++; 
+   *fv = VAR_VALUE($AO0) / 1000.0;
+   if ( HI_WORD_FIRST )
+   {
+      v_ao[0] = HIWORD(dwHex[0]);
+      v_ao[1] = LOWORD(dwHex[0]);
+   }
+   else
+   {
+      v_ao[0] = LOWORD(dwHex[0]);
+      v_ao[1] = HIWORD(dwHex[0]);
+   }
+     
+   if( VAR_FLAG_IS_WRITE($AO1) ) iWrite++; 
+   *fv1 = VAR_VALUE($AO1) / 1000.0;
+   if ( HI_WORD_FIRST )
+   {
+      v_ao[2] = HIWORD(dwHex[1]);
+      v_ao[3] = LOWORD(dwHex[1]);
+   }
+   else
+   {
+      v_ao[2] = LOWORD(dwHex[1]);
+      v_ao[3] = HIWORD(dwHex[1]);
+   }
+
+   if ( iWrite ) // Write only when need
+   {   
+      gWriteCount++;
+      if ( ! MTM_WRITEAO($DEVICE, $NETID, 20, 4, v_ao, $TIMEOUT) )
+         return HMI_ERROR;
+   }
+}
+
+if ( gWriteCount ) return HMI_OK;  // Skip reading to reduce the device loading 
+
+if (VAR_VALUE($ENABLE_DO) && VAR_VALUE($R_ACTION)) { 
+   if (MTM_READDO($DEVICE, $NETID, 20, 2, &v_do, $TIMEOUT) ) 
+   {
+      VAR_SET($DO0, (v_do>>0) & 1);
+      VAR_SET($DO1, (v_do>>1) & 1);
+   } else
+      return HMI_ERROR;  
+}
+
+// Readback AO ***************	
+if (VAR_VALUE($ENABLE_AO) && VAR_VALUE($R_ACTION)) { 
+
+   DWORD dwHex[2];
+      
+   float *fv  = (float*) &dwHex[0];  // Sharing the same address for DWORD & float
+   float *fv1 = (float*) &dwHex[1];
+   
+   // get floating data @ 0x208
+     
+   if (MTM_READAO($DEVICE, $NETID, 20, 4, v_ao, $TIMEOUT) )  // handle, address, points, buffer 
+   {
+      if ( HI_WORD_FIRST )
+      {
+         for (int i = 0; i < 2; i++)
+            dwHex[i] = (((DWORD) v_ao[i*2]) << 16) | v_ao[i*2+1];
+      }
+      else
+      {
+         for(int i = 0; i < 2; i++)
+            dwHex[i] = (((DWORD) v_ao[i*2+1]) << 16) | v_ao[i*2];
+      } 
+   
+      VAR_SET($AO0, (long)((*fv)  * 1000.0));  // Gain 1000 to keep 3 points decimal value
+      VAR_SET($AO1, (long)((*fv1) * 1000.0) );
+   } else
+      return HMI_ERROR;  
+}
+
+
+// Read DI ********************
+if (VAR_VALUE($ENABLE_DI) && VAR_VALUE($R_ACTION)) { 
+   if (MTM_READDI($DEVICE, $NETID, 20, 2, &v_di, $TIMEOUT)) 
+   {  
+      VAR_SET($DI0, (v_di>>0) & 1);
+      VAR_SET($DI1, (v_di>>1) & 1);
+   } else
+      return HMI_ERROR;
+}
+
+if (VAR_VALUE($ENABLE_AI) && VAR_VALUE($R_ACTION)) 
+{
+   DWORD dwHex[6];
+      
+   float *fv  = (float*) &dwHex[0];  // Sharing the same address for DWORD & float
+   float *fv1 = (float*) &dwHex[1];
+   float *fv2 = (float*) &dwHex[2];   
+   float *fv3 = (float*) &dwHex[3];
+   float *fv4 = (float*) &dwHex[4];
+   float *fv5 = (float*) &dwHex[5];
+   
+   // get floating data @ 0x208
+     
+   if (MTM_READAI($DEVICE, $NETID, 20, 12, v_ai, $TIMEOUT) )  // handle, address, points, buffer 
+   {
+      if ( HI_WORD_FIRST )
+      {
+         for (int i = 0; i < 6; i++)
+            dwHex[i] = (((DWORD) v_ai[i*2]) << 16) | v_ai[i*2+1];
+      }
+      else
+      {
+         for(int i = 0; i < 6; i++)
+            dwHex[i] = (((DWORD) v_ai[i*2+1]) << 16) | v_ai[i*2];
+      } 
+   
+      VAR_SET($AI0, (long)((*fv)  * 1000.0));  // Gain 1000 to keep 3 points decimal value
+      VAR_SET($AI1, (long)((*fv1) * 1000.0) );
+      VAR_SET($AI2, (long)((*fv2) * 1000.0) );
+      VAR_SET($AI3, (long)((*fv3) * 1000.0) );
+      VAR_SET($AI4, (long)((*fv4) * 1000.0) );
+      VAR_SET($AI5, (long)((*fv5) * 1000.0) );
+   } else
+      return HMI_ERROR;  
+}
+   
+END_FUNCTION_BLOCK();

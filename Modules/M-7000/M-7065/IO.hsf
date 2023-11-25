@@ -1,0 +1,64 @@
+BEGIN_FUNCTION_BLOCK();
+
+char  v_do, v_di;
+BOOL  flag ;
+int   gWriteCount = 0;
+
+uart_SetTimeout($CONNECTION, $TIMEOUT);
+
+if(VAR_VALUE($ENABLE_DO) && VAR_VALUE($W_ACTION))
+{			
+   int iWrite = 0;
+   v_do   = 0;
+
+   iWrite += VAR_GET_WRITE_BYTE(&v_do, $DO0, 0);
+   iWrite += VAR_GET_WRITE_BYTE(&v_do, $DO1, 1);
+   iWrite += VAR_GET_WRITE_BYTE(&v_do, $DO2, 2);
+   iWrite += VAR_GET_WRITE_BYTE(&v_do, $DO3, 3);
+   iWrite += VAR_GET_WRITE_BYTE(&v_do, $DO4, 4);
+
+   if ( iWrite )  // Write only when need
+   {
+      // Modbus RTU master API uses byte-array to send/receive data.
+      flag = mrm_WriteDO($CONNECTION, $NETID, 0, 5, &v_do);
+      if (! flag) return HMI_ERROR; // failure
+	  
+      gWriteCount++;
+   }
+}
+
+// Skip the reading (one time) if there is writing,
+// this reduces the loading of the remote I/O device.
+if ( gWriteCount ) return HMI_OK;
+
+
+if(VAR_VALUE($ENABLE_DI) && VAR_VALUE($R_ACTION))
+{
+   v_di = 0;
+
+   // Modbus RTU master API uses byte-array to send/receive data.
+   flag = mrm_ReadDI($CONNECTION, $NETID, 0, 4, &v_di);
+   if (! flag) return HMI_ERROR; // failure
+
+   VAR_SET($DI0, (v_di>>0) & 1);
+   VAR_SET($DI1, (v_di>>1) & 1);
+   VAR_SET($DI2, (v_di>>2) & 1);
+   VAR_SET($DI3, (v_di>>3) & 1);
+}
+
+if(VAR_VALUE($ENABLE_DO) && VAR_VALUE($R_ACTION))
+{
+   v_do = 0;
+
+   // Modbus RTU master API uses byte-array to send/receive data.
+   flag = mrm_ReadDO($CONNECTION, $NETID, 0, 5, &v_do);
+   if (! flag) return HMI_ERROR; // failure
+
+   VAR_SET($DO0, (v_do>>0) & 1);
+   VAR_SET($DO1, (v_do>>1) & 1);
+   VAR_SET($DO2, (v_do>>2) & 1);
+   VAR_SET($DO3, (v_do>>3) & 1);
+   VAR_SET($DO4, (v_do>>4) & 1);
+}
+
+END_FUNCTION_BLOCK();

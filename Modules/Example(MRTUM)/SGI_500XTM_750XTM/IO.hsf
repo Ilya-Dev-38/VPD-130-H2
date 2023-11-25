@@ -1,0 +1,74 @@
+BEGIN_FUNCTION_BLOCK();
+
+const int recv1_7_ch = 6;  
+
+WORD  recv1_7[recv1_7_ch];    
+
+const int recv41_48_ch = 8;  
+
+WORD  recv41_48[recv41_48_ch];
+
+BOOL  flag;
+
+uart_SetTimeout($CONNECTION, $TIMEOUT);
+
+float Temp = 0 ;
+
+float multiplier[2] = {0.1953125,0.00610352};
+
+if ( VAR_VALUE($R_ACTION) ) 
+{ 
+  memset(recv1_7, 0, sizeof(recv1_7));  // ->0
+  memset(recv41_48, 0, sizeof(recv41_48));
+  
+  flag = mrm_ReadAO($CONNECTION, $NetID, 0 , recv1_7_ch, recv1_7);
+  if (! flag) return HMI_ERROR; // failure  
+  
+  flag = mrm_ReadAO($CONNECTION, $NetID, 40 , recv41_48_ch, recv41_48);
+  if (! flag) return HMI_ERROR; // failure   
+
+  Temp = recv1_7[0]*multiplier[0] ;
+  VAR_SET($DCV, Temp*100 );
+  
+  Temp = recv1_7[1]*multiplier[0]*100 ;
+  VAR_SET($AACPO, Temp*100 );
+  
+  Temp = recv1_7[2]*multiplier[1] ;
+  VAR_SET($ACGF, Temp*100 ); 
+  
+  Temp = recv1_7[3]*multiplier[0] ;
+  VAR_SET($L1L2ACV, Temp*100 );   
+ 
+  Temp = recv1_7[4]*multiplier[0] ;
+  VAR_SET($L2L3ACV, Temp*100 ); 
+  
+  Temp = recv1_7[5]*multiplier[0] ;
+  VAR_SET($L1L3ACV, Temp*100 );     
+  
+
+  Temp = recv41_48[0]*multiplier[0] ;
+  VAR_SET($ACOVS, Temp*100 );
+  
+  Temp = recv41_48[1]*multiplier[0] ;
+  VAR_SET($ACCOVS, Temp*100 );
+  
+  Temp = recv41_48[2]*multiplier[0] ;
+  VAR_SET($ACROVS, Temp*100 ); 
+  
+  Temp = recv41_48[3]*multiplier[0] ;
+  VAR_SET($ACUVS, Temp*100 );   
+ 
+  Temp = recv41_48[4]*multiplier[0] ;
+  VAR_SET($ACCUVS, Temp*100 ); 
+  
+  Temp = recv41_48[5]*multiplier[1] ;
+  VAR_SET($ACOFS, Temp*100 );     
+ 
+  Temp = recv41_48[6]*multiplier[1] ;
+  VAR_SET($ACUFS, Temp*100 ); 
+  
+  Temp = recv41_48[7]*multiplier[1] ;
+  VAR_SET($ACCUFS, Temp*100 );  
+}
+
+END_FUNCTION_BLOCK();

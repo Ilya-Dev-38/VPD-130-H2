@@ -1,0 +1,79 @@
+BEGIN_FUNCTION_BLOCK();
+
+const int ch_count = 8;  // Number of AO channels
+BOOL  flag;
+WORD  recv[ch_count];    // Raw data from M-7000
+int   val[ch_count], i;
+int   gWriteCount = 0;
+const WORD aoTypes[]={$TYPE_AO0, $TYPE_AO1, $TYPE_AO2, $TYPE_AO3, $TYPE_AO4, $TYPE_AO5, $TYPE_AO6, $TYPE_AO7};
+const int  aoGains[]={$GAIN_AO0, $GAIN_AO1, $GAIN_AO2, $GAIN_AO3, $GAIN_AO4, $GAIN_AO5, $GAIN_AO6, $GAIN_AO7};
+
+//DWORD dwStart, dwEnd;
+//dwStart = hmi_GetTickCount();
+
+uart_SetTimeout($CONNECTION, $TIMEOUT);
+
+if ( VAR_VALUE($ENABLE_AO) && VAR_VALUE($W_ACTION) ) 
+{ 
+   int iWrite = 0;
+
+   if( VAR_FLAG_IS_WRITE($AO0) ) iWrite++;
+   recv[0] = M7000_AOLongToHex( "7028", aoTypes[0], VAR_VALUE($AO0), aoGains[0], NULL );
+
+   if( VAR_FLAG_IS_WRITE($AO1) ) iWrite++;
+   recv[1] = M7000_AOLongToHex( "7028", aoTypes[1], VAR_VALUE($AO1), aoGains[1], NULL );
+
+   if( VAR_FLAG_IS_WRITE($AO2) ) iWrite++;
+   recv[2] = M7000_AOLongToHex( "7028", aoTypes[2], VAR_VALUE($AO2), aoGains[2], NULL );
+
+   if( VAR_FLAG_IS_WRITE($AO3) ) iWrite++;
+   recv[3] = M7000_AOLongToHex( "7028", aoTypes[3], VAR_VALUE($AO3), aoGains[3], NULL );
+
+   if( VAR_FLAG_IS_WRITE($AO4) ) iWrite++;
+   recv[4] = M7000_AOLongToHex( "7028", aoTypes[4], VAR_VALUE($AO4), aoGains[4], NULL );
+
+   if( VAR_FLAG_IS_WRITE($AO5) ) iWrite++;
+   recv[5] = M7000_AOLongToHex( "7028", aoTypes[5], VAR_VALUE($AO5), aoGains[5], NULL );
+
+   if( VAR_FLAG_IS_WRITE($AO6) ) iWrite++;
+   recv[6] = M7000_AOLongToHex( "7028", aoTypes[6], VAR_VALUE($AO6), aoGains[6], NULL );
+
+   if( VAR_FLAG_IS_WRITE($AO7) ) iWrite++;
+   recv[7] = M7000_AOLongToHex( "7028", aoTypes[7], VAR_VALUE($AO7), aoGains[7], NULL );
+
+   if ( iWrite )
+   {
+      gWriteCount++;
+      flag = mrm_WriteAO($CONNECTION, $NetID, 0, ch_count, recv);
+      if (! flag) return HMI_ERROR; // failure
+   }
+}
+
+// Skip the reading (one time) if there is writing,
+// this reduces the loading of the remote I/O device.
+if ( gWriteCount ) return HMI_OK;
+
+if ( VAR_VALUE($ENABLE_AO) && VAR_VALUE($R_ACTION) ) 
+{ 
+  memset(recv, 0, sizeof(recv));
+  flag = mrm_ReadAO($CONNECTION, $NetID, 0, ch_count, recv);
+  if (! flag) return HMI_ERROR; // failure
+
+  for (i=0; i<ch_count; i++)
+     val[i] = M7000_AOHexToLong("7028", aoTypes[i], recv[i], aoGains[i], NULL);
+
+  VAR_SET($AO0, val[0] );
+  VAR_SET($AO1, val[1] );
+  VAR_SET($AO2, val[2] );
+  VAR_SET($AO3, val[3] );
+  VAR_SET($AO4, val[4] );
+  VAR_SET($AO5, val[5] );
+  VAR_SET($AO6, val[6] );
+  VAR_SET($AO7, val[7] );
+ 
+}
+
+//dwEnd = hmi_GetTickCount() - dwStart;
+//VAR_SET(v1, dwEnd);
+
+END_FUNCTION_BLOCK();

@@ -1,0 +1,22 @@
+BEGIN_FUNCTION_BLOCK();
+
+const int ch_count = 7;  
+BOOL  flag;
+WORD  recv[ch_count];    
+
+if ( VAR_VALUE($ENABLE_AI) && VAR_VALUE($R_ACTION) ) 
+{ 
+  memset(recv, 0, sizeof(recv));  // ->0
+  flag = MTM_READAI($DEVICE, $NetID, 0, ch_count, recv, $TIMEOUT);
+  if (! flag) return HMI_ERROR; // failure  
+
+  VAR_SET($AI0, recv[0] );
+  VAR_SET($AI1, recv[1] );
+  VAR_SET($AI2, recv[2] );
+  VAR_SET($AI3, recv[3] );
+  VAR_SET($AI4, recv[4] );
+  VAR_SET($AI5, recv[5] );
+  VAR_SET($AI6, recv[6] );
+}
+
+END_FUNCTION_BLOCK();

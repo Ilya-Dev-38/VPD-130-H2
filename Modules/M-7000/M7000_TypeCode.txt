@@ -1,0 +1,158 @@
+
+The type-code (Range Type) is used to tell the API functions how to convert the binary data 
+into readable value depending on the configuration of the M-7000 modules. 
+
+The data format of the M-7000 AI/AO modules must be configured as 2's complement. 
+M-7011 is special one that using Engineering data format.
+	
+Supports the following API functions.
+
+// This function converts AI hex to long value based on M-7000 AI type-code.
+//
+// id[]:     Not used for AI module yet, reserved for future usage.
+// typeCode: AI type-code indicates the mapping of the input and output value range.
+// hexVal:   The input hex value.
+// gain:     Can be 1, 10, 100, 1000, 10000, 100000.
+//           For example: Gain 1000 maps the +/- 2.5 range to +/- 2500.
+// *err:     0 = OK, -1=Wrong type-code, -2=Wrong gain code.
+//           err can be NULL address for skipping error code.
+// return:   A long value converted from hex.
+long M7000_AIHexToLong(char id[], uint16_t typeCode, uint16_t hexVal, int gain, int *err);
+
+// This function converts AO hex to long value based on M-7000 AO type-code.
+//
+// id[]:     "7022" for using M-7022 special type-code. 
+//           "" or NULL for other modules.
+// typeCode: AO type-code indicates the mapping of the input and output value range.
+// hexVal:   The input hex value.
+// gain:     Can be 1, 10, 100, 1000, 10000, 100000.
+//           For example: Gain 1000 maps the +/- 2.5 range to +/- 2500.
+// *err:     0 = OK, -1=Wrong type-code, -2=Wrong gain code.
+//           err can be NULL address for skipping error code.
+// return:   A long value converted from hex.
+long M7000_AOHexToLong(char id[], uint16_t typeCode, uint16_t hexVal, int gain, int *err);
+
+// This function converts AO long to hex value based on M-7000 AO type-code.
+//
+// id[]:     "7022" for using M-7022 special type-code. 
+//           "" or NULL for other modules.
+// typeCode: AO type-code indicates the mapping of the input and output value range.
+// val:      The input long value.
+// gain:     Can be 1, 10, 100, 1000, 10000, 100000.
+//           For example: Gain 1000 maps the +/- 2500 range to +/- 2.5.
+// *err:     0 = OK, -1=Wrong type-code, -2=Wrong gain code.
+//           err can be NULL address for skipping error code.
+// return:   A hex value converted from long.
+uint16_t M7000_AOLongToHex(char id[], uint16_t typeCode, long val, int gain, int *err);
+
+
+Updated Dec.01, 2022
+
+// ================================
+AO Type Codes (2's complement)
+
+0x00: // 0 ~ 20 mA
+0x01: // 4 ~ 20 mA
+0x02: // 0 ~ 10 V
+0x03: // +/- 10 V
+0x04: // 0 ~ 5 V
+0x05: // +/- 5 V
+	
+0x30: // 0 ~ 20 mA
+0x31: // 4 ~ 20 mA
+0x32: // 0 ~ 10 V
+0x33: // +/- 10 V
+0x34: // 0 ~ 5 V
+0x35: // +/- 5 V
+
+AI Type Codes (2's complement)
+
+0x00: // +- 15 mA
+0x01: // +- 50 mA
+0x02: // +- 100 mA
+0x03: // +- 500 mV
+0x04: // +- 1 V
+0x05: // +- 2.5 V
+0x06: // +- 20 mA 
+0x07: // 4 ~ 20 mA
+0x08: // +- 10 V
+0x09: // +- 5 V
+0x0A: // +- 1 V 
+0x0B: // +- 500 mV
+0x0C: // +- 150 mV 
+0x0D: // +- 20 mA
+0x0E: // J Type -210 ~ 760 
+0x0F: // K Type -210 ~ 1372
+0x10: // T Type -270 ~ 400
+0x11: // E Type -270 ~ 1000
+0x12: // R Type -0 ~ 1768
+0x13: // S Type 0 ~ 1768 
+0x14: // B Type 0 ~ 1820
+0x15: // N Type -270 ~ 1300 
+0x16: // C Type 0 ~ 2320
+0x17: // L Type -200 ~ 800
+0x18: // M Type -200 ~ 100
+0x19: // L2 Type -200 ~ 900 
+0x1A: // 0 ~ 20 mA
+0x1B: // +- 150 V
+0x1C: // +- 50 V
+
+0x20: // +/- 100, PT 100 £\=00385
+0x21: // 0 ~ +100, PT 100 £\=00385
+0x22: // 0 ~ +200, PT 100 £\=00385
+0x23: // 0 ~ +600, PT 100 £\=00385
+0x24: // +/- 100, PT 100 £\=003916
+0x25: // 0 ~ +100, PT 100 £\=003916
+0x26: // 0 ~ +200, PT 100 £\=003916 
+0x27: // 0 ~ +600, PT 100 £\=003916
+0x28: // -80 ~ +100, Nickel 120 
+0x29: //   0 ~ +100, Nickel 120
+0x2A: // -200 ~ +600, PT 1000 £\=00385
+0x2B: // -20 ~ 150, Cu 100 @ 0¢XC,£\= 00421 
+0x2C: //   0 ~ 200, Cu 100 @ 25¢XC,£\= 00427
+0x2D: // -20 ~ 150, Cu 1000 @ 0¢XC,£\= 00421
+0x2E: // -200 ~ +200¢XC, PT 100 ,£\= 00385
+0x2F: // -200 ~ +200¢XC, PT 100 ,£\= 003916
+ 
+0x60: // -30 ~ 240¢XF, PreCon Type III 10K @ 25¢XC 
+0x61: // -50 ~ +150 ¢XC, Type u Fenwell 
+0x62: //   0 ~ +150 ¢XC, Type u Fenwell 
+0x63: // -80 ~ 100, YSI L Mix 100 @ 25¢XC 
+0x64: // -80 ~ 100, YSI L Mix 300 @ 25¢XC 
+0x65: // -70 ~ 100, YSI L Mix 1000 @ 25¢XC 
+0x66: // -50 ~ 150, YSI B Mix 2252 @ 25¢XC 
+0x67: // -40 ~ 150, YSI B Mix 3000 @ 25¢XC 
+0x68: // -40 ~ 150, YSI B Mix 5000 @ 25¢XC 
+0x69: // -30 ~ 150, YSI B Mix 6000 @ 25¢XC 
+0x6A: // -30 ~ 150, YSI B Mix 10000 @ 25¢XC 
+0x6B: // -30 ~ 150, YSI H Mix 10000 @ 25¢XC 
+0x6C: // -10 ~ 200, YSI H Mix 30000 @ 25¢XC 
+
+0x70 ~ 0x77: // User Define -50 ~ +150
+ 
+0x80: // -200 ~ +600¢XC, PT-100, alpha = 00385
+0x81: // -200 ~ +600¢XC, PT 100 ,£\= 003916 
+0x82: // -50 ~ +150¢XC, Cu50 ,£\= 003916 
+0x83: // -60 ~ +180¢XC, Ni100 
+0x84:	// -80 ~ 150, Nickel 120
+0x85:	// 0 ~ 150, Cu 100
+
+M-7011 - AI Type Codes (Engineering Format)
+0x00: +/-15mV,  -15000 ~ 15000
+0x01: +/-50mV,   -5000 ~  5000
+0x02: +/-100mV, -10000 ~ 10000
+0x03: +/-500mV,  -5000 ~  5000
+0x04: +/-1V,    -10000 ~ 10000
+0x05: +/-2.5V,  -25000 ~ 25000
+0x06: +/-20mA,  -20000 ~ 20000
+
+0x0E: J Type -210 ~ 760 , -2100 ~  7600
+0x0F: K Type -210 ~ 1372, -2700 ~ 13720
+0x10: T Type -270 ~ 400,  -2700 ~  4000
+0x11: E Type -270 ~ 1000, -2700 ~ 10000
+0x12: R Type   -0 ~ 1768,     0 ~ 17680
+0x13: S Type    0 ~ 1768,     0 ~ 17680
+0x14: B Type    0 ~ 1820,     0 ~ 18200
+0x15: N Type -270 ~ 1300, -2700 ~ 13000
+0x16: C Type    0 ~ 2320,     0 ~ 23200
+

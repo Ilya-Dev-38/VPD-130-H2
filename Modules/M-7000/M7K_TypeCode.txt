@@ -1,0 +1,108 @@
+
+Please refer to M7000_TypeCode.txt for using new type-code and functions.
+
+
+The type-code is used to tell the API functions how to convert the binary data 
+into readable value depending on the configuration of the M-7000 modules. 
+
+Note: 
+1. In the HMIWorks, the Type-Code must be input in decimal number.
+2. The data format of the M-7000 AI modules must be configured as 2's complement;
+   while the M-7000 AO modules must be configured as Engineering format. 
+3. Supports the following functions:
+   short M7K_AOLongKToHex(int typeCode, long  rawData);
+   long  M7K_AOHexToLongK(int typeCode, short rawData);
+	long  M7K_AIHexToLongK(char id[], short typeCode, short hexVal); 
+
+AO Type Codes (Engineering format)
+
+  0  (0x0): // AO module 0 ~ 20 mA
+
+  1  (0x1): // AO module 4 ~ 20 mA
+
+  2  (0x2): // AO module 0 ~ 10 V
+  
+ 48 (0x30): // 0 ~ 20 mA
+ 49 (0x31): // 4 ~ 20 mA
+ 50 (0x32): // 0 ~ 10 V
+ 51 (0x33): // +/- 10 V
+ 52 (0x34): // 0 ~ 5 V
+ 53 (0x35): // +/- 5 V
+    
+
+AI Type Codes (2's complement)
+
+  0  (0x0): // AI module +- 15 mA
+            // AO module 0 ~ 20 mA
+
+  1  (0x1): // AI module +-50 mA
+            // AO module 4 ~ 20 mA
+
+  2  (0x2): // AI module +- 100 mA
+            // AO module 0 ~ 10 V
+
+  3  (0x3): // +- 500 mV
+  4  (0x4): // +- 1 V
+  5  (0x5): // +- 2.5 V
+  6  (0x6): // +- 20 mA 
+  7  (0x7): // 4 ~ 20 mA
+  8  (0x8): // +- 10 V
+  9  (0x9): // +- 5 V
+ 10  (0xa): // +- 1 V 
+ 11  (0xb): // +- 500 mV
+ 12  (0xc): // +- 150 mV 
+ 13  (0xd): // +- 20 mA
+ 14  (0xe): // J Type -210 ~ 760 
+ 15  (0xf): // K Type -210 ~ 1372
+ 16 (0x10): // T Type -270 ~ 400
+ 17 (0x11): // E Type -270 ~ 1000
+ 18 (0x12): // R Type -0 ~ 1768
+ 19 (0x13): // S Type 0 ~ 1768 
+ 20 (0x14): // B Type 0 ~ 1820
+ 21 (0x15): // N Type -270 ~ 1300 
+ 22 (0x16): // C Type 0 ~ 2320
+ 23 (0x17): // L Type -200 ~ 800
+ 24 (0x18): // M Type -200 ~ 100
+ 25 (0x19): // L2 Type -200 ~ 900 
+ 26 (0x1a): // 0 ~ 20 mArefBegin=0x0000
+ 27 (0x1b): // +- 150 VrefBegin=0x8000
+ 28 (0x1c): // +- 50 VrefBegin=0x8000
+ 32 (0x20): // +/- 100 ,PT 100 £\=00385
+ 33 (0x21): // 0 ~ +100 ,PT 100 £\=00385
+ 34 (0x22): // 0 ~ +200 ,PT 100 £\=00385
+ 35 (0x23): // 0 ~ +600 ,PT 100 £\=00385
+ 36 (0x24): // +/- 100 ,PT 100 £\=003916
+ 37 (0x25): // 0 ~ +100 ,PT 100 £\=003916
+ 38 (0x26): // 0 ~ +200 ,PT 100 £\=003916 
+ 39 (0x27): // 0 ~ +600 ,PT 100 £\=003916
+ 40 (0x28): // -80 ~ +100 ,Nickel 120 
+ 41 (0x29): // 0 ~ +100 ,Nickel 120
+ 42 (0x2a): // -200 ~ +600 ,PT 1000 £\=00385
+ 43 (0x2b): // -20 ~ 150 ,Cu 100 @ 0¢XC,£\= 00421 
+ 44 (0x2c): // 0 ~ 200 ,Cu 100 @ 25¢XC,£\= 00427
+ 45 (0x2d): // -20 ~ 150 ,Cu 1000 @ 0¢XC,£\= 00421
+ 46 (0x2e): // -200 ~ +200¢XC ,PT 100 ,£\= 00385
+ 47 (0x2f): // -200 ~ +200¢XC ,PT 100 ,£\= 003916
+ 
+ 96 (0x60): // PreCon Type III 10K @ 25¢XC -35 ~ 115¢XC
+ 97 (0x61): // Type u Fenwell -50 ~ +150 ¢XC
+ 98 (0x62): // Type u Fenwell 0 ~ +150 ¢XC
+ 99 (0x63): // YSI L Mix 100 @ 25¢XC -80 ~ 100
+100 (0x64): // YSI L Mix 300 @ 25¢XC -80 ~ 100
+101 (0x65): // YSI L Mix 1000 @ 25¢XC -70 ~ 100
+102 (0x66): // YSI B Mix 2252 @ 25¢XC -50 ~ 150
+103 (0x67): // YSI B Mix 3000 @ 25¢XC -40 ~ 150
+104 (0x68): // YSI B Mix 5000 @ 25¢XC -40 ~ 150
+105 (0x69): // YSI B Mix 6000 @ 25¢XC -30 ~ 150
+106 (0x6a): // YSI B Mix 10000 @ 25¢XC -30 ~ 150
+107 (0x6b): // YSI H Mix 10000 @ 25¢XC -30 ~ 150
+108 (0x6c): // YSI H Mix 30000 @ 25¢XC -10 ~ 200
+
+112 (0x70) ~ 119 (0x77):
+            // User Define -50 ~ +150
+ 
+128 (0x80): // PT-100, alpha = 00385, -200 ~ +600 degree C
+129 (0x81): // -200 ~ +600¢XC ,PT 100 ,£\= 003916 
+130 (0x82): // -50 ~ +150¢XC ,Cu50 ,£\= 003916 
+131 (0x83): // -60 ~ +180¢XC ,Ni100 
+

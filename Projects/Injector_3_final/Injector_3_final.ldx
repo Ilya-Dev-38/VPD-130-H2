@@ -1,0 +1,167 @@
+﻿<?xml version="1.0"?>
+<xml>
+<Rung>
+  <Head Label=""/>
+  <ContactSeries>
+    <Function Name="GetPanelKey" Category="VPD-130" DisplayName="GetPanelKey" Rows="2">
+      <Pin NO="0" Name="en" />
+      <Pin NO="2" Name="eno" />
+      <Pin NO="3" Name="out" VarType="Virtual" VarName="GetPanelKey" />
+    </Function>
+  </ContactSeries>
+  <CoilSeries>
+  </CoilSeries>
+  <Tail />
+</Rung>
+<Rung>
+  <Head Label=""/>
+  <ContactSeries>
+    <Function Name="Equal" Category="default" DisplayName="Equal" Rows="2">
+      <Pin NO="0" Name="en" />
+      <Pin NO="1" Name="in1" VarType="Const" Default="1" />
+      <Pin NO="2" Name="eno" />
+      <Pin NO="3" Name="in2" VarType="Virtual" VarName="GetPanelKey" />
+    </Function>
+  </ContactSeries>
+  <CoilSeries>
+    <Coil Type="0" VarName="Pump_C_DOWN"/>
+  </CoilSeries>
+  <Tail />
+</Rung>
+<Rung>
+  <Head Label=""/>
+  <ContactSeries>
+    <Function Name="Equal" Category="default" DisplayName="Equal" Rows="2">
+      <Pin NO="0" Name="en" />
+      <Pin NO="1" Name="in1" VarType="Const" Default="2" />
+      <Pin NO="2" Name="eno" />
+      <Pin NO="3" Name="in2" VarType="Virtual" VarName="GetPanelKey" />
+    </Function>
+  </ContactSeries>
+  <CoilSeries>
+    <Coil Type="0" VarName="Pump_C_UP"/>
+  </CoilSeries>
+  <Tail />
+</Rung>
+<Rung>
+  <Head Label=""/>
+  <ContactSeries>
+    <Parallel>
+      <Function Name="Equal" Category="default" DisplayName="Equal" Rows="2">
+        <Pin NO="0" Name="en" />
+        <Pin NO="1" Name="in1" VarType="Const" Default="4" />
+        <Pin NO="2" Name="eno" />
+        <Pin NO="3" Name="in2" VarType="Virtual" VarName="GetPanelKey" />
+      </Function>
+      <Contact Type="0" VarType="Virtual" VarName="Pump_ERROR_D1" />
+    </Parallel>
+    <Function Name="Add" Category="math" DisplayName="+" Rows="3">
+      <Pin NO="0" Name="en" />
+      <Pin NO="1" Name="in1" VarType="Const" Default="0" />
+      <Pin NO="3" Name="eno" />
+      <Pin NO="4" Name="in2" VarType="Const" Default="0" />
+      <Pin NO="5" Name="q" VarType="Virtual" VarName="Pump_Start" />
+    </Function>
+    <Function Name="Add" Category="math" DisplayName="+" Rows="3">
+      <Pin NO="0" Name="en" />
+      <Pin NO="1" Name="in1" VarType="Const" Default="0" />
+      <Pin NO="3" Name="eno" />
+      <Pin NO="4" Name="in2" VarType="Const" Default="0" />
+      <Pin NO="5" Name="q" VarType="Virtual" VarName="Needles_Start" />
+    </Function>
+  </ContactSeries>
+  <CoilSeries>
+  </CoilSeries>
+  <Tail />
+</Rung>
+<Rung>
+  <Head Label=""/>
+  <ContactSeries>
+    <Function Name="Equal" Category="default" DisplayName="Equal" Rows="2">
+      <Pin NO="0" Name="en" />
+      <Pin NO="1" Name="in1" VarType="Const" Default="8" />
+      <Pin NO="2" Name="eno" />
+      <Pin NO="3" Name="in2" VarType="Virtual" VarName="GetPanelKey" />
+    </Function>
+  </ContactSeries>
+  <CoilSeries>
+    <Coil Type="0" VarName="Needles_C_DOWN"/>
+  </CoilSeries>
+  <Tail />
+</Rung>
+<Rung>
+  <Head Label=""/>
+  <ContactSeries>
+    <Function Name="Equal" Category="default" DisplayName="Equal" Rows="2">
+      <Pin NO="0" Name="en" />
+      <Pin NO="1" Name="in1" VarType="Const" Default="16" />
+      <Pin NO="2" Name="eno" />
+      <Pin NO="3" Name="in2" VarType="Virtual" VarName="GetPanelKey" />
+    </Function>
+  </ContactSeries>
+  <CoilSeries>
+    <Coil Type="0" VarName="Needles_C_UP"/>
+  </CoilSeries>
+  <Tail />
+</Rung>
+<Rung>
+  <Head Label=""/>
+  <ContactSeries>
+    <Function Name="Add" Category="math" DisplayName="+" Rows="3">
+      <Pin NO="0" Name="en" />
+      <Pin NO="1" Name="in1" VarType="Const" Default="100" />
+      <Pin NO="3" Name="eno" />
+      <Pin NO="4" Name="in2" VarType="Const" Default="0" />
+      <Pin NO="5" Name="q" VarType="Virtual" VarName="Needles_SPEED_MIN" />
+    </Function>
+  </ContactSeries>
+  <CoilSeries>
+  </CoilSeries>
+  <Tail />
+</Rung>
+<Rung>
+  <Head Label=""/>
+  <ContactSeries>
+    <Function Name="Add" Category="math" DisplayName="+" Rows="3">
+      <Pin NO="0" Name="en" />
+      <Pin NO="1" Name="in1" VarType="Const" Default="600" />
+      <Pin NO="3" Name="eno" />
+      <Pin NO="4" Name="in2" VarType="Const" Default="0" />
+      <Pin NO="5" Name="q" VarType="Virtual" VarName="Needles_SPEED_MAX" />
+    </Function>
+  </ContactSeries>
+  <CoilSeries>
+  </CoilSeries>
+  <Tail />
+</Rung>
+<Rung>
+  <Head Label=""/>
+  <ContactSeries>
+    <Function Name="Add" Category="math" DisplayName="+" Rows="3">
+      <Pin NO="0" Name="en" />
+      <Pin NO="1" Name="in1" VarType="Const" Default="0" />
+      <Pin NO="3" Name="eno" />
+      <Pin NO="4" Name="in2" VarType="Const" Default="0" />
+      <Pin NO="5" Name="q" VarType="Virtual" VarName="Pump_SPEED_MIN" />
+    </Function>
+  </ContactSeries>
+  <CoilSeries>
+  </CoilSeries>
+  <Tail />
+</Rung>
+<Rung>
+  <Head Label=""/>
+  <ContactSeries>
+    <Function Name="Add" Category="math" DisplayName="+" Rows="3">
+      <Pin NO="0" Name="en" />
+      <Pin NO="1" Name="in1" VarType="Const" Default="500" />
+      <Pin NO="3" Name="eno" />
+      <Pin NO="4" Name="in2" VarType="Const" Default="0" />
+      <Pin NO="5" Name="q" VarType="Virtual" VarName="Pump_SPEED_MAX" />
+    </Function>
+  </ContactSeries>
+  <CoilSeries>
+  </CoilSeries>
+  <Tail />
+</Rung>
+</xml>

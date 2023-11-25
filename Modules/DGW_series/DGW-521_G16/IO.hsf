@@ -1,0 +1,26 @@
+BEGIN_FUNCTION_BLOCK();
+
+uart_SetTimeout($CONNECTION, $TIMEOUT);
+
+static const PVAR gp[] = {
+&$Group0, &$Group1, &$Group2, &$Group3, &$Group4, &$Group5, &$Group6, &$Group7, &$Group8, &$Group9,
+&$Group10, &$Group11, &$Group12, &$Group13, &$Group14, &$Group15 };
+
+if ( dgw_State($HANDLE) < DGW_READY )
+{
+	dgw_Process($HANDLE); // init
+	return HMI_ERROR;
+}
+
+// Output groups level
+for (int i=0; i<=15; i++) 
+{
+  if ( PVAR_FLAG_IS_WRITE(gp[i]) ) 
+     dgw_SetGroupLevel($HANDLE, i, PVAR_READ_DEVICE(gp[i]));
+}
+
+dgw_Process($HANDLE);
+
+// Group only (virtual mapping), no lamps readback
+
+END_FUNCTION_BLOCK();

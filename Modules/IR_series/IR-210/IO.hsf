@@ -1,0 +1,48 @@
+BEGIN_FUNCTION_BLOCK();
+
+WORD v_ao[2];
+BOOL flag;
+int gWriteCount = 0;
+uart_SetTimeout($CONNECTION, $TIMEOUT);
+memset(v_ao, 0, sizeof(v_ao));
+
+if ( VAR_VALUE($ENABLE_AO) && VAR_VALUE($W_ACTION) )
+  {
+    int iWrite = 0;
+
+    if (VAR_FLAG_IS_WRITE($AO0))
+      iWrite++;
+    v_ao[0] = VAR_VALUE($AO0);
+    if (VAR_FLAG_IS_WRITE($AO1))
+      iWrite++;
+    v_ao[1] = VAR_VALUE($AO1);
+
+
+    if (iWrite)                 // Write only when need
+      {
+        // Modbus RTU master API uses byte-array to send/receive data.
+        flag = mrm_WriteAO($CONNECTION, $NETID, 1103, 2, v_ao);
+        if (!flag)
+          return HMI_ERROR;     // failure
+
+        gWriteCount++;
+      }
+  }
+
+if (gWriteCount)
+  return HMI_OK;
+
+memset(v_ao, 0, sizeof(v_ao));
+
+if ( VAR_VALUE($ENABLE_AO) && VAR_VALUE($R_ACTION) )
+  {
+    if ( mrm_ReadAO($CONNECTION, $NETID, 1103, 2, v_ao) )
+      {
+        VAR_SET($AO0, v_ao[0]);
+        VAR_SET($AO1, v_ao[1]);
+      }
+    else
+      return HMI_ERROR;
+  }
+
+END_FUNCTION_BLOCK();

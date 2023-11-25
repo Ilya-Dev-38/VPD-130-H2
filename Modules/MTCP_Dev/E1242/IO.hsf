@@ -1,0 +1,126 @@
+BEGIN_FUNCTION_BLOCK();
+
+// I/O script for testing the Moxa's IoLogik E1242 device.
+// AI x4, DI x4, DO x4
+// To read the floating value, the scaling function of E1242 must be enabled first.
+
+const int HI_WORD_FIRST  = 0; // 1 = high-word first, 0 = low-word first
+const int FLOAT_DATA     = 1; // 1 = get float data,  0 = get raw data   
+const int POINTS_PER_AI  = 2; // 2 = two points for one AI, 1 = one point for one AI
+
+DWORD v_do = 0;
+DWORD v_di = 0;
+WORD  v_ai[4];  // read 2 points, requires 2 words; set 4 words to prevent error from the device
+int   gWriteCount = 0;
+
+// Write DO
+if (VAR_VALUE($ENABLE_DO) && VAR_VALUE($W_ACTION)) 
+{
+   int iWrite = 0;
+   v_do   = 0;
+    
+   iWrite += VAR_GET_WRITE_U32(&v_do, $DO0, 0);
+   iWrite += VAR_GET_WRITE_U32(&v_do, $DO1, 1);
+   iWrite += VAR_GET_WRITE_U32(&v_do, $DO2, 2);
+   iWrite += VAR_GET_WRITE_U32(&v_do, $DO3, 3);
+   
+   if ( iWrite )  // Write only when need
+   {
+      gWriteCount++;
+      if ( ! MBM_WRITEDO($DEVICE, 0, 4, v_do) )
+         return HMI_ERROR;  
+   }
+}
+
+if ( gWriteCount ) return HMI_OK;  // Skip reading to reduce the device loading 
+
+if (VAR_VALUE($ENABLE_DO) && VAR_VALUE($R_ACTION)) { 
+	if (MBM_READDO($DEVICE, 0, 4, &v_do) ) 
+	{
+		VAR_SET($DO0, (v_do>>0) & 1);
+		VAR_SET($DO1, (v_do>>1) & 1);
+		VAR_SET($DO2, (v_do>>2) & 1);
+		VAR_SET($DO3, (v_do>>3) & 1);
+	} else
+            return HMI_ERROR;  
+}
+
+if (VAR_VALUE($ENABLE_DO) && VAR_VALUE($R_ACTION)) { 
+	if (MBM_READDI($DEVICE, 0, 4, &v_do) ) 
+	{
+		VAR_SET($DI0, (v_di>>0) & 1);
+		VAR_SET($DI1, (v_di>>1) & 1);
+		VAR_SET($DI2, (v_di>>2) & 1);
+		VAR_SET($DI3, (v_di>>3) & 1);
+	} else
+            return HMI_ERROR;  
+}
+
+if (VAR_VALUE($ENABLE_AI) &&VAR_VALUE($R_ACTION)) 
+{
+    DWORD dwHex;
+    float *fv = (float*) &dwHex;  // Sharing the same address for DWORD & float
+    
+    if ( ! FLOAT_DATA )  // Get raw data @ 0x200
+    {
+    	if (MBM_READAI($DEVICE, 0x200, 4, v_ai) )  // handle, address, points, buffer
+        {
+           VAR_SET($AI0, v_ai[0] ); 
+           VAR_SET($AI1, v_ai[1] ); 
+           VAR_SET($AI2, v_ai[2] ); 
+           VAR_SET($AI3, v_ai[3] );
+           
+           return HMI_OK; 
+        } else
+           return HMI_ERROR;  
+    }
+    
+    // get floating data @ 0x208
+     
+	if (MBM_READAI($DEVICE, 0x208, POINTS_PER_AI, v_ai) )  // handle, address, points, buffer 
+	{
+        if ( HI_WORD_FIRST )
+	       dwHex = (((DWORD) v_ai[0]) << 16) | v_ai[1];
+        else 
+	       dwHex = (((DWORD) v_ai[1]) << 16) | v_ai[0];
+            
+		VAR_SET($AI0, (long)((*fv) * 1000.0) );  // Gain 1000 to keep 3 points decimal value
+	} else
+        return HMI_ERROR;  
+
+	if (MBM_READAI($DEVICE, 0x209, POINTS_PER_AI, v_ai) )  // handle, address, points, buffer 
+	{
+        if ( HI_WORD_FIRST )
+	       dwHex = (((DWORD) v_ai[0]) << 16) | v_ai[1];
+        else 
+	       dwHex = (((DWORD) v_ai[1]) << 16) | v_ai[0];
+            
+		VAR_SET($AI1, (long)((*fv) * 1000.0) );  // Gain 1000 to keep 3 points decimal value
+	} else
+        return HMI_ERROR;  
+
+
+	if (MBM_READAI($DEVICE, 0x20A, POINTS_PER_AI, v_ai) )  // handle, address, points, buffer 
+	{
+        if ( HI_WORD_FIRST )
+	       dwHex = (((DWORD) v_ai[0]) << 16) | v_ai[1];
+        else 
+	       dwHex = (((DWORD) v_ai[1]) << 16) | v_ai[0];
+            
+		VAR_SET($AI2, (long)((*fv) * 1000.0) );  // Gain 1000 to keep 3 points decimal value
+	} else
+        return HMI_ERROR;  
+
+	if (MBM_READAI($DEVICE, 0x20B, POINTS_PER_AI, v_ai) )  // handle, address, points, buffer 
+	{
+        if ( HI_WORD_FIRST )
+	       dwHex = (((DWORD) v_ai[0]) << 16) | v_ai[1];
+        else 
+	       dwHex = (((DWORD) v_ai[1]) << 16) | v_ai[0];
+            
+		VAR_SET($AI3, (long)((*fv) * 1000.0) );  // Gain 1000 to keep 3 points decimal value
+	} else
+        return HMI_ERROR;  
+}
+	
+END_FUNCTION_BLOCK();

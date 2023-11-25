@@ -1,0 +1,73 @@
+BEGIN_FUNCTION_BLOCK();
+
+char  v_do[2];
+char  v_di[2];
+
+const PVAR var_do_list[]={
+   &$DO0,  &$DO1,  &$DO2,  &$DO3,  &$DO4,  &$DO5,  &$DO6,  &$DO7, 
+   &$DO8,  &$DO9,  &$DO10, &$DO11, &$DO12, &$DO13, &$DO14, &$DO15 };
+const PVAR var_di_list[]={
+   &$DI0,  &$DI1,  &$DI2,  &$DI3,  &$DI4,  &$DI5,  &$DI6,  &$DI7, 
+   &$DI8,  &$DI9,  &$DI10, &$DI11, &$DI12, &$DI13, &$DI14, &$DI15 };
+
+// Write DO
+if (VAR_VALUE($ENABLE_DO) && VAR_VALUE($W_ACTION)) 
+{
+   int iWrite = 0;
+   memset(v_do, 0, 2);
+   int iTag = 0;
+   for (int iByte=0; iByte<=1; iByte++)
+	{
+		for (int iBit=0; iBit<=7; iBit++)
+		{
+			iWrite += PVAR_GET_WRITE_BYTE( &(v_do[iByte]), var_do_list[iTag], iBit);
+			iTag++;
+		}
+	}
+     
+   if ( iWrite )  // Write only when need
+   {
+      if ( MTM_WRITEDO($DEVICE, $NETID, 0, 16, v_do, $TIMEOUT) )
+		      return HMI_OK;
+		else  return HMI_ERROR;
+			 
+		// Skip reading to reduce the device loading 
+   }  
+}
+
+// Readback DO ***************
+if (VAR_VALUE($ENABLE_DO) && VAR_VALUE($R_ACTION)) { 
+   if (MTM_READDO($DEVICE, $NETID, 0, 16, v_do, $TIMEOUT) ) 
+   {
+		int iTag = 0;
+		for (int iByte=0; iByte<=1; iByte++)
+		{
+			for (int iBit=0; iBit<=7; iBit++)
+			{
+				PVAR_SET(var_do_list[iTag], (v_do[iByte]>> iBit) & 1);
+				iTag++;
+			}
+		}	
+   } else
+      return HMI_ERROR;
+}
+
+// Read DI ********************
+if (VAR_VALUE($ENABLE_DI) && VAR_VALUE($R_ACTION)) { 
+   if (MTM_READDI($DEVICE, $NETID, 0, 16, v_di, $TIMEOUT)) 
+   {  
+		int iTag = 0;
+		for (int iByte=0; iByte<=1; iByte++)
+		{
+			for (int iBit=0; iBit<=7; iBit++)
+			{
+				PVAR_SET(var_di_list[iTag], (v_di[iByte]>> iBit) & 1);
+				iTag++;
+			}
+		}	
+   } else
+      return HMI_ERROR;
+}
+
+
+END_FUNCTION_BLOCK();

@@ -1,0 +1,22 @@
+BEGIN_FUNCTION_BLOCK();
+
+WORD v_ao[2];
+const int  IR_COUNT = 2;
+const PVAR IR_LIST[]={&$IR_Out1, &$IR_Out2};
+
+for (int i=0; i<IR_COUNT; i++)
+{
+  if ( PVAR_FLAG_IS_WRITE(IR_LIST[i]) ) // Get and clear the write flag.
+  {
+    v_ao[0] = 0xFFFF & PVAR_VALUE(IR_LIST[i]); // command
+	 v_ao[1] = (1 << i); // channel
+
+    if ( ! MTM_WRITEAO($DEVICE, $NETID, 1103, 2, v_ao, $TIMEOUT) )
+	      return HMI_ERROR;     // failure
+	 //else return HMI_OK;      // send others in next loop (= add delay)
+  }
+}
+
+return HMI_OK;
+
+END_FUNCTION_BLOCK();

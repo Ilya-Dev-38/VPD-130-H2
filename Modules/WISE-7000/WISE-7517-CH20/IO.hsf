@@ -1,0 +1,71 @@
+BEGIN_FUNCTION_BLOCK();
+
+const int HI_WORD_FIRST  = 0; // 1 = high-word first, 0 = low-word first
+
+WORD  v_ai[40];  // read 2 points, requires 2 words; set 4 words to prevent error from the device
+
+if (VAR_VALUE($ENABLE_AI) &&VAR_VALUE($R_ACTION)) 
+{
+   DWORD dwHex[10];
+      
+   float *fv  = (float*) &dwHex[0];  // Sharing the same address for DWORD & float
+   float *fv1 = (float*) &dwHex[1];
+   float *fv2 = (float*) &dwHex[2];
+   float *fv3 = (float*) &dwHex[3];
+   float *fv4 = (float*) &dwHex[4];
+   float *fv5 = (float*) &dwHex[5];
+   float *fv6 = (float*) &dwHex[6];
+   float *fv7 = (float*) &dwHex[7];
+   float *fv8 = (float*) &dwHex[8];
+   float *fv9 = (float*) &dwHex[9];
+   float *fv10 = (float*) &dwHex[10];
+   float *fv11 = (float*) &dwHex[11];
+   float *fv12 = (float*) &dwHex[12];
+   float *fv13 = (float*) &dwHex[13];
+   float *fv14 = (float*) &dwHex[14];
+   float *fv15 = (float*) &dwHex[15];
+   float *fv16 = (float*) &dwHex[16];
+   float *fv17 = (float*) &dwHex[17];
+   float *fv18 = (float*) &dwHex[18];
+   float *fv19 = (float*) &dwHex[19];
+   
+   // get floating data @ 0x208
+     
+   if (MTM_READAI($DEVICE, $NETID, 20, 40, v_ai, $TIMEOUT) )  // handle, address, points, buffer 
+   {
+      if ( HI_WORD_FIRST )
+      {
+         for (int i = 0; i < 20; i++)
+            dwHex[i] = (((DWORD) v_ai[i*2]) << 16) | v_ai[i*2+1];
+      }
+      else
+      {
+         for(int i = 0; i < 20; i++)
+            dwHex[i] = (((DWORD) v_ai[i*2+1]) << 16) | v_ai[i*2];
+      } 
+   
+      VAR_SET($AI0, (long)((*fv)  * 1000.0));  // Gain 1000 to keep 3 points decimal value
+      VAR_SET($AI1, (long)((*fv1) * 1000.0) );
+      VAR_SET($AI2, (long)((*fv2) * 1000.0) );
+      VAR_SET($AI3, (long)((*fv3) * 1000.0) );
+      VAR_SET($AI4, (long)((*fv4) * 1000.0) );
+      VAR_SET($AI5, (long)((*fv5) * 1000.0) );
+      VAR_SET($AI6, (long)((*fv6) * 1000.0) );
+      VAR_SET($AI7, (long)((*fv7) * 1000.0) );
+      VAR_SET($AI8, (long)((*fv8) * 1000.0) );
+      VAR_SET($AI9, (long)((*fv9) * 1000.0) );
+      VAR_SET($AI10, (long)((*fv10) * 1000.0) );
+      VAR_SET($AI11, (long)((*fv11) * 1000.0) );
+      VAR_SET($AI12, (long)((*fv12) * 1000.0) );
+      VAR_SET($AI13, (long)((*fv13) * 1000.0) );
+      VAR_SET($AI14, (long)((*fv14) * 1000.0) );
+      VAR_SET($AI15, (long)((*fv15) * 1000.0) );
+      VAR_SET($AI16, (long)((*fv16) * 1000.0) );
+      VAR_SET($AI17, (long)((*fv17) * 1000.0) );
+      VAR_SET($AI18, (long)((*fv18) * 1000.0) );
+      VAR_SET($AI19, (long)((*fv19) * 1000.0) );
+   } else
+      return HMI_ERROR;  
+}
+   
+END_FUNCTION_BLOCK();

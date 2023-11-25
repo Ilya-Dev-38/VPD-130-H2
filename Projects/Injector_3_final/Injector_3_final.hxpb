@@ -1,0 +1,84 @@
+﻿<?xml version="1.0"?>
+<xml>
+<Project Version ="1.4">
+  <Driver Name="VPD-130-H2" Orientation="Landscape" />
+
+  <Files>
+    <File Name="Injector_3_final.hwd" />
+  </Files>
+
+  <Program>
+    <Logic Type="" Name="Injector_3_final.ldx" />
+  </Program>
+
+  <Connections>
+    <Connection Name="SER_0" Interface="COM1" Protocol="UART" Port="1" BaudRate="115200" Parity="0" DataBit="8" StopBit="1" SilentTime="10" />
+  </Connections>
+
+  <Devices>
+    <Device Name="Pump" Connection="SER_0" Series="Frequency" Model="Frequency_motor" NetID="22" Timeout="200" ScanTime="200">
+      <IO Type="Virtual" Name="Pump_SPEED_MAX" RawName="SPEED_MAX" />
+      <IO Type="Virtual" Name="Pump_SPEED_MIN" RawName="SPEED_MIN" />
+      <IO Type="Virtual" Name="Pump_SPEED_GET" RawName="SPEED_GET" />
+      <IO Type="Virtual" Name="Pump_SPEED_SET" RawName="SPEED_SET" />
+      <IO Type="Virtual" Name="Pump_C_UP" RawName="C_UP" />
+      <IO Type="Virtual" Name="Pump_C_DOWN" RawName="C_DOWN" />
+      <IO Type="Virtual" Name="Pump_D1" RawName="D1" />
+      <IO Type="Virtual" Name="Pump_A1" RawName="A1" />
+      <IO Type="Virtual" Name="Pump_Start" RawName="Start" />
+      <IO Type="Virtual" Name="Pump_Reverse" RawName="Reverse" />
+      <IO Type="Virtual" Name="Pump_ERROR_D1" RawName="ERROR_D1" />
+      <IO Type="Virtual" Name="Pump_Bar" RawName="Bar" />
+      <IO Type="Virtual" Name="Pump_ERROR" RawName="ERROR" />
+      <IO Type="Virtual" Name="Pump_ENABLE_DEVICE" Default="1" RawName="ENABLE_DEVICE" Const="1" />
+    </Device>
+
+    <Device Name="Needles" Connection="SER_0" Series="Frequency" Model="Frequency_motor" NetID="11" Timeout="200" ScanTime="200">
+      <IO Type="Virtual" Name="Needles_SPEED_MAX" RawName="SPEED_MAX" />
+      <IO Type="Virtual" Name="Needles_SPEED_MIN" RawName="SPEED_MIN" />
+      <IO Type="Virtual" Name="Needles_SPEED_GET" RawName="SPEED_GET" />
+      <IO Type="Virtual" Name="Needles_SPEED_SET" RawName="SPEED_SET" />
+      <IO Type="Virtual" Name="Needles_C_UP" RawName="C_UP" />
+      <IO Type="Virtual" Name="Needles_C_DOWN" RawName="C_DOWN" />
+      <IO Type="Virtual" Name="Needles_D1" RawName="D1" />
+      <IO Type="Virtual" Name="Needles_A1" RawName="A1" />
+      <IO Type="Virtual" Name="Needles_Start" RawName="Start" />
+      <IO Type="Virtual" Name="Needles_Reverse" RawName="Reverse" />
+      <IO Type="Virtual" Name="Needles_ERROR_D1" RawName="ERROR_D1" />
+      <IO Type="Virtual" Name="Needles_Bar" RawName="Bar" />
+      <IO Type="Virtual" Name="Needles_ERROR" RawName="ERROR" />
+      <IO Type="Virtual" Name="Needles_ENABLE_DEVICE" Default="1" RawName="ENABLE_DEVICE" Const="1" />
+    </Device>
+
+  </Devices>
+
+  <Virtual>
+      <IO Type="Virtual" Name="GetPanelKey" />
+  </Virtual>
+
+  <Configuration>
+    <WatchDog Timeout="4000" ClearTime="1000" MTCPTimeout="60000" MTCPSTimeout="60000" />
+    <Startup LED="False" Beep="True" Delay="100" />
+    <LCD AutoOff="240" OnBeep="True" OfBeep="True" Brightness="180" />
+    <UserPictures Folder="[Pictures]"/>
+    <Beep Touch="True" TCPTimeout="False" />
+    <ConfigBeep BeepFreq="800" BeepDuration="100" />
+    <Language Support="English" />
+    <Download Checksum="False" />
+    <Refresh Time="100" ConnectingBlinkCycle="500" ReconnectionInterval="5000" />
+    <Ladder Version="1" />
+    <Device NickName="ICPDAS" />
+    <NTP Enable="False" FREQ="15" ZONE="10,00" ADDR="time.stdtime.gov.tw" />
+    <UserFlash Size="0" />
+    <Warning MultiSlave="0" />
+  </Configuration>
+</Project>
+</xml>
+
+<!-- Information>
+  Tool Name="HMIWorks STD v2.30.11 (Feb.03, 2023)" 
+  Project Path="C:\ICPDAS\HMIWorks_Standard\Projects\Injector_3_final\" 
+  Backup Enable="False"
+  OS Version="64-bit Windows 10 Enterprise (Build 19045)" 
+  CPU Model="12th Gen Intel(R) Core(TM) i5-1235U" 
+-->

@@ -1,0 +1,48 @@
+BEGIN_FUNCTION_BLOCK();
+
+const int ch_count = 3;  
+BOOL  flag;
+WORD  recv[ch_count];    
+
+uart_SetTimeout($CONNECTION, $TIMEOUT);
+
+float temp = 0 ;
+if ( VAR_VALUE($R_ACTION) ) 
+{ 
+  memset(recv, 0, sizeof(recv));  // ->0
+  flag = mrm_ReadAO($CONNECTION, $NetID, 86 , ch_count, recv);
+  if (! flag) return HMI_ERROR; // failure  
+
+  //RAW DATA
+  VAR_SET($PV_TK, recv[0] );
+  VAR_SET($Amb_TK, recv[1] );
+  VAR_SET($MPH, recv[2] );
+  
+  //To C : 273+Value x 0.1;
+  temp = (float)VAR_VALUE($PV_TK)*0.1 + 273 ;
+  VAR_SET($PV_TC, temp * 100 );
+  
+  //To F : TF=32+(9/5) x TC ;
+  temp = temp*1.4+32 ;
+  VAR_SET($PV_TF, temp*100);
+  
+  
+  //To C : 273+Value x 0.1;
+  temp = (float)VAR_VALUE($Amb_TK)*0.1 + 273 ;
+  VAR_SET($Amb_TC, temp * 100 );
+  
+  //To F : TF=32+(9/5) x TC ;
+  temp = temp*1.4+32 ;
+  VAR_SET($Amb_TF, temp*100);
+  
+  
+  //To Meters Per Sec : Sm/s = Smph x 0.447
+  temp = (float)VAR_VALUE($MPH)*0.1*0.447 ;
+  VAR_SET($MPS, temp * 100 ); 
+  
+  //To Kilometers Per Hour : Smph x 1.609
+  temp = temp * 1.609 ;
+  VAR_SET($KPH, temp * 100 ); 
+}
+
+END_FUNCTION_BLOCK();

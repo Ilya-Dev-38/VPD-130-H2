@@ -1,0 +1,133 @@
+BEGIN_FUNCTION_BLOCK();
+
+char  v_do, v_di;
+BOOL  flag ;
+int   gWriteCount = 0;
+int   iWrite = 0;
+
+const int AI_ch_count = 4;
+short AI_recv[AI_ch_count];
+WORD  AI_Type[AI_ch_count];
+
+WORD  DI_Counter_Recv[8];    
+char  DI_Counter_Send;    
+
+uart_SetTimeout($CONNECTION, $TIMEOUT);
+
+//AI type code
+if ( VAR_VALUE($ENABLE_AI) && VAR_VALUE($SET_TYPECODE_AI) ) 
+{ 
+   memset(AI_Type, 0, sizeof(WORD)*4);
+  
+	AI_Type[0]=VAR_VALUE($TYPECODE_AI0);
+	AI_Type[1]=VAR_VALUE($TYPECODE_AI1);
+	AI_Type[2]=VAR_VALUE($TYPECODE_AI2);
+	AI_Type[3]=VAR_VALUE($TYPECODE_AI3);
+
+	gWriteCount++;	  
+
+	flag = mrm_WriteAO($CONNECTION, $NetID, 256, AI_ch_count, AI_Type);
+	if (! flag) return HMI_ERROR; // failure
+	
+	v_do = 1; // 1:Engineering unit for TouchPAD
+   flag = mrm_WriteDO($CONNECTION, $NetID, 268, 1, &v_do);
+   if (! flag) return HMI_ERROR; // failure
+
+   // Set type-code once and only once, finally.
+	VAR_SET($SET_TYPECODE_AI, 0);
+}
+
+if(VAR_VALUE($ENABLE_DO) && VAR_VALUE($W_ACTION))
+{			
+   iWrite = 0 ;
+   v_do   = 0;
+
+   iWrite += VAR_GET_WRITE_BYTE(&v_do, $DO0, 0);
+   iWrite += VAR_GET_WRITE_BYTE(&v_do, $DO1, 1);
+   iWrite += VAR_GET_WRITE_BYTE(&v_do, $DO2, 2);
+   iWrite += VAR_GET_WRITE_BYTE(&v_do, $DO3, 3);
+
+   if ( iWrite )  // Write only when need
+   {      
+      gWriteCount++;
+      flag = mrm_WriteDO($CONNECTION, $NETID, 0, 4, &v_do);
+      if (! flag) return HMI_ERROR; // failure
+   }
+}
+
+//Counter
+if(VAR_VALUE($ENABLE_DI_Counter) && VAR_VALUE($W_ACTION))
+{			
+   iWrite = 0 ;
+   DI_Counter_Send   = 0;
+
+   iWrite += VAR_GET_WRITE_BYTE(&DI_Counter_Send, $ClearCounter0, 0);
+   iWrite += VAR_GET_WRITE_BYTE(&DI_Counter_Send, $ClearCounter1, 1);
+   iWrite += VAR_GET_WRITE_BYTE(&DI_Counter_Send, $ClearCounter2, 2);
+   iWrite += VAR_GET_WRITE_BYTE(&DI_Counter_Send, $ClearCounter3, 3);
+
+   if ( iWrite )  // Write only when need
+   {      
+      gWriteCount++;
+      flag = mrm_WriteDO($CONNECTION, $NETID, 512, 4, &DI_Counter_Send);
+      if (! flag) return HMI_ERROR; // failure
+   }
+}
+
+
+// Skip the reading (one time) if there is writing,
+// this reduces the loading of the remote I/O device.
+if ( gWriteCount ) return HMI_OK;
+
+
+if(VAR_VALUE($ENABLE_DI) && VAR_VALUE($R_ACTION))
+{
+   v_di = 0;
+
+   flag = mrm_ReadDI($CONNECTION, $NETID, 32, 4, &v_di);
+   if (! flag) return HMI_ERROR; // failure
+
+   VAR_SET($DI0, (v_di>>0) & 1);
+   VAR_SET($DI1, (v_di>>1) & 1);
+   VAR_SET($DI2, (v_di>>2) & 1);
+   VAR_SET($DI3, (v_di>>3) & 1);
+}
+
+if(VAR_VALUE($ENABLE_DO) && VAR_VALUE($R_ACTION))
+{
+   v_do = 0;
+
+   flag = mrm_ReadDO($CONNECTION, $NETID, 0, 4, &v_do);
+   if (! flag) return HMI_ERROR; // failure
+
+   VAR_SET($DO0, (v_do>>0) & 1);
+   VAR_SET($DO1, (v_do>>1) & 1);
+   VAR_SET($DO2, (v_do>>2) & 1);
+   VAR_SET($DO3, (v_do>>3) & 1);
+}
+
+if ( VAR_VALUE($ENABLE_AI) && VAR_VALUE($R_ACTION) ) { 
+
+  memset(AI_recv, 0, sizeof(AI_recv));
+  flag = mrm_ReadAI($CONNECTION, $NetID, 0, AI_ch_count, (WORD *)AI_recv);
+  if (! flag) return HMI_ERROR; // failure
+
+  VAR_SET($AI0, AI_recv[0] );
+  VAR_SET($AI1, AI_recv[1] );
+  VAR_SET($AI2, AI_recv[2] );
+  VAR_SET($AI3, AI_recv[3] );
+}
+
+if ( VAR_VALUE($ENABLE_DI_Counter) && VAR_VALUE($R_ACTION) ) 
+{ 
+  memset(DI_Counter_Recv, 0, sizeof(DI_Counter_Recv));
+  flag = mrm_ReadAI($CONNECTION, $NetID, 128, 8, DI_Counter_Recv);
+  if (! flag) return HMI_ERROR; // failure
+
+  VAR_SET($DI_Counter0, DI_Counter_Recv[0]+(DI_Counter_Recv[1]<<16) );
+  VAR_SET($DI_Counter1, DI_Counter_Recv[2]+(DI_Counter_Recv[3]<<16) );
+  VAR_SET($DI_Counter2, DI_Counter_Recv[4]+(DI_Counter_Recv[5]<<16) );
+  VAR_SET($DI_Counter3, DI_Counter_Recv[6]+(DI_Counter_Recv[7]<<16));
+}
+
+END_FUNCTION_BLOCK();

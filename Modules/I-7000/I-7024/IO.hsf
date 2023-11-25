@@ -1,0 +1,45 @@
+BEGIN_FUNCTION_BLOCK();
+
+float v_ao0;
+float v_ao1;
+float v_ao2;
+float v_ao3;
+
+uart_SetTimeout($CONNECTION, $TIMEOUT);
+
+if ( VAR_VALUE($ENABLE_AO) && VAR_VALUE($W_ACTION)) 
+{
+    // Channel 0
+	if( VAR_FLAG_IS_WRITE($AO0) ) 
+	{
+      v_ao0 = VAR_VALUE($AO0) / 1000.0;
+      if ( ! dcon_WriteAO($CONNECTION, $NETID, 0, 4, v_ao0) )
+	     return HMI_ERROR;
+	}
+	   
+    // Channel 1
+	if( VAR_FLAG_IS_WRITE($AO1) )
+    { 
+      v_ao1 = VAR_VALUE($AO1) / 1000.0;
+	  if ( ! dcon_WriteAO($CONNECTION, $NETID, 1, 4, v_ao1) )
+	     return HMI_ERROR;
+	}
+
+    // Channel 2
+	if( VAR_FLAG_IS_WRITE($AO2) )
+    { 
+      v_ao2 = VAR_VALUE($AO2) / 1000.0;
+	  if ( ! dcon_WriteAO($CONNECTION, $NETID, 2, 4, v_ao2) )
+	    return HMI_ERROR;
+	}
+	   
+    // Channel 3
+	if( VAR_FLAG_IS_WRITE($AO3) )
+    { 
+      v_ao3 = VAR_VALUE($AO3) / 1000.0;
+      if ( ! dcon_WriteAO($CONNECTION, $NETID, 3, 4, v_ao3) )
+	    return HMI_ERROR;
+    }
+}	
+
+END_FUNCTION_BLOCK();

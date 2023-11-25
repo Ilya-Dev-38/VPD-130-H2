@@ -1,0 +1,338 @@
+BEGIN_FUNCTION_BLOCK();
+
+DWORD v_do = 0;
+
+uart_SetTimeout($CONNECTION, $TIMEOUT);
+
+if (VAR_VALUE($W_ACTION) && VAR_VALUE($ENABLE_Frequency)) 
+{
+  bool iRet = true ;
+  static char InBuf[20],OutBuf[10];
+
+    if( VAR_FLAG_IS_WRITE($Frequency_0) ) 
+	  {
+	     sprintf( OutBuf,"$%02XC%01dF%06d",$NETID,0,VAR_VALUE($Frequency_0) );
+		 
+	     iRet = uart_SendCmd($CONNECTION,OutBuf, InBuf);
+		
+	  }
+	 
+    if( VAR_FLAG_IS_WRITE($Frequency_1) ) 
+	  {
+	     sprintf(OutBuf,"$%02XC%01dF%06d",$NETID,1,VAR_VALUE($Frequency_1));
+		 
+	     iRet = uart_SendCmd($CONNECTION,OutBuf, InBuf);
+	  }
+	  
+    if( VAR_FLAG_IS_WRITE($Frequency_2) ) 
+	  {
+	     sprintf(OutBuf,"$%02XC%01dF%06d",$NETID,2,VAR_VALUE($Frequency_2));
+		 
+	     iRet = uart_SendCmd($CONNECTION,OutBuf, InBuf);
+	  }
+	  
+    if( VAR_FLAG_IS_WRITE($Frequency_3) ) 
+	  {
+	     sprintf(OutBuf,"$%02XC%01dF%06d",$NETID,3,VAR_VALUE($Frequency_3));
+		 
+	     iRet = uart_SendCmd($CONNECTION,OutBuf, InBuf);
+	  }
+	  
+	if( VAR_FLAG_IS_WRITE($Frequency_4) ) 
+	  {
+	     sprintf(OutBuf,"$%02XC%01dF%06d",$NETID,4,VAR_VALUE($Frequency_4));
+		 
+	     iRet = uart_SendCmd($CONNECTION,OutBuf, InBuf);
+	  }
+	  
+	if( VAR_FLAG_IS_WRITE($Frequency_5) ) 
+	  {
+	     sprintf(OutBuf,"$%02XC%01dF%06d",$NETID,5,VAR_VALUE($Frequency_5));
+		 
+	     iRet = uart_SendCmd($CONNECTION,OutBuf, InBuf);
+	  }
+	  
+    if( VAR_FLAG_IS_WRITE($Frequency_6) ) 
+	  {
+	     sprintf(OutBuf,"$%02XC%01dF%06d",$NETID,6,VAR_VALUE($Frequency_6));
+		 
+	     iRet = uart_SendCmd($CONNECTION,OutBuf, InBuf);
+	  }
+	  
+	if( VAR_FLAG_IS_WRITE($Frequency_7) ) 
+	  {
+	     sprintf(OutBuf,"$%02XC%01dF%06d",$NETID,7,VAR_VALUE($Frequency_7));
+		 
+	     iRet = uart_SendCmd($CONNECTION,OutBuf, InBuf);
+	  }
+  //------------------------------------------------------------------------
+  
+    if ( ! iRet || InBuf[0] == '?')  return HMI_ERROR;
+   
+   // else return HMI_OK;
+   
+}
+
+if (VAR_VALUE($W_ACTION) && VAR_VALUE($ENABLE_Duty_Cycle)) 
+{
+ bool iRet = true ;
+ static char InBuf[20],OutBuf[10];
+  
+  //------------------------------------------------------------------------
+    if( VAR_FLAG_IS_WRITE($Duty_Cycle_0) ) 
+	  {
+	     sprintf( OutBuf,"$%02XC%01dD%2.1f",$NETID,0,(float)VAR_VALUE($Duty_Cycle_0)/10);
+		 
+	     iRet = uart_SendCmd($CONNECTION,OutBuf, InBuf);
+	  }
+	 
+    if( VAR_FLAG_IS_WRITE($Duty_Cycle_1) ) 
+	  {
+	     sprintf( OutBuf,"$%02XC%01dD%2.1f",$NETID,0,(float)VAR_VALUE($Duty_Cycle_1)/10);
+		 
+	     iRet = uart_SendCmd($CONNECTION,OutBuf, InBuf);
+	  }
+	  
+    if( VAR_FLAG_IS_WRITE($Duty_Cycle_2) ) 
+	  {
+	     sprintf( OutBuf,"$%02XC%01dD%2.1f",$NETID,0,(float)VAR_VALUE($Duty_Cycle_2)/10);
+		 
+	     iRet = uart_SendCmd($CONNECTION,OutBuf, InBuf);
+	  }
+	  
+    if( VAR_FLAG_IS_WRITE($Duty_Cycle_3) ) 
+	  {
+	     sprintf( OutBuf,"$%02XC%01dD%2.1f",$NETID,0,(float)VAR_VALUE($Duty_Cycle_3)/10);
+		 
+	     iRet = uart_SendCmd($CONNECTION,OutBuf, InBuf);
+	  }
+	  
+	if( VAR_FLAG_IS_WRITE($Duty_Cycle_4) ) 
+	  {
+	     sprintf( OutBuf,"$%02XC%01dD%2.1f",$NETID,0,(float)VAR_VALUE($Duty_Cycle_4)/10);
+		 
+	     iRet = uart_SendCmd($CONNECTION,OutBuf, InBuf);
+	  }
+	  
+	if( VAR_FLAG_IS_WRITE($Duty_Cycle_5) ) 
+	  {
+	     sprintf( OutBuf,"$%02XC%01dD%2.1f",$NETID,0,(float)VAR_VALUE($Duty_Cycle_5)/10);
+		 
+	     iRet = uart_SendCmd($CONNECTION,OutBuf, InBuf);
+	  }
+	  
+    if( VAR_FLAG_IS_WRITE($Duty_Cycle_6) ) 
+	  {
+	     sprintf( OutBuf,"$%02XC%01dD%2.1f",$NETID,0,(float)VAR_VALUE($Duty_Cycle_6)/10);
+		 
+	     iRet = uart_SendCmd($CONNECTION,OutBuf, InBuf);
+	  }
+	  
+	if( VAR_FLAG_IS_WRITE($Duty_Cycle_7) ) 
+	  {
+	    sprintf( OutBuf,"$%02XC%01dD%2.1f",$NETID,0,(float)VAR_VALUE($Duty_Cycle_7)/10);
+		 
+	     iRet = uart_SendCmd($CONNECTION,OutBuf, InBuf);
+	  }
+	  
+	  if ( ! iRet || InBuf[0] == '?')  return HMI_ERROR;
+  //------------------------------------------------------------------------
+}
+
+if (VAR_VALUE($W_ACTION) && VAR_VALUE($ENABLE_Mode)) 
+{
+ bool iRet = true ;
+ static char InBuf[20],OutBuf[10];
+	if( VAR_FLAG_IS_WRITE($Mode_0) ) 
+	  {
+	    sprintf( OutBuf,"$%02XC%01dM%01d",$NETID,0,VAR_VALUE($Mode_0));
+		 
+	     iRet = uart_SendCmd($CONNECTION,OutBuf, InBuf);
+	  }
+	  
+	if( VAR_FLAG_IS_WRITE($Mode_1) ) 
+	  {
+	    sprintf( OutBuf,"$%02XC%01dM%01d",$NETID,0,VAR_VALUE($Mode_1));
+		 
+	     iRet = uart_SendCmd($CONNECTION,OutBuf, InBuf);
+	  }
+	  
+	if( VAR_FLAG_IS_WRITE($Mode_2) ) 
+	  {
+	    sprintf( OutBuf,"$%02XC%01dM%01d",$NETID,0,VAR_VALUE($Mode_2));
+		 
+	     iRet = uart_SendCmd($CONNECTION,OutBuf, InBuf);
+	  }
+
+	if( VAR_FLAG_IS_WRITE($Mode_3) ) 
+	  {
+	    sprintf( OutBuf,"$%02XC%01dM%01d",$NETID,0,VAR_VALUE($Mode_3));
+		 
+	     iRet = uart_SendCmd($CONNECTION,OutBuf, InBuf);
+	  }
+
+	if( VAR_FLAG_IS_WRITE($Mode_4) ) 
+	  {
+	    sprintf( OutBuf,"$%02XC%01dM%01d",$NETID,0,VAR_VALUE($Mode_4));
+		 
+	     iRet = uart_SendCmd($CONNECTION,OutBuf, InBuf);
+	  }
+	  
+	if( VAR_FLAG_IS_WRITE($Mode_5) ) 
+	  {
+	    sprintf( OutBuf,"$%02XC%01dM%01d",$NETID,0,VAR_VALUE($Mode_5));
+		 
+	     iRet = uart_SendCmd($CONNECTION,OutBuf, InBuf);
+	  }
+	  
+	if( VAR_FLAG_IS_WRITE($Mode_6) ) 
+	  {
+	    sprintf( OutBuf,"$%02XC%01dM%01d",$NETID,0,VAR_VALUE($Mode_6));
+		 
+	     iRet = uart_SendCmd($CONNECTION,OutBuf, InBuf);
+	  }
+	  
+	if( VAR_FLAG_IS_WRITE($Mode_7) ) 
+	  {
+	    sprintf( OutBuf,"$%02XC%01dM%01d",$NETID,0,VAR_VALUE($Mode_7));
+		 
+	     iRet = uart_SendCmd($CONNECTION,OutBuf, InBuf);
+	  }
+	  
+	  if ( ! iRet || InBuf[0] == '?')  return HMI_ERROR;
+}
+
+if (VAR_VALUE($W_ACTION) && VAR_VALUE($ENABLE_Start_Stop)) 
+{
+
+bool iRet = false ;
+static char InBuf[20],OutBuf[10];
+   int iWrite = 0;
+   v_do   = 0;
+
+   iWrite += VAR_GET_WRITE_U32(&v_do, $Start_Stop_0, 0);
+   iWrite += VAR_GET_WRITE_U32(&v_do, $Start_Stop_1, 1);
+   iWrite += VAR_GET_WRITE_U32(&v_do, $Start_Stop_2, 2);
+   iWrite += VAR_GET_WRITE_U32(&v_do, $Start_Stop_3, 3);
+   iWrite += VAR_GET_WRITE_U32(&v_do, $Start_Stop_4, 4);
+   iWrite += VAR_GET_WRITE_U32(&v_do, $Start_Stop_5, 5);
+   iWrite += VAR_GET_WRITE_U32(&v_do, $Start_Stop_6, 6);
+   iWrite += VAR_GET_WRITE_U32(&v_do, $Start_Stop_7, 7);
+   
+   if ( iWrite )
+    {
+	// gWriteCount++;
+	sprintf( OutBuf,"@%02XDO%02X",$NETID,(unsigned int)v_do);
+	
+	iRet = uart_SendCmd($CONNECTION,OutBuf, InBuf);
+	
+	if ( ! iRet || InBuf[0] == '?')  return HMI_ERROR;
+	}
+	
+
+}
+
+
+// if ( gWriteCount ) return HMI_OK;  // Skip reading to reduce the device loading 
+
+
+if ( VAR_VALUE($ENABLE_Frequency) && VAR_VALUE($R_ACTION)) 
+{
+    static char InInBuf[20],OutBuf[10];
+	BOOL iRet;
+
+	for(int i = 0 ; i < 8 ; i++)
+	{
+    sprintf(OutBuf,"$%02XC%01dF",$NETID,i );
+		 
+    iRet = uart_SendCmd($CONNECTION, OutBuf, InInBuf);
+	
+	if(i == 0) VAR_SET($Frequency_0,atol(InInBuf+3));
+	if(i == 1) VAR_SET($Frequency_1,atol(InInBuf+3));
+	if(i == 2) VAR_SET($Frequency_2,atol(InInBuf+3));
+	if(i == 3) VAR_SET($Frequency_3,atol(InInBuf+3));
+	if(i == 4) VAR_SET($Frequency_4,atol(InInBuf+3));
+	if(i == 5) VAR_SET($Frequency_5,atol(InInBuf+3));
+	if(i == 6) VAR_SET($Frequency_6,atol(InInBuf+3));
+	if(i == 7) VAR_SET($Frequency_7,atol(InInBuf+3));
+    }
+	 if ( ! iRet || InInBuf[0] == '?')  return HMI_ERROR;
+}
+
+if ( VAR_VALUE($ENABLE_Duty_Cycle) && VAR_VALUE($R_ACTION)) 
+{
+    static char InInBuf[20],OutBuf[10];
+	BOOL iRet;
+
+	for(int i = 0 ; i < 8 ; i++)
+	{
+    sprintf(OutBuf,"$%02XC%01dD",$NETID,i );
+		 
+    iRet = uart_SendCmd($CONNECTION, OutBuf, InInBuf);
+	
+	if(i == 0) VAR_SET($Duty_Cycle_0,atol(InInBuf+3)*10);
+	if(i == 1) VAR_SET($Duty_Cycle_1,atol(InInBuf+3)*10);
+	if(i == 2) VAR_SET($Duty_Cycle_2,atol(InInBuf+3)*10);
+	if(i == 3) VAR_SET($Duty_Cycle_3,atol(InInBuf+3)*10);
+	if(i == 4) VAR_SET($Duty_Cycle_4,atol(InInBuf+3)*10);
+	if(i == 5) VAR_SET($Duty_Cycle_5,atol(InInBuf+3)*10);
+	if(i == 6) VAR_SET($Duty_Cycle_6,atol(InInBuf+3)*10);
+	if(i == 7) VAR_SET($Duty_Cycle_7,atol(InInBuf+3)*10);
+    }
+	 if ( ! iRet || InInBuf[0] == '?')  return HMI_ERROR;
+}
+
+if ( VAR_VALUE($ENABLE_Mode) && VAR_VALUE($R_ACTION)) 
+{
+    static char InInBuf[20],OutBuf[10];
+	BOOL iRet;
+
+	for(int i = 0 ; i < 8 ; i++)
+	{
+    sprintf(OutBuf,"$%02XC%01dM",$NETID,i );
+		 
+    iRet = uart_SendCmd($CONNECTION, OutBuf, InInBuf);
+	
+	if(i == 0) VAR_SET($Mode_0,atol(InInBuf+3));
+	if(i == 1) VAR_SET($Mode_1,atol(InInBuf+3));
+	if(i == 2) VAR_SET($Mode_2,atol(InInBuf+3));
+	if(i == 3) VAR_SET($Mode_3,atol(InInBuf+3));
+	if(i == 4) VAR_SET($Mode_4,atol(InInBuf+3));
+	if(i == 5) VAR_SET($Mode_5,atol(InInBuf+3));
+	if(i == 6) VAR_SET($Mode_6,atol(InInBuf+3));
+	if(i == 7) VAR_SET($Mode_7,atol(InInBuf+3));
+    }
+	 if ( ! iRet || InInBuf[0] == '?')  return HMI_ERROR;
+}
+
+if ( VAR_VALUE($ENABLE_Start_Stop) && VAR_VALUE($R_ACTION)) 
+{
+  static char InInBuf[20],OutBuf[10];
+	BOOL iRet;
+	
+  sprintf( OutBuf,"@%02XDI",$NETID);
+  
+  iRet = uart_SendCmd($CONNECTION,OutBuf, InInBuf);
+  
+  static char PWM_Out[2] ;
+  PWM_Out[0] = InInBuf[3];
+  PWM_Out[1] = InInBuf[4];
+  v_do = atol(PWM_Out) ;
+  
+  if (iRet)
+  {
+	VAR_SET($Start_Stop_0, (v_do>>0) & 1);
+	VAR_SET($Start_Stop_1, (v_do>>1) & 1);
+	VAR_SET($Start_Stop_2, (v_do>>2) & 1);
+	VAR_SET($Start_Stop_3, (v_do>>3) & 1);
+	VAR_SET($Start_Stop_4, (v_do>>4) & 1);
+	VAR_SET($Start_Stop_5, (v_do>>5) & 1);
+	VAR_SET($Start_Stop_6, (v_do>>6) & 1);
+	VAR_SET($Start_Stop_7, (v_do>>7) & 1);
+  } else
+    return HMI_ERROR;
+}
+	
+	
+
+END_FUNCTION_BLOCK();

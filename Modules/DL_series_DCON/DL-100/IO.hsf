@@ -1,0 +1,40 @@
+BEGIN_FUNCTION_BLOCK();
+
+  char buf[20];
+  float f;
+  int res;
+  
+  uart_SetTimeout($CONNECTION, $TIMEOUT);
+
+  if ( VAR_VALUE($ENABLE_AI) && VAR_VALUE($R_ACTION) )
+  {  
+	res = uart_SendCmd($CONNECTION, "#01C0TF" , buf);
+	if(res && buf[0] == '>')
+	{
+		usscanf(buf+2, "%f", &f);
+		if (buf[1] == '-') f = -f;
+		VAR_SET($AI0, (int)(f*10));
+	} else
+	   return HMI_ERROR;
+
+	res = uart_SendCmd($CONNECTION, "#01C0H" , buf);
+	if(res && buf[0] == '>')
+	{
+		usscanf(buf+2, "%f", &f);
+		if (buf[1] == '-') f = -f;
+		VAR_SET($AI1, (int)(f*10));
+	} else
+	   return HMI_ERROR;
+
+	res = uart_SendCmd($CONNECTION, "#01C0TC" , buf);
+	if(res && buf[0] == '>')
+	{
+		usscanf(buf+2, "%f", &f);
+		if (buf[1] == '-') f = -f;
+		VAR_SET($AI2, (int)(f*10));
+	} else
+	   return HMI_ERROR;
+	   
+  }
+	
+END_FUNCTION_BLOCK();

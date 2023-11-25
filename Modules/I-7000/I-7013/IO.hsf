@@ -1,0 +1,17 @@
+BEGIN_FUNCTION_BLOCK();
+
+float v_ai0  ;
+
+uart_SetTimeout($CONNECTION, $TIMEOUT);
+
+if ( VAR_VALUE($ENABLE_AI) && VAR_VALUE($R_ACTION)) 
+{ 
+  if(dcon_ReadAI($CONNECTION,$NETID, 0, 1 , &v_ai0))
+  {
+    VAR_SET($AI0, v_ai0);
+  } else
+    return HMI_ERROR;
+}
+
+
+END_FUNCTION_BLOCK();

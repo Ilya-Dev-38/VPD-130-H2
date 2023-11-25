@@ -1,0 +1,36 @@
+BEGIN_FUNCTION_BLOCK();
+
+uart_SetTimeout($CONNECTION, $TIMEOUT);
+
+static const PVAR pv[] = {
+&$Lamp0, &$Lamp1, &$Lamp2, &$Lamp3, &$Lamp4, &$Lamp5, &$Lamp6, &$Lamp7, &$Lamp8, &$Lamp9,
+&$Lamp10, &$Lamp11, &$Lamp12, &$Lamp13, &$Lamp14, &$Lamp15, &$Lamp16, &$Lamp17, &$Lamp18, &$Lamp19,
+&$Lamp20, &$Lamp21, &$Lamp22, &$Lamp23, &$Lamp24, &$Lamp25, &$Lamp26, &$Lamp27, &$Lamp28, &$Lamp29,
+&$Lamp30, &$Lamp31 };
+
+if ( dgw_State($HANDLE) < DGW_READY )
+{
+	dgw_Process($HANDLE); // init
+	return HMI_ERROR;
+}
+
+// Output lamps level
+for (int i=0; i<=31; i++) 
+{
+  if ( PVAR_FLAG_IS_WRITE(pv[i]) ) dgw_SetLampLevel($HANDLE, i, PVAR_READ_DEVICE(pv[i]));
+}
+
+dgw_Process($HANDLE);
+
+// Get current state
+unsigned char data[64];
+if ( dgw_GetAllLampsLevel($HANDLE, data) == DGW_OK )
+{
+	for (int i=0; i<=31; i++)
+	  PVAR_SET(pv[i], data[i]);
+	return HMI_OK;  
+}
+else
+   return HMI_ERROR;
+
+END_FUNCTION_BLOCK();

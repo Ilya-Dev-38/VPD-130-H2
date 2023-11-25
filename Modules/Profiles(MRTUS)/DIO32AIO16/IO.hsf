@@ -1,0 +1,154 @@
+BEGIN_FUNCTION_BLOCK();
+
+DWORD st = mrs_GetIOStatus($NETID);
+
+if(VAR_VALUE($ENABLE_DIO) && VAR_VALUE($W_ACTION))
+{
+   // Update to gmrs_DioBuf only when the I/O Tag's write-flag is true.
+   // The grms_DioBuf is global data buffer for the Modbus RTU slave functions 
+   // working in ladder mode.
+   
+   // DIO0 is usually used as device status.
+   // When reboot, all I/O tags are initialized as zeros.
+   // Client (Modbus RTU master) can then initial the TouchPAD again, 
+   // and then set DIO0 to 1 that indicates initialized by client.
+   
+   VAR_UPDATE_DIO_BUF_BYTE(&gmrs_DioBuf[0], $DIO0, 0);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmrs_DioBuf[0], $DIO1, 1);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmrs_DioBuf[0], $DIO2, 2);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmrs_DioBuf[0], $DIO3, 3);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmrs_DioBuf[0], $DIO4, 4);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmrs_DioBuf[0], $DIO5, 5);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmrs_DioBuf[0], $DIO6, 6);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmrs_DioBuf[0], $DIO7, 7);
+
+   VAR_UPDATE_DIO_BUF_BYTE(&gmrs_DioBuf[1], $DIO8,  0);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmrs_DioBuf[1], $DIO9,  1);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmrs_DioBuf[1], $DIO10, 2);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmrs_DioBuf[1], $DIO11, 3);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmrs_DioBuf[1], $DIO12, 4);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmrs_DioBuf[1], $DIO13, 5);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmrs_DioBuf[1], $DIO14, 6);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmrs_DioBuf[1], $DIO15, 7);
+
+   VAR_UPDATE_DIO_BUF_BYTE(&gmrs_DioBuf[2], $DIO16, 0);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmrs_DioBuf[2], $DIO17, 1);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmrs_DioBuf[2], $DIO18, 2);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmrs_DioBuf[2], $DIO19, 3);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmrs_DioBuf[2], $DIO20, 4);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmrs_DioBuf[2], $DIO21, 5);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmrs_DioBuf[2], $DIO22, 6);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmrs_DioBuf[2], $DIO23, 7);
+   
+   VAR_UPDATE_DIO_BUF_BYTE(&gmrs_DioBuf[3], $DIO24, 0);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmrs_DioBuf[3], $DIO25, 1);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmrs_DioBuf[3], $DIO26, 2);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmrs_DioBuf[3], $DIO27, 3);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmrs_DioBuf[3], $DIO28, 4);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmrs_DioBuf[3], $DIO29, 5);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmrs_DioBuf[3], $DIO30, 6);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmrs_DioBuf[3], $DIO31, 7);
+  
+}
+
+if(VAR_VALUE($ENABLE_AIO) && VAR_VALUE($W_ACTION))
+{
+   // Update to gmrs_AIOBuf only when the I/O Tag's write-flag is true.
+   // The grms_AIOBuf is global data buffer for the Modbus RTU slave functions 
+   // working in ladder mode.
+   
+   // AIO0 is usually used as device status.
+   // When reboot, all I/O tags are initialized as zeros.
+   // Client (Modbus RTU master) can then initial the TouchPAD again, 
+   // and then set AIO0 to 1 that indicates initialized by client.
+   
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[0],  $AIO0);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[1],  $AIO1);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[2],  $AIO2);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[3],  $AIO3);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[4],  $AIO4);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[5],  $AIO5);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[6],  $AIO6);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[7],  $AIO7);
+
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[8],  $AIO8);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[9],  $AIO9);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[10], $AIO10);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[11], $AIO11);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[12], $AIO12);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[13], $AIO13);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[14], $AIO14);
+   VAR_UPDATE_AIO_BUF(&gmrs_AioBuf[15], $AIO15);
+}
+
+if(VAR_VALUE($ENABLE_DIO) && VAR_VALUE($R_ACTION))
+{
+   // Update all I/O Tags from the gmrs_DioBuf.
+    
+   if ( st & 1 ) // bit 0 is dity flag for DIO
+   {
+      VAR_SET($DIO0, (gmrs_DioBuf[0]>>0) & 1);
+      VAR_SET($DIO1, (gmrs_DioBuf[0]>>1) & 1);
+      VAR_SET($DIO2, (gmrs_DioBuf[0]>>2) & 1);
+      VAR_SET($DIO3, (gmrs_DioBuf[0]>>3) & 1);
+      VAR_SET($DIO4, (gmrs_DioBuf[0]>>4) & 1);
+      VAR_SET($DIO5, (gmrs_DioBuf[0]>>5) & 1);
+      VAR_SET($DIO6, (gmrs_DioBuf[0]>>6) & 1);
+      VAR_SET($DIO7, (gmrs_DioBuf[0]>>7) & 1);
+   
+      VAR_SET($DIO8,  (gmrs_DioBuf[1]>>0) & 1);
+      VAR_SET($DIO9,  (gmrs_DioBuf[1]>>1) & 1);
+      VAR_SET($DIO10, (gmrs_DioBuf[1]>>2) & 1);
+      VAR_SET($DIO11, (gmrs_DioBuf[1]>>3) & 1);
+      VAR_SET($DIO12, (gmrs_DioBuf[1]>>4) & 1);
+      VAR_SET($DIO13, (gmrs_DioBuf[1]>>5) & 1);
+      VAR_SET($DIO14, (gmrs_DioBuf[1]>>6) & 1);
+      VAR_SET($DIO15, (gmrs_DioBuf[1]>>7) & 1);
+
+      VAR_SET($DIO16, (gmrs_DioBuf[2]>>0) & 1);
+      VAR_SET($DIO17, (gmrs_DioBuf[2]>>1) & 1);
+      VAR_SET($DIO18, (gmrs_DioBuf[2]>>2) & 1);
+      VAR_SET($DIO19, (gmrs_DioBuf[2]>>3) & 1);
+      VAR_SET($DIO20, (gmrs_DioBuf[2]>>4) & 1);
+      VAR_SET($DIO21, (gmrs_DioBuf[2]>>5) & 1);
+      VAR_SET($DIO22, (gmrs_DioBuf[2]>>6) & 1);
+      VAR_SET($DIO23, (gmrs_DioBuf[2]>>7) & 1);
+
+      VAR_SET($DIO24, (gmrs_DioBuf[3]>>0) & 1);
+      VAR_SET($DIO25, (gmrs_DioBuf[3]>>1) & 1);
+      VAR_SET($DIO26, (gmrs_DioBuf[3]>>2) & 1);
+      VAR_SET($DIO27, (gmrs_DioBuf[3]>>3) & 1);
+      VAR_SET($DIO28, (gmrs_DioBuf[3]>>4) & 1);
+      VAR_SET($DIO29, (gmrs_DioBuf[3]>>5) & 1);
+      VAR_SET($DIO30, (gmrs_DioBuf[3]>>6) & 1);
+      VAR_SET($DIO31, (gmrs_DioBuf[3]>>7) & 1);
+   }   
+}
+
+if(VAR_VALUE($ENABLE_AIO) && VAR_VALUE($R_ACTION))
+{
+   // Update all I/O Tags from the gmrs_AioBuf.
+   
+   if ( st & 2 ) // bit 1 is dity flag for AIO
+   {
+      VAR_SET($AIO0,  gmrs_AioBuf[0]);
+      VAR_SET($AIO1,  gmrs_AioBuf[1]);
+      VAR_SET($AIO2,  gmrs_AioBuf[2]);
+      VAR_SET($AIO3,  gmrs_AioBuf[3]);
+      VAR_SET($AIO4,  gmrs_AioBuf[4]);
+      VAR_SET($AIO5,  gmrs_AioBuf[5]);
+      VAR_SET($AIO6,  gmrs_AioBuf[6]);
+      VAR_SET($AIO7,  gmrs_AioBuf[7]);
+   
+      VAR_SET($AIO8,  gmrs_AioBuf[8]);
+      VAR_SET($AIO9,  gmrs_AioBuf[9]);
+      VAR_SET($AIO10, gmrs_AioBuf[10]);
+      VAR_SET($AIO11, gmrs_AioBuf[11]);
+      VAR_SET($AIO12, gmrs_AioBuf[12]);
+      VAR_SET($AIO13, gmrs_AioBuf[13]);
+      VAR_SET($AIO14, gmrs_AioBuf[14]);
+      VAR_SET($AIO15, gmrs_AioBuf[15]);
+   }
+}
+
+END_FUNCTION_BLOCK();

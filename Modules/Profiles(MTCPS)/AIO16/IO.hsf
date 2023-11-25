@@ -1,0 +1,61 @@
+BEGIN_FUNCTION_BLOCK();
+
+DWORD st = mts_GetIOStatus($NETID);
+
+if(VAR_VALUE($ENABLE_AIO) && VAR_VALUE($W_ACTION))
+{
+   // Update to gmts_AIOBuf only when the I/O Tag's write-flag is true.
+   // The grms_AIOBuf is global data buffer for the Modbus RTU slave functions 
+   // working in ladder mode.
+   
+   // AIO0 is usually used as device status.
+   // When reboot, all I/O tags are initialized as zeros.
+   // Client (Modbus RTU master) can then initial the TouchPAD again, 
+   // and then set AIO0 to 1 that indicates initialized by client.
+   
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[0],  $AIO0);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[1],  $AIO1);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[2],  $AIO2);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[3],  $AIO3);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[4],  $AIO4);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[5],  $AIO5);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[6],  $AIO6);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[7],  $AIO7);
+
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[8],  $AIO8);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[9],  $AIO9);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[10], $AIO10);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[11], $AIO11);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[12], $AIO12);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[13], $AIO13);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[14], $AIO14);
+   VAR_UPDATE_AIO_BUF(&gmts_AioBuf[15], $AIO15);
+}
+
+if(VAR_VALUE($ENABLE_AIO) && VAR_VALUE($R_ACTION))
+{
+   // Update all I/O Tags from the gmts_AioBuf.
+
+   if ( st & 2 ) // bit 1 is dity flag for AIO
+   {
+      VAR_SET($AIO0,  gmts_AioBuf[0]);
+      VAR_SET($AIO1,  gmts_AioBuf[1]);
+      VAR_SET($AIO2,  gmts_AioBuf[2]);
+      VAR_SET($AIO3,  gmts_AioBuf[3]);
+      VAR_SET($AIO4,  gmts_AioBuf[4]);
+      VAR_SET($AIO5,  gmts_AioBuf[5]);
+      VAR_SET($AIO6,  gmts_AioBuf[6]);
+      VAR_SET($AIO7,  gmts_AioBuf[7]);
+   
+      VAR_SET($AIO8,  gmts_AioBuf[8]);
+      VAR_SET($AIO9,  gmts_AioBuf[9]);
+      VAR_SET($AIO10, gmts_AioBuf[10]);
+      VAR_SET($AIO11, gmts_AioBuf[11]);
+      VAR_SET($AIO12, gmts_AioBuf[12]);
+      VAR_SET($AIO13, gmts_AioBuf[13]);
+      VAR_SET($AIO14, gmts_AioBuf[14]);
+      VAR_SET($AIO15, gmts_AioBuf[15]);
+   }
+}
+
+END_FUNCTION_BLOCK();

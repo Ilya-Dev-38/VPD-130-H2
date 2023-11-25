@@ -1,0 +1,28 @@
+BEGIN_FUNCTION_BLOCK();
+
+char  v_di[4];
+const PVAR var_list[]={
+   &$DI0,  &$DI1,  &$DI2,  &$DI3,  &$DI4,  &$DI5,  &$DI6,  &$DI7, 
+   &$DI8,  &$DI9,  &$DI10, &$DI11, &$DI12, &$DI13, &$DI14, &$DI15,
+   &$DI16, &$DI17, &$DI18, &$DI19, &$DI20, &$DI21, &$DI22, &$DI23,
+   &$DI24, &$DI25, &$DI26, &$DI27, &$DI28, &$DI29, &$DI30, &$DI31 };
+
+// Read DI ********************
+if (VAR_VALUE($ENABLE_DI) && VAR_VALUE($R_ACTION)) { 
+   if (MTM_READDI($DEVICE, $NETID, 0, 32, v_di, $TIMEOUT)) 
+   {  
+		int iTag = 0;
+		for (int iByte=0; iByte<=3; iByte++)
+		{
+			for (int iBit=0; iBit<=7; iBit++)
+			{
+				PVAR_SET(var_list[iTag], (v_di[iByte]>> iBit) & 1);
+				iTag++;
+			}
+		}
+   } else
+      return HMI_ERROR;
+}
+
+
+END_FUNCTION_BLOCK();

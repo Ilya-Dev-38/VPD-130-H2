@@ -1,0 +1,370 @@
+BEGIN_FUNCTION_BLOCK();
+
+char v_do[4], v_di;
+WORD AI[13], AO[8],AO_1[2];
+BOOL flag ;
+int  gWriteCount = 0;
+
+uart_SetTimeout($CONNECTION, $TIMEOUT);
+
+if(VAR_VALUE($ENABLE_DO) && VAR_VALUE($W_ACTION))
+{			
+   int iWrite[4] = {0,0,0,0} ;
+   v_do[0] = v_do[1] = v_do[2] = v_do[3] = 0;
+
+   iWrite[0] += VAR_GET_WRITE_BYTE(&v_do[0], $Protocol, 0);
+   iWrite[1] += VAR_GET_WRITE_BYTE(&v_do[1], $FindAll,  0);
+   iWrite[2] += VAR_GET_WRITE_BYTE(&v_do[2], $WatchDogEnable, 0);
+   iWrite[3] += VAR_GET_WRITE_BYTE(&v_do[3], $WatchDog_Reset, 0);
+
+   if ( iWrite[0] || iWrite[1] || iWrite[2] || iWrite[3] )  // Write only when need
+   {
+      // Modbus RTU master API uses byte-array to send/receive data.
+      flag = mrm_WriteDO($CONNECTION, $NETID, 256, 1, &v_do[0]);
+	  flag = mrm_WriteDO($CONNECTION, $NETID, 258, 1, &v_do[1]);
+	  flag = mrm_WriteDO($CONNECTION, $NETID, 260, 1, &v_do[2]);
+	  flag = mrm_WriteDO($CONNECTION, $NETID, 269, 1, &v_do[3]);
+	  
+      if (! flag) return HMI_ERROR; // failure
+	  
+	  
+      gWriteCount++;
+   }
+}
+
+
+if ( VAR_VALUE($ENABLE_AO) && VAR_VALUE($W_ACTION) ) 
+{ 
+   int iWrite[10] = {0,0,0,0,0,0,0,0,0,0};
+   int iWrite_1 = 0 ;
+   
+   memset(AO, 0, sizeof(AO));
+   memset(AO_1, 0, sizeof(AO_1));
+   
+   if(VAR_VALUE($Cmd_Trigger_1)) 
+     { 
+	    iWrite[0]++;
+	  
+	    switch(VAR_VALUE($Short_Group_Broadcast_1))
+	    {
+		   case 0 : AO[0] = ((((VAR_VALUE($Short_Group_Broadcast_1)&1)<<7)+((VAR_VALUE($Address_1)&0x3f)<<1)+(VAR_VALUE($Cmd_Or_Value_1)&1))<<8)&0xff00 ;
+		   break ;  
+		   
+		   case 1 : AO[0] = ((((VAR_VALUE($Short_Group_Broadcast_1)&1)<<7)+((VAR_VALUE($Address_1)&0xf)<<1)+((VAR_VALUE($Cmd_Or_Value_1)&1)))<<8)&0xff00 ;
+		   break ;
+		   
+		   case 2 : AO[0] = ((((VAR_VALUE($Cmd_Or_Value_1)&1)) + 0xFE)<<8 )&0xff00  ;
+		   break ;
+		}
+
+       AO[0] = AO[0] + (VAR_VALUE($DALI_Cmd_1)&0x00ff) ;
+	  
+	   VAR_SET($Cmd_Trigger_1, 0);
+     }
+	 
+   if(VAR_VALUE($Cmd_Trigger_2)) 
+     { 
+	    iWrite[1]++;
+	  
+	    switch(VAR_VALUE($Short_Group_Broadcast_2))
+	    {
+		   case 0 : AO[1] = ((((VAR_VALUE($Short_Group_Broadcast_2)&1)<<7)+((VAR_VALUE($Address_2)&0x3f)<<1)+(VAR_VALUE($Cmd_Or_Value_2)&1))<<8)&0xff00 ;
+		   break ;  
+		   
+		   case 1 : AO[1] = ((((VAR_VALUE($Short_Group_Broadcast_2)&1)<<7)+((VAR_VALUE($Address_2)&0xf)<<1)+((VAR_VALUE($Cmd_Or_Value_2)&1)))<<8)&0xff00 ;
+		   break ;
+		   
+		   case 2 : AO[1] = ((((VAR_VALUE($Cmd_Or_Value_2)&1)) + 0xFE)<<8 )&0xff00  ;
+		   break ;
+		}
+
+      AO[1] = AO[1] + (VAR_VALUE($DALI_Cmd_2)&0x00ff) ;
+	  
+	  VAR_SET($Cmd_Trigger_2, 0);
+     }
+	 
+   if(VAR_VALUE($Cmd_Trigger_3)) 
+     { 
+	    iWrite[2]++;
+	  
+	    switch(VAR_VALUE($Short_Group_Broadcast_3))
+	    {
+		   case 0 : AO[2] = ((((VAR_VALUE($Short_Group_Broadcast_3)&1)<<7)+((VAR_VALUE($Address_3)&0x3f)<<1)+(VAR_VALUE($Cmd_Or_Value_3)&1))<<8)&0xff00 ;
+		   break ;  
+		   
+		   case 1 : AO[2] = ((((VAR_VALUE($Short_Group_Broadcast_3)&1)<<7)+((VAR_VALUE($Address_3)&0xf)<<1)+((VAR_VALUE($Cmd_Or_Value_3)&1)))<<8)&0xff00 ;
+		   break ;
+		   
+		   case 2 : AO[2] = ((((VAR_VALUE($Cmd_Or_Value_3)&1)) + 0xFE)<<8 )&0xff00  ;
+		   break ;
+		}
+
+      AO[2] = AO[2] + (VAR_VALUE($DALI_Cmd_3)&0x00ff) ;
+	  VAR_SET($Cmd_Trigger_3, 0);
+     }
+	 
+	   if(VAR_VALUE($Cmd_Trigger_4)) 
+     { 
+	    iWrite[3]++;
+	  
+	    switch(VAR_VALUE($Short_Group_Broadcast_4))
+	    {
+		   case 0 : AO[3] = ((((VAR_VALUE($Short_Group_Broadcast_4)&1)<<7)+((VAR_VALUE($Address_4)&0x3f)<<1)+(VAR_VALUE($Cmd_Or_Value_4)&1))<<8)&0xff00 ;
+		   break ;  
+		   
+		   case 1 : AO[3] = ((((VAR_VALUE($Short_Group_Broadcast_4)&1)<<7)+((VAR_VALUE($Address_4)&0xf)<<1)+((VAR_VALUE($Cmd_Or_Value_4)&1)))<<8)&0xff00 ;
+		   break ;
+		   
+		   case 2 : AO[3] = ((((VAR_VALUE($Cmd_Or_Value_4)&1)) + 0xFE)<<8 )&0xff00  ;
+		   break ;
+		}
+
+      AO[3] = AO[3] + (VAR_VALUE($DALI_Cmd_4)&0x00ff) ;
+	  VAR_SET($Cmd_Trigger_4, 0);
+     }
+	 
+   if(VAR_VALUE($Cmd_Trigger_5)) 
+     { 
+	    iWrite[4]++;
+	  
+	    switch(VAR_VALUE($Short_Group_Broadcast_5))
+	    {
+		   case 0 : AO[4] = ((((VAR_VALUE($Short_Group_Broadcast_5)&1)<<7)+((VAR_VALUE($Address_5)&0x3f)<<1)+(VAR_VALUE($Cmd_Or_Value_5)&1))<<8)&0xff00 ;
+		   break ;  
+		   
+		   case 1 : AO[4] = ((((VAR_VALUE($Short_Group_Broadcast_5)&1)<<7)+((VAR_VALUE($Address_5)&0xf)<<1)+((VAR_VALUE($Cmd_Or_Value_5)&1)))<<8)&0xff00 ;
+		   break ;
+		   
+		   case 2 : AO[4] = ((((VAR_VALUE($Cmd_Or_Value_5)&1)) + 0xFE)<<8 )&0xff00  ;
+		   break ;
+		}
+
+      AO[4] = AO[4] + (VAR_VALUE($DALI_Cmd_5)&0x00ff) ;
+	  VAR_SET($Cmd_Trigger_5, 0);
+     }
+	 
+   if(VAR_VALUE($Cmd_Trigger_6)) 
+     { 
+	    iWrite[5]++;
+	  
+	    switch(VAR_VALUE($Short_Group_Broadcast_6))
+	    {
+		   case 0 : AO[5] = ((((VAR_VALUE($Short_Group_Broadcast_6)&1)<<7)+((VAR_VALUE($Address_6)&0x3f)<<1)+(VAR_VALUE($Cmd_Or_Value_6)&1))<<8)&0xff00 ;
+		   break ;  
+		   
+		   case 1 : AO[5] = ((((VAR_VALUE($Short_Group_Broadcast_6)&1)<<7)+((VAR_VALUE($Address_6)&0xf)<<1)+((VAR_VALUE($Cmd_Or_Value_6)&1)))<<8)&0xff00 ;
+		   break ;
+		   
+		   case 2 : AO[5] = ((((VAR_VALUE($Cmd_Or_Value_6)&1)) + 0xFE)<<8 )&0xff00  ;
+		   break ;
+		}
+
+      AO[5] = AO[5] + (VAR_VALUE($DALI_Cmd_6)&0x00ff) ;
+	  VAR_SET($Cmd_Trigger_6, 0);
+     }
+	 
+   if(VAR_VALUE($Cmd_Trigger_7)) 
+     { 
+	    iWrite[6]++;
+	  
+	    switch(VAR_VALUE($Short_Group_Broadcast_7))
+	    {
+		   case 0 : AO[6] = ((((VAR_VALUE($Short_Group_Broadcast_7)&1)<<7)+((VAR_VALUE($Address_7)&0x3f)<<1)+(VAR_VALUE($Cmd_Or_Value_7)&1))<<8)&0xff00 ;
+		   break ;  
+		   
+		   case 1 : AO[6] = ((((VAR_VALUE($Short_Group_Broadcast_7)&1)<<7)+((VAR_VALUE($Address_7)&0xf)<<1)+((VAR_VALUE($Cmd_Or_Value_7)&1)))<<8)&0xff00 ;
+		   break ;
+		   
+		   case 2 : AO[6] = ((((VAR_VALUE($Cmd_Or_Value_7)&1)) + 0xFE)<<8 )&0xff00  ;
+		   break ;
+		}
+
+      AO[6] = AO[6] + (VAR_VALUE($DALI_Cmd_7)&0x00ff) ;
+	  VAR_SET($Cmd_Trigger_7, 0);
+     }
+	 
+   if(VAR_VALUE($Cmd_Trigger_8)) 
+     { 
+	    iWrite[7]++;
+	  
+	    switch(VAR_VALUE($Short_Group_Broadcast_8))
+	    {
+		   case 0 : AO[7] = ((((VAR_VALUE($Short_Group_Broadcast_8)&1)<<7)+((VAR_VALUE($Address_8)&0x3f)<<1)+(VAR_VALUE($Cmd_Or_Value_8)&1))<<8)&0xff00 ;
+		   break ;  
+		   
+		   case 1 : AO[7] = ((((VAR_VALUE($Short_Group_Broadcast_8)&1)<<7)+((VAR_VALUE($Address_8)&0xf)<<1)+((VAR_VALUE($Cmd_Or_Value_8)&1)))<<8)&0xff00 ;
+		   break ;
+		   
+		   case 2 : AO[7] = ((((VAR_VALUE($Cmd_Or_Value_8)&1)) + 0xFE)<<8 )&0xff00  ;
+		   break ;
+		}
+
+      AO[7] = AO[7] + (VAR_VALUE($DALI_Cmd_8)&0x00ff) ;
+	  VAR_SET($Cmd_Trigger_8, 0);
+     }	 
+
+   if( VAR_FLAG_IS_WRITE($Change_Remove_Slave_Address) ) iWrite_1++;
+   AO_1[0] =  VAR_VALUE($Change_Remove_Slave_Address) ;
+
+   if( VAR_FLAG_IS_WRITE($DALI_Slave_Address_Allocation) ) iWrite_1++;
+   AO_1[1] =  VAR_VALUE($DALI_Slave_Address_Allocation) ;
+   
+   if( iWrite[0] )
+   {
+      gWriteCount++;
+      flag = mrm_WriteAO($CONNECTION, $NetID, 32 , 1, &AO[0]);
+      if (! flag) return HMI_ERROR; // failure
+   }
+   
+   if( iWrite[1] )
+   {
+      gWriteCount++;
+      flag = mrm_WriteAO($CONNECTION, $NetID, 33 , 1, &AO[1]);
+      if (! flag) return HMI_ERROR; // failure
+   }
+
+   if( iWrite[2] )
+   {
+      gWriteCount++;
+      flag = mrm_WriteAO($CONNECTION, $NetID, 34 , 1, &AO[2]);
+      if (! flag) return HMI_ERROR; // failure
+   }
+   
+   if( iWrite[3] )
+   {
+      gWriteCount++;
+      flag = mrm_WriteAO($CONNECTION, $NetID, 35 , 1, &AO[3]);
+      if (! flag) return HMI_ERROR; // failure
+   }
+   
+   if( iWrite[4] )
+   {
+      gWriteCount++;
+      flag = mrm_WriteAO($CONNECTION, $NetID, 36 , 1, &AO[4]);
+      if (! flag) return HMI_ERROR; // failure
+   }
+   
+   if( iWrite[5] )
+   {
+      gWriteCount++;
+      flag = mrm_WriteAO($CONNECTION, $NetID, 37 , 1, &AO[5]);
+      if (! flag) return HMI_ERROR; // failure
+   }
+   
+   if( iWrite[6] )
+   {
+      gWriteCount++;
+      flag = mrm_WriteAO($CONNECTION, $NetID, 38 , 1, &AO[6]);
+      if (! flag) return HMI_ERROR; // failure
+   }
+   
+   if( iWrite[7] )
+   {
+      gWriteCount++;
+      flag = mrm_WriteAO($CONNECTION, $NetID, 39 , 1, &AO[7]);
+      if (! flag) return HMI_ERROR; // failure
+   }
+   
+   if ( iWrite_1 )
+   {
+      gWriteCount++;
+	  flag = mrm_WriteAO($CONNECTION, $NetID, 320, 2, AO_1);
+      if (! flag) return HMI_ERROR; // failure
+   }
+}
+
+// Skip the reading (one time) if there is writing,
+// this reduces the loading of the remote I/O device.
+if ( gWriteCount ) return HMI_OK;
+
+
+if(VAR_VALUE($ENABLE_DI) && VAR_VALUE($R_ACTION))
+{
+   v_di = 0;
+
+   // Modbus RTU master API uses byte-array to send/receive data.
+   flag = mrm_ReadDI($CONNECTION, $NETID, 272, 1, &v_di);
+   if (! flag) return HMI_ERROR; // failure
+
+   VAR_SET($ResetStatus, (v_di>>0) & 1);
+}
+
+if(VAR_VALUE($ENABLE_DO) && VAR_VALUE($R_ACTION))
+{
+   v_do[0] = v_do[1] = v_do[2] = v_do[3] = 0;
+
+   // Modbus RTU master API uses byte-array to send/receive data.
+   flag = mrm_ReadDO($CONNECTION, $NETID, 256, 1, &v_do[0]);
+   flag = mrm_ReadDO($CONNECTION, $NETID, 258, 1, &v_do[1]);
+   flag = mrm_ReadDO($CONNECTION, $NETID, 260, 1, &v_do[2]);
+   flag = mrm_ReadDO($CONNECTION, $NETID, 269, 1, &v_do[3]);
+   
+   if (! flag) return HMI_ERROR; // failure
+
+   VAR_SET($Protocol,       (v_do[0]>>0) & 1);
+   VAR_SET($FindAll,        (v_do[1]>>0) & 1);
+   VAR_SET($WatchDogEnable, (v_do[2]>>0) & 1);
+   VAR_SET($WatchDog_Reset, (v_do[3]>>0) & 1);
+}
+
+if(VAR_VALUE($ENABLE_AI) && VAR_VALUE($R_ACTION))
+{
+   memset(AI, 0, sizeof(AI));
+
+   // Modbus RTU master API uses byte-array to send/receive data.
+   flag = mrm_ReadAI($CONNECTION, $NETID, 0  , 8, AI  );
+   flag = mrm_ReadAI($CONNECTION, $NETID, 288, 4, AI+8);
+   flag = mrm_ReadAI($CONNECTION, $NETID, 256, 1, AI+12);
+
+   
+   if (! flag) return HMI_ERROR; // failure
+
+   VAR_SET($Status_Cmd_1,AI[0]&0xff);
+   VAR_SET($Status_Cmd_2,AI[1]&0xff);
+   VAR_SET($Status_Cmd_3,AI[2]&0xff);
+   VAR_SET($Status_Cmd_4,AI[3]&0xff);
+   VAR_SET($Status_Cmd_5,AI[4]&0xff);
+   VAR_SET($Status_Cmd_6,AI[5]&0xff);
+   VAR_SET($Status_Cmd_7,AI[6]&0xff);
+   VAR_SET($Status_Cmd_8,AI[7]&0xff);
+   
+   VAR_SET($Responds_Cmd_1,(AI[0]>>8)&0xff);
+   VAR_SET($Responds_Cmd_2,(AI[1]>>8)&0xff);
+   VAR_SET($Responds_Cmd_3,(AI[2]>>8)&0xff);
+   VAR_SET($Responds_Cmd_4,(AI[3]>>8)&0xff);
+   VAR_SET($Responds_Cmd_5,(AI[4]>>8)&0xff);
+   VAR_SET($Responds_Cmd_6,(AI[5]>>8)&0xff);
+   VAR_SET($Responds_Cmd_7,(AI[6]>>8)&0xff);
+   VAR_SET($Responds_Cmd_8,(AI[7]>>8)&0xff);
+
+   VAR_SET($Pre_Slaves_0_15, AI[8] );
+   VAR_SET($Pre_Slaves_16_31,AI[9] );
+   VAR_SET($Pre_Slaves_32_47,AI[10]);
+   VAR_SET($Pre_Slaves_48_63,AI[11]);
+   
+   VAR_SET($Status_Cmd_Execution ,AI[12]);
+}
+
+if(VAR_VALUE($ENABLE_AO) && VAR_VALUE($R_ACTION))
+{
+   memset(AO, 0, sizeof(AO));
+
+   // Modbus RTU master API uses byte-array to send/receive data.
+   flag = mrm_ReadAO($CONNECTION, $NetID, 32 , 8, AO  );
+   flag = mrm_ReadAO($CONNECTION, $NetID, 320, 2, AO_1);
+
+   if (! flag) return HMI_ERROR; // failure
+
+   VAR_SET($DALI_Cmd_1,AO[0]);
+   VAR_SET($DALI_Cmd_2,AO[1]);
+   VAR_SET($DALI_Cmd_3,AO[2]);
+   VAR_SET($DALI_Cmd_4,AO[3]);
+   VAR_SET($DALI_Cmd_5,AO[4]);
+   VAR_SET($DALI_Cmd_6,AO[5]);
+   VAR_SET($DALI_Cmd_7,AO[6]);
+   VAR_SET($DALI_Cmd_8,AO[7]);
+   
+   VAR_SET($Change_Remove_Slave_Address, AO_1[0] );
+   VAR_SET($DALI_Slave_Address_Allocation,AO_1[1] );
+}
+END_FUNCTION_BLOCK();

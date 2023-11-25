@@ -1,0 +1,98 @@
+BEGIN_FUNCTION_BLOCK();
+
+DWORD st = mts_GetIOStatus($NETID);
+
+if(VAR_VALUE($ENABLE_DIO) && VAR_VALUE($W_ACTION))
+{
+   // Update to gmts_DioBuf only when the I/O Tag's write-flag is true.
+   // The grms_DioBuf is global data buffer for the Modbus RTU slave functions 
+   // working in ladder mode.
+   
+   // DIO0 is usually used as device status.
+   // When reboot, all I/O tags are initialized as zeros.
+   // Client (Modbus RTU master) can then initial the TouchPAD again, 
+   // and then set DIO0 to 1 that indicates initialized by client.
+   
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[0], $DIO0, 0);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[0], $DIO1, 1);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[0], $DIO2, 2);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[0], $DIO3, 3);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[0], $DIO4, 4);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[0], $DIO5, 5);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[0], $DIO6, 6);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[0], $DIO7, 7);
+
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[1], $DIO8,  0);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[1], $DIO9,  1);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[1], $DIO10, 2);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[1], $DIO11, 3);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[1], $DIO12, 4);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[1], $DIO13, 5);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[1], $DIO14, 6);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[1], $DIO15, 7);
+
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[2], $DIO16, 0);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[2], $DIO17, 1);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[2], $DIO18, 2);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[2], $DIO19, 3);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[2], $DIO20, 4);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[2], $DIO21, 5);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[2], $DIO22, 6);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[2], $DIO23, 7);
+   
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[3], $DIO24, 0);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[3], $DIO25, 1);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[3], $DIO26, 2);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[3], $DIO27, 3);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[3], $DIO28, 4);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[3], $DIO29, 5);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[3], $DIO30, 6);
+   VAR_UPDATE_DIO_BUF_BYTE(&gmts_DioBuf[3], $DIO31, 7);
+  
+}
+
+if(VAR_VALUE($ENABLE_DIO) && VAR_VALUE($R_ACTION))
+{
+   // Update all I/O Tags from the gmts_DioBuf.
+    
+   if ( st & 1 ) // bit 0 is dity flag for DIO
+   {
+      VAR_SET($DIO0, (gmts_DioBuf[0]>>0) & 1);
+      VAR_SET($DIO1, (gmts_DioBuf[0]>>1) & 1);
+      VAR_SET($DIO2, (gmts_DioBuf[0]>>2) & 1);
+      VAR_SET($DIO3, (gmts_DioBuf[0]>>3) & 1);
+      VAR_SET($DIO4, (gmts_DioBuf[0]>>4) & 1);
+      VAR_SET($DIO5, (gmts_DioBuf[0]>>5) & 1);
+      VAR_SET($DIO6, (gmts_DioBuf[0]>>6) & 1);
+      VAR_SET($DIO7, (gmts_DioBuf[0]>>7) & 1);
+   
+      VAR_SET($DIO8,  (gmts_DioBuf[1]>>0) & 1);
+      VAR_SET($DIO9,  (gmts_DioBuf[1]>>1) & 1);
+      VAR_SET($DIO10, (gmts_DioBuf[1]>>2) & 1);
+      VAR_SET($DIO11, (gmts_DioBuf[1]>>3) & 1);
+      VAR_SET($DIO12, (gmts_DioBuf[1]>>4) & 1);
+      VAR_SET($DIO13, (gmts_DioBuf[1]>>5) & 1);
+      VAR_SET($DIO14, (gmts_DioBuf[1]>>6) & 1);
+      VAR_SET($DIO15, (gmts_DioBuf[1]>>7) & 1);
+
+      VAR_SET($DIO16, (gmts_DioBuf[2]>>0) & 1);
+      VAR_SET($DIO17, (gmts_DioBuf[2]>>1) & 1);
+      VAR_SET($DIO18, (gmts_DioBuf[2]>>2) & 1);
+      VAR_SET($DIO19, (gmts_DioBuf[2]>>3) & 1);
+      VAR_SET($DIO20, (gmts_DioBuf[2]>>4) & 1);
+      VAR_SET($DIO21, (gmts_DioBuf[2]>>5) & 1);
+      VAR_SET($DIO22, (gmts_DioBuf[2]>>6) & 1);
+      VAR_SET($DIO23, (gmts_DioBuf[2]>>7) & 1);
+
+      VAR_SET($DIO24, (gmts_DioBuf[3]>>0) & 1);
+      VAR_SET($DIO25, (gmts_DioBuf[3]>>1) & 1);
+      VAR_SET($DIO26, (gmts_DioBuf[3]>>2) & 1);
+      VAR_SET($DIO27, (gmts_DioBuf[3]>>3) & 1);
+      VAR_SET($DIO28, (gmts_DioBuf[3]>>4) & 1);
+      VAR_SET($DIO29, (gmts_DioBuf[3]>>5) & 1);
+      VAR_SET($DIO30, (gmts_DioBuf[3]>>6) & 1);
+      VAR_SET($DIO31, (gmts_DioBuf[3]>>7) & 1);
+   }   
+}
+
+END_FUNCTION_BLOCK();

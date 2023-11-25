@@ -1,0 +1,114 @@
+BEGIN_FUNCTION_BLOCK();
+
+char  v_do, v_di;
+BOOL  flag ;
+int   gWriteCount = 0;
+const int ai_ch_count = 6;  // Number of AI channels
+const int ao_ch_count = 2;  // Number of AO channels
+WORD  ai_recv[ai_ch_count], ao_recv[ao_ch_count];    // Raw data from M-7000
+int   ai_val[ai_ch_count], ao_val[ao_ch_count], i;
+const WORD aiTypes[]={$TYPE_AI0, $TYPE_AI1, $TYPE_AI2, $TYPE_AI3, $TYPE_AI4, $TYPE_AI5};
+const WORD aoTypes[]={$TYPE_AO0, $TYPE_AO1 };
+const int aiGains[]={ $GAIN_AI0, $GAIN_AI1, $GAIN_AI2, $GAIN_AI3, $GAIN_AI4, $GAIN_AI5};
+const int aoGains[]={ $GAIN_AO0, $GAIN_AO1};
+
+uart_SetTimeout($CONNECTION, $TIMEOUT);
+
+if(VAR_VALUE($ENABLE_DO) && VAR_VALUE($W_ACTION))
+{			
+   int iWrite = 0;
+   v_do   = 0;
+
+   iWrite += VAR_GET_WRITE_BYTE(&v_do, $DO0, 0);
+   iWrite += VAR_GET_WRITE_BYTE(&v_do, $DO1, 1);
+   iWrite += VAR_GET_WRITE_BYTE(&v_do, $DO2, 2);
+
+   if ( iWrite )  // Write only when need
+   {
+      // Modbus RTU master API uses byte-array to send/receive data.
+      flag = mrm_WriteDO($CONNECTION, $NETID, 0, 3, &v_do);
+      if (! flag) return HMI_ERROR; // failure
+	  
+      gWriteCount++;
+   }
+}
+
+if ( VAR_VALUE($ENABLE_AO) && VAR_VALUE($W_ACTION) ) 
+{ 
+   int iWrite = 0;
+
+   if( VAR_FLAG_IS_WRITE($AO0) ) iWrite++;
+   ao_recv[0] = M7000_AOLongToHex( "7026", aoTypes[0], VAR_VALUE($AO0), aoGains[0], NULL );
+
+   if( VAR_FLAG_IS_WRITE($AO1) ) iWrite++;
+   ao_recv[1] = M7000_AOLongToHex( "7026", aoTypes[1], VAR_VALUE($AO1), aoGains[1], NULL );
+
+   if ( iWrite )
+   {
+      gWriteCount++;
+      flag = mrm_WriteAO($CONNECTION, $NetID, 0x20, ao_ch_count, ao_recv);
+      if (! flag) return HMI_ERROR; // failure
+   }
+}
+
+// Skip the reading (one time) if there is writing,
+// this reduces the loading of the remote I/O device.
+if ( gWriteCount ) return HMI_OK;
+
+if ( VAR_VALUE($ENABLE_AO) && VAR_VALUE($R_ACTION) ) 
+{ 
+  memset(ao_recv, 0, sizeof(ao_recv));
+  flag = mrm_ReadAO($CONNECTION, $NetID, 0x20, ao_ch_count, ao_recv);
+  if (! flag) return HMI_ERROR; // failure
+
+  for (i=0; i<ao_ch_count; i++)
+     ao_val[i] = M7000_AOHexToLong("7026", aoTypes[i], ao_recv[i], aoGains[i], NULL);
+
+  VAR_SET($AO0, ao_val[0] );
+  VAR_SET($AO1, ao_val[1] );
+}
+
+if ( VAR_VALUE($ENABLE_AI) && VAR_VALUE($R_ACTION) ) { 
+
+  memset(ai_recv, 0, sizeof(ai_recv));
+  flag = mrm_ReadAI($CONNECTION, $NetID, 0, ai_ch_count, ai_recv);
+  if (! flag) return HMI_ERROR; // failure
+
+  for (i=0; i<ai_ch_count; i++)
+     ai_val[i] = M7000_AIHexToLong("7026", aiTypes[i], ai_recv[i], aiGains[i], NULL);
+
+  VAR_SET($AI0, ai_val[0] );
+  VAR_SET($AI1, ai_val[1] );
+  VAR_SET($AI2, ai_val[2] );
+  VAR_SET($AI3, ai_val[3] );
+  VAR_SET($AI4, ai_val[4] );
+  VAR_SET($AI5, ai_val[5] );
+}
+
+if(VAR_VALUE($ENABLE_DI) && VAR_VALUE($R_ACTION))
+{
+   v_di = 0;
+
+   // Modbus RTU master API uses byte-array to send/receive data.
+   flag = mrm_ReadDI($CONNECTION, $NETID, 0x20, 3, &v_di);
+   if (! flag) return HMI_ERROR; // failure
+
+   VAR_SET($DI0, (v_di>>0) & 1);
+   VAR_SET($DI1, (v_di>>1) & 1);
+   VAR_SET($DI2, (v_di>>2) & 1);
+}
+
+if(VAR_VALUE($ENABLE_DO) && VAR_VALUE($R_ACTION))
+{
+   v_do = 0;
+
+   // Modbus RTU master API uses byte-array to send/receive data.
+   flag = mrm_ReadDO($CONNECTION, $NETID, 0, 3, &v_do);
+   if (! flag) return HMI_ERROR; // failure
+
+   VAR_SET($DO0, (v_do>>0) & 1);
+   VAR_SET($DO1, (v_do>>1) & 1);
+   VAR_SET($DO2, (v_do>>2) & 1);
+}
+
+END_FUNCTION_BLOCK();
